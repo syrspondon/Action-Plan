@@ -1,0 +1,5739 @@
+<template>
+  <div class=" h-screen">
+    <!-- header -->
+   <div class=" bg-white h-[10vh] top-0 drop-shadow-md">
+    <div class=" grid grid-cols-2">
+      <div class=" col-span-1">
+        <img class=" md:ml-32 h-[8vh] my-[1vh]" src="@\assets\logo01.png" alt="">
+      </div>
+      <div class="col-span-1 hidden md:flex items-center">
+        <p class="font-semibold text-sm">An initative of:</p>
+        <img class=" h-[6vh] my-[2vh]" src="@\assets\logo03.png" alt="">
+        <div class=" border-l border-slate-400 h-[6vh] my-[2vh]"></div>
+        <img class=" h-[6vh] my-[2vh]" src="@\assets\logo02.png" alt="">
+      </div>
+    </div>
+   </div>
+
+    <!-- body -->
+    <div v-if="page==1" class=" h-[82vh] bg-gradient-to-b from-[#F4F1EC] to-[#E6EBF1]">
+      <div class="grid grid-cols-8 h-full">
+        <div class=" col-span-1 "></div>
+        <div class=" col-span-3 text-left mt-[20vh] ">
+          <p class=" lg:text-3xl md:text-2xl font-bold mb-[2vh] text-black">Empowering individuals and their families at high cancer risk due to a gene fault</p>
+          <p class=" border-2 border-orange-600 mb-[2vh] w-[10vh]"></p>
+          <p class=" lg:text-lg md:text-base font-thin text-black">It can be daunting to be told that you have a fault in a gene which increases your risk of developing breast and/or ovarian cancer. If you are uncertain where to find information about managing your increased cancer risk, or what questions to ask your specialist, this website is here to help you.</p>
+        </div>
+        <div class=" col-span-2 mt-[30vh]">
+          <button @click="page=2" class=" py-3 px-5 md:text-xl lg:text-2xl text-white bg-purple-700 hover:bg-purple-600 rounded hover:scale-105">Create Your Actionplan →</button>
+        </div>
+      </div>
+    </div>
+
+    <div v-else-if="page==2" class=" h-[82vh] bg-gradient-to-b from-[#51287B] to-[#093963]">
+      <div class="h-full flex justify-center">
+        <div class="mt-[20vh]">
+          <p class="mb-[3vh] text-[#F7931E] font-bold">QUESTION 1</p>
+          <p class="mb-[3vh] text-white text-2xl font-bold">Which gene did you test positive to?</p>
+          <div class="mb-[3vh]" role="group">
+            <button @click="option1=true; option3=false; option4=false; optionSelect=true" type="button" :class="{ activeOp: option1 }" class=" text-slate-800 drop-shadow hover:text-white py-5 px-24 font-bold bg-white hover:bg-[#623093] mx-2 rounded">BRCA1</button>
+            <button @click="option1=false; option3=true; option4=false; optionSelect=true" type="button" :class="{ activeOp: option3 }" class=" text-slate-800 drop-shadow hover:text-white py-5 px-24 font-bold bg-white hover:bg-[#623093] mx-2 rounded">BRCA2</button>
+            <button @click="option1=false; option3=false; option4=true; optionSelect=true" type="button" :class="{ activeOp: option4 }" class=" text-slate-800 drop-shadow hover:text-white py-5 px-24 font-bold bg-white hover:bg-[#623093] mx-2 rounded">PALB2</button>
+          </div>
+          <div class="mb-[3vh]">
+            <button @click="page=3;Page02()" :disabled="!optionSelect" class="drop-shadow text-white py-4 px-16 font-bold bg-[#623093] disabled:text-slate-400 disabled:bg-slate-800 mx-2 rounded hover:scale-105">NEXT →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div v-else-if="page==3" class=" h-[82vh] bg-gradient-to-b from-[#51287B] to-[#093963]">
+      <div class="h-full flex justify-center">
+        <div class="mt-[20vh]">
+          <p class="mb-[3vh] text-[#F7931E] font-bold">QUESTION 2</p>
+          <p class="mb-[3vh] text-white text-2xl font-bold">What is your current age?</p>
+          <div class="mb-[2vh]" >
+            <input v-model="ageV" type="number" class=" text-center rounded py-5 px-10 font-bold">
+          </div>
+          <div class="mb-[2vh]" >
+            <p class=" text-white">*age must be between 20 to 80 years</p>
+          </div>
+          <div class="mb-[3vh]">
+            <button @click="page=2" class="drop-shadow text-white py-4 px-16 font-bold bg-[#3D393E] hover:bg-[#007DBC] mx-2 rounded hover:scale-105">← BACK</button>
+            <button @click="page=4;ChageAge()" :disabled="ageV=='' || ageV<20 || ageV>80" class="drop-shadow text-white py-4 px-16 font-bold bg-[#623093] disabled:text-slate-400 disabled:bg-slate-800 mx-2 rounded hover:scale-105">NEXT →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div v-else-if="page==4" class=" h-[82vh] bg-gradient-to-b from-[#51287B] to-[#093963]">
+      <div class="h-full flex justify-center">
+        <div class="mt-[20vh]">
+          <p class="mb-[3vh] text-[#F7931E] font-bold">QUESTION 3</p>
+          <p class="mb-[1vh] text-white text-2xl font-bold">Which best describes you?</p>
+          <p class="mb-[3vh] w-[40vw] text-white text-sm ">This question will not affect the information in your ActionPlan. It will be used purely for analytical purposes and guide the development of future content.</p>
+          <div class="mb-[3vh]" role="group">
+            <div>
+              <button @click="option11=true; option22=false; optionSelect2=true" type="button" :class="{ activeOp2: option11 }" class=" text-slate-800 drop-shadow hover:text-white py-5 px-24 font-bold bg-white hover:bg-[#623093] mb-3 rounded">I'm exploring info for myself or someone I know with a gene fault</button>
+            </div>
+            <div>
+              <button @click="option11=false; option22=true; optionSelect2=true" type="button" :class="{ activeOp2: option22 }" class=" text-slate-800 drop-shadow hover:text-white py-5 px-24 font-bold bg-white hover:bg-[#623093]  rounded">I'm a doctor providing support to my patient</button>
+            </div>
+          </div>
+          <div class="mb-[3vh]">
+            <button @click="page=3" class="drop-shadow text-white py-4 px-16 font-bold bg-[#3D393E] hover:bg-[#007DBC] mx-2 rounded hover:scale-105">← BACK</button>
+            <button @click="page=5" :disabled="!optionSelect2" class="drop-shadow text-white py-4 px-16 font-bold bg-[#623093] disabled:text-slate-400 disabled:bg-slate-800 mx-2 rounded hover:scale-105">FINISH →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div v-else-if="page==5" class=" min-h-[82vh] bg-[#D9EBFC]">
+        <div class="grid grid-cols-8">
+          <div class=" col-span-8 pt-[4vh] pb-[3vh] bg-gradient-to-b from-[#51287B] to-[#093963]">
+            <div class=" grid grid-cols-8">
+              <div class=" col-span-1"></div>
+              <div class=" col-span-4 pr-20">
+                 <p class=" text-white text-4xl border-b-2 w-fit border-[#E16326] mb-4">Here is your ActionPlan</p>
+                 <p class=" text-slate-200 text-left my-4">The aim of this ActionPlan is to support you and help you manage your cancer risk. The information provided represents the risk and risk management recommendations for the average person who has your gene fault. Individual risks may differ.</p>
+                 <p class=" text-slate-200 text-left my-4">If you have any specific questions or concerns about your circumstances, please discuss them with your specialist or contact your local familial cancer centre. People who have been diagnosed with a breast or ovarian cancer should discuss their care with their treating specialists.</p>
+              </div>
+              <div class=" col-span-2 flex justify-end gap-2">
+                <div class="p-5 bg-gradient-to-r from-[#00C0BC] to-[#0074BC] rounded drop-shadow h-[120px]">
+                  <p class="  text-white text-left text-sm font-bold">GENE FAULT <span @click="modalGraph=true" class=" font-thin ml-10 underline cursor-pointer hover:text-orange-300 text-xs">Edit</span></p>
+                  <p v-if="option1" class="  text-white text-left text-3xl mt-4">BRCA1</p>
+                  <p v-if="option3" class="  text-white text-left text-3xl mt-4">BRCA2</p>
+                  <p v-if="option4" class="  text-white text-left text-3xl mt-4">PALB2</p>
+                </div>
+                <div class="p-5 bg-gradient-to-r from-[#00C0BC] to-[#0074BC] rounded drop-shadow h-[120px]">
+                  <p class="  text-white text-left text-sm font-bold">AGE <span  @click="modalAge=true;ageV2=ageV" class=" font-thin ml-10 underline cursor-pointer hover:text-orange-300 text-xs">Edit</span></p>
+                  <p class="  text-white text-left text-3xl mt-4">{{ageV}}</p>
+                </div>
+              </div>
+              <div class=" col-span-1"></div>
+            </div>
+          </div>
+          <div class=" col-span-1"></div>
+          <div class=" col-span-6 pt-[2vh] pb-[4vh]">
+            <div class="mt-4 rounded-lg drop-shadow bg-white grid grid-cols-5">
+
+              <!-- Top Headline -->
+              <div class=" col-span-5 bg-gradient-to-r from-[#017BBC] to-[#5F3395] rounded-t-lg">
+                <p class=" text-3xl text-white text-left my-5 ml-10">Cancer Risk (AGE {{ageV}})</p>
+              </div>
+              <!-- 1st Headline -->
+              <p class="mt-2 mb-3 text-center text-3xl text-[#623093] col-span-5">Your risk of developing Breast Cancer</p>
+
+              <div class=" col-span-2 mx-5">
+                <div class=" px-10">
+                  <p v-if="age<=71" class="text-left text-lg mb-1 font-bold">Track your risk evolution for the next 10 years</p>
+                  <p v-else class="text-left text-lg mb-1 font-bold">Track your risk evolution for next few years</p>
+                  <vue3-slider @change="Page03()" :alwaysShowHandle="true" v-model="age" :min="ageMin" :max="ageMax" :height="sliderHeight" color="#623093" :tooltip="true" track-color="#EEE5F7" />
+                  <div class=" flex justify-between font-bold">
+                    <span >Age {{ageMin}}</span>
+                    <span >Age {{ageMax}}</span>
+                  </div>
+                </div>
+                <p class=" text-slate-800 text-xl m-2">Your Risk from Age {{age}} until Age 80 is {{ageR}}%</p>
+                <Doughnut :data="dataS" class="pb-4 max-h-[40vh]"/>
+              </div>
+
+              <div v-if="selectGraph==1" class=" col-span-3 mr-5">
+                <div class="flex">
+                  <button class="p-1 bg-[#623093] w-full text-white hover:cursor-pointer border border-slate-500 rounded-l" >Your lifetime cumulative risk</button>
+                  <button @click="selectGraph=2" class="p-1 bg-[#FAF9F6] hover:bg-[#EEE5F7] w-full hover:cursor-pointer border border-slate-500" >Your Risk in Next 10 Years</button>
+                  <button @click="selectGraph=3" class="p-1 bg-[#FAF9F6] hover:bg-[#EEE5F7] w-full hover:cursor-pointer border border-slate-500 rounded-r" >Your lifetime residual risk</button>
+                </div>
+                <div class="pt-10 pb-1">
+                  <Bar :data="dataF" :options="options"  />
+                </div>
+                <button @click="boxPlot1=true" class="underline text-[#623093] text-lg hover:scale-105 hover:cursor-pointer">View an in-depth graph</button>
+                
+              </div>
+              <div v-else-if="selectGraph==2" class=" col-span-3 mr-5">
+                <div class="flex">
+                  <button @click="selectGraph=1" class="p-1 bg-[#FAF9F6] hover:bg-[#EEE5F7] w-full hover:cursor-pointer border border-slate-500 rounded-l" >Your lifetime cumulative risk</button>
+                  <button class="p-1 bg-[#623093] w-full text-white hover:cursor-pointer border border-slate-500" >Your Risk in Next 10 Years</button>
+                  <button @click="selectGraph=3" class="p-1 bg-[#FAF9F6] hover:bg-[#EEE5F7] w-full hover:cursor-pointer border border-slate-500 rounded-r" >Your lifetime residual risk</button>
+                </div>
+                <div class="pt-10 pb-1">
+                  <Bar :data="dataF2" :options="options"  />
+                </div>
+                <button @click="boxPlot2=true" class="underline text-[#623093] text-lg hover:scale-105 hover:cursor-pointer">View an in-depth graph</button>
+              </div>
+
+              <div v-else-if="selectGraph==3" class=" col-span-3 mr-5">
+                <div class="flex">
+                  <button @click="selectGraph=1" class="p-1 bg-[#FAF9F6] hover:bg-[#EEE5F7] w-full hover:cursor-pointer border border-slate-500 rounded-l" >Your lifetime cumulative risk</button>
+                  <button @click="selectGraph=2" class="p-1 bg-[#FAF9F6] hover:bg-[#EEE5F7] w-full hover:cursor-pointer border border-slate-500" >Your Risk in Next 10 Years</button>
+                  <button class="p-1 bg-[#623093] w-full text-white hover:cursor-pointer border border-slate-500 rounded-r" >Your lifetime residual risk</button>
+                </div>
+                <div class="pt-10 pb-1">
+                  <Bar :data="dataR" :options="options"  />
+                </div>
+              </div>
+
+              <div v-if="selectGraph==1" class=" col-span-5 text-left px-20 my-8 text-black leading-7">
+                <p class=" font-bold">Graph Details:</p>
+                <p class=" pl-10"><span class="pr-2">&#x2022;</span>This bar chart simplifies the comparison of average breast cancer risk across different age groups. It offers a clear visual representation of how risk levels change as individuals move through different 10-year age spans. Each bar corresponds to a specific age group, starting at age 20 and increasing in 10-year increments. The height of each bar indicates the average cancer risk for that particular age range.</p>
+                <!-- <p class=" font-bold">Graph Interpretation:</p> -->
+                <p v-if="option1" class=" pl-10"><span class="pr-2">&#x2022;</span>If we observe the bar graph, a gradual increase in bar heights as age progresses. This might suggest a correlation between age and average cancer risk, indicating that, on average, cancer risk tends to rise with age, with a peak of 65.4% average risk at age range 71-80.</p>
+                <p v-if="option3" class=" pl-10"><span class="pr-2">&#x2022;</span>If we observe the bar graph, a gradual increase in bar heights as age progresses. This might suggest a correlation between age and average cancer risk, indicating that, on average, cancer risk tends to rise with age, with a peak of 60% average risk at age range 71-80.</p>
+                <p v-if="option4" class=" pl-10"><span class="pr-2">&#x2022;</span>If we observe the bar graph, a gradual increase in bar heights as age progresses. This might suggest a correlation between age and average cancer risk, indicating that, on average, cancer risk tends to rise with age, with a peak of 50.2% average risk at age range 71-80.</p>
+              </div>
+
+
+              <div v-if="selectGraph==2" class=" col-span-5 text-left px-20 my-8 text-black leading-7">
+                <p class=" font-bold">Graph Details:</p>
+                <!-- <p class=" pl-10"><span class="pr-2">&#x2022;</span>At age {{age}}, There is a {{ageR}}% risk that you will develop breast cancer by the age of 80 years.</p> -->
+                <p v-if="ageRL!=0 || ageRU!=0" class="pl-10"><span class="pr-2">&#x2022;</span>Your risk in next 10 years is: {{ageRL}}%-{{ageRU}}%</p>
+                <p v-else class="pl-10"><span class="pr-2">&#x2022;</span>Your risk in next 10 years is 0%</p>
+                <!-- <p class=" font-bold">Graph Interpretation:</p> -->
+                <p class=" pl-10"><span class="pr-2">&#x2022;</span>This bar chart illustrates the average 10-year risk of breast cancer across various age groups, ranging from 20 to 80 years. The height of each bar corresponds to the average 10-year cancer risk for the respective age group. Taller bars indicate higher average risk, while shorter bars represent lower average risk.</p>
+                <p v-if="option1" class=" pl-10"><span class="pr-2">&#x2022;</span>After observing the graph, we can see a distinctive pattern. The 10-year average risk gradually increases till the age range of 31-40, reaching its peak at 17%. Beyond this point, there is a gradual decrease in average risk over the next three decades.</p>
+                <p v-if="option3" class=" pl-10"><span class="pr-2">&#x2022;</span>After observing the graph, we can see a distinctive pattern. The 10-year average risk gradually increases till the age range of 41-50, reaching its peak at 16%. Beyond this point, there is a gradual decrease in average risk over the next three decades.</p>
+                <p v-if="option4" class=" pl-10"><span class="pr-2">&#x2022;</span>After observing the graph, we can see a distinctive pattern. The 10-year average risk gradually increases till the age range of 41-50, reaching its peak at 14%. Beyond this point, there is a gradual decrease in average risk over the next three decades.</p>
+              </div>
+
+
+              <div v-if="selectGraph==3" class=" col-span-5 text-left px-20 my-8 text-black leading-7">
+                <p class=" font-bold">Graph Details:</p>
+                <p class=" pl-10"><span class="pr-2">&#x2022;</span>This bar chart illustrates the residual risk for breast cancer in the age range of {{age}} to 80. Residual cancer risk denotes the persisting probability of developing cancer. Upon examination of the graph, a discernible trend emerges, revealing a gradual reduction in residual risk with each successive year within the specified age bracket</p>
+              </div>
+
+              <!-- <div class="mx-10 p-2 col-span-5 bg-gradient-to-r from-[#017BBC] to-[#5F3395] rounded-lg grid grid-cols-5">
+                <div class=" col-span-5" v-if="!boolean1 && !boolean2">
+                  <p class=" text-white text-xl p-1">Have you diagnosed with breast cancer Before?</p>
+                  <div class="pb-1" role="group">
+                    <button @click="boolean1=true;boolean2=false; NewRisk()" :class="{ activebool: boolean1 }" class=" text-slate-800 px-3 py-1 bg-slate-100 hover:bg-orange-400 rounded m-1">Yes</button>
+                    <button @click="boolean1=false;boolean2=true" :class="{ activebool: boolean2 }" class=" text-slate-800 px-3 py-1 bg-slate-100 hover:bg-orange-400 rounded m-1">No</button>
+                  </div>
+                </div>
+                <div v-if="boolean2" class=" flex items-center justify-center col-span-5">
+                  <p class="px-10 text-lg text-white">Same as upper result</p>
+                </div>
+                <div v-if="boolean1" class=" flex items-center justify-center col-span-4">
+                  <p class="px-10 text-lg text-white">Then, You have redused the risk of getting diagnosed with cancer by 90%, your new risk is {{boolean1Value}}%</p>
+                </div>
+                <div v-if="boolean1" class=" flex items-center justify-start col-span-1">  
+                  <div class=" max-w-fit bg-white rounded-3xl drop-shadow">
+                    <Doughnut :data="dataBoolean1" class="pb-4 max-h-[25vh] text-white"/>
+                  </div>
+                </div>
+              </div> -->
+
+              <!-- border line -->
+              <div class=" col-span-5 border mx-10 my-8 border-gray-300"></div>
+              
+              <!-- 2nd Headline --> 
+              <p class=" mb-5 text-center text-3xl text-[#623093] col-span-5">Your risk of developing Ovarian Cancer</p>
+              
+              <div class=" col-span-2 mx-5"> 
+                <div class=" px-10">
+                  <p v-if="age<=71" class="text-left text-lg mb-1 font-bold">Track your risk evolution for the next 10 years</p>
+                  <p v-else class="text-left text-lg mb-1 font-bold">Track your risk evolution for next few years</p>
+                  <vue3-slider @change="Page04()" :alwaysShowHandle="true" v-model="age2" :min="ageMin" :max="ageMax" :height="sliderHeight" color="#623093" :tooltip="true" track-color="#EEE5F7" />
+                 <div class=" flex justify-between font-bold">
+                    <span >Age {{ageMin}}</span>
+                    <span >Age {{ageMax}}</span>
+                  </div>
+                </div>
+                <p class=" text-slate-800 text-xl m-2 ">Your Risk from Age {{age2}} until Age 80 is {{ageR2}}%</p>
+                <Doughnut :data="dataS2" class="pb-4 max-h-[40vh]"/>
+              </div>
+
+              <div v-if="selectGraph2==1" class=" col-span-3 mr-5">
+                <div class="flex">
+                  <button @click="selectGraph2=1" class="p-1 bg-[#623093] w-full text-white hover:cursor-pointer border border-slate-500 rounded-l" >Your lifetime cumulative risk</button>
+                  <button @click="selectGraph2=2" class="p-1 bg-[#FAF9F6] hover:bg-[#EEE5F7] w-full hover:cursor-pointer border border-slate-500" >Your Risk in Next 10 Years</button>
+                  <button @click="selectGraph2=3" class="p-1 bg-[#FAF9F6] hover:bg-[#EEE5F7] w-full hover:cursor-pointer border border-slate-500 rounded-r" >Your lifetime residual risk</button>
+                </div>
+                <div class="pt-10 pb-1"><Bar :data="dataJ" :options="options"  /></div>
+                <button @click="boxPlot3=true" class="underline text-[#623093] text-lg hover:scale-105 hover:cursor-pointer">View an in-depth graph</button>
+              </div>
+
+              <div v-else-if="selectGraph2==2" class=" col-span-3 mr-5">
+                <div class="flex">
+                  <button @click="selectGraph2=1" class="p-1 bg-[#FAF9F6] hover:bg-[#EEE5F7] w-full hover:cursor-pointer border border-slate-500 rounded-l" >Your lifetime cumulative risk</button>
+                  <button @click="selectGraph2=2" class="p-1 bg-[#623093] w-full text-white hover:cursor-pointer border border-slate-500" >Your Risk in Next 10 Years</button>
+                  <button @click="selectGraph2=3" class="p-1 bg-[#FAF9F6] hover:bg-[#EEE5F7] w-full hover:cursor-pointer border border-slate-500 rounded-r" >Your lifetime residual risk</button>
+                 </div>
+                <div class="pt-10 pb-1"><Bar :data="dataJ2" :options="options"  /></div>
+                <button @click="boxPlot4=true" class="underline text-[#623093] text-lg hover:scale-105 hover:cursor-pointer">View an in-depth graph</button>
+              </div>
+
+              <div v-else-if="selectGraph2==3" class=" col-span-3 mr-5">
+                <div class="flex">
+                  <button @click="selectGraph2=1" class="p-1 bg-[#FAF9F6] hover:bg-[#EEE5F7] w-full hover:cursor-pointer border border-slate-500 rounded-l" >Your lifetime cumulative risk</button>
+                  <button @click="selectGraph2=2" class="p-1 bg-[#FAF9F6] hover:bg-[#EEE5F7] w-full hover:cursor-pointer border border-slate-500" >Your Risk in Next 10 Years</button>
+                  <button @click="selectGraph2=3" class="p-1 bg-[#623093] w-full text-white hover:cursor-pointer border border-slate-500 rounded-r" >Your lifetime residual risk</button>
+                 </div>
+                <div class="pt-10 pb-1"><Bar :data="dataR2" :options="options"  /></div>
+              </div>
+
+              <div v-if="selectGraph2==1" class=" col-span-5 text-left px-20 my-8 text-black leading-7">
+                <p class=" font-bold">Graph Details:</p>
+                <p class=" pl-10"><span class="pr-2">&#x2022;</span>This bar chart makes it easy to compare how likely it is to get Ovarian cancer in different age groups. It shows a clear picture of how the risk changes as people go through each 10-year of their lives. Imagine each bar as a group of ages, starting from 20 and going up every 10 years. The height of the bar tells you the average risk of getting ovarian cancer for that group of ages.</p>
+                <!-- <p class=" font-bold">Graph Interpretation:</p> -->
+                <p v-if="option1" class=" pl-10"><span class="pr-2">&#x2022;</span>By checking out the bar graph, we will notice a slow rise in the height of the bars as age goes up, and there's hardly any risk for the initial three decades. However, things change significantly starting from age 51, with a gradual increase in risk continuing up to age 80 reaching its peak at 17% average risk for the age group 71-80.</p>
+                <p v-if="option3" class=" pl-10"><span class="pr-2">&#x2022;</span>By checking out the bar graph, we will notice a slow rise in the height of the bars as age goes up, and there's hardly any risk for the initial three decades. However, things change significantly starting from age 51, with a gradual increase in risk continuing up to age 80 reaching its peak at 17% average risk for the age group 71-80.</p>
+                <p v-if="option4" class=" pl-10"><span class="pr-2">&#x2022;</span>By checking out the bar graph, we will notice a slow rise in the height of the bars as age goes up, and there's hardly any risk for the initial four decades. However, things change starting from age 61, with a gradual increase in risk continuing up to age 80 reaching its peak at 2.5% average risk for the age group 71-80.</p>
+              </div>
+
+              <div v-if="selectGraph2==2" class=" col-span-5 text-left px-20 my-8 text-black leading-7">
+                <p class=" font-bold">Graph Details:</p>
+                <!-- <p class=" pl-10"><span class="pr-2">&#x2022;</span>At age {{age2}}, There is a {{ageR2}}% risk that you will develop breast cancer by the age of 80 years.</p> -->
+                <p v-if="ageRL2!=0 || ageRU2!=0" class="pl-10"><span class="pr-2">&#x2022;</span>Your risk in next 10 years is: {{ageRL2}}%-{{ageRU2}}%</p>
+                <p v-else class="pl-10"><span class="pr-2">&#x2022;</span>Your risk in next 10 years is 0%</p>
+                <p class=" pl-10"><span class="pr-2">&#x2022;</span>This bar chart shows how likely it is to get ovarian cancer over a 10-year period for different age groups from 20 to 80 years. The height of each bar represents the average risk for that age group. If a bar is tall, it means there is a higher average risk, and if it's short, the average risk is lower.</p>
+                <!-- <p class=" font-bold">Graph Interpretation:</p> -->
+                <p v-if="option1" class=" pl-10"><span class="pr-2">&#x2022;</span>After observing the graph, we can see a distinctive pattern. The 10-year average risk gradually increases till the age range of 51-60, reaching its peak at 7.9%. Beyond this point, there is a gradual decrease in average risk over the next three decades.</p>
+                <p v-if="option3" class=" pl-10"><span class="pr-2">&#x2022;</span>After observing the graph, we can see a distinctive pattern. The 10-year average risk gradually increases till the age range of 51-60, reaching its peak at 7.9%. Beyond this point, there is a gradual decrease in average risk over the next three decades.</p>
+                <p v-if="option4" class=" pl-10"><span class="pr-2">&#x2022;</span>After observing the graph, we can see a distinctive pattern. The 10-year average risk gradually increases till the age range of 71-80, reaching its peak at 1.3%.</p>
+              </div>
+
+              <div v-if="selectGraph2==3" class=" col-span-5 text-left px-20 my-8 text-black leading-7">
+                <p class=" font-bold">Graph Details:</p>
+                <p class=" pl-10"><span class="pr-2">&#x2022;</span>This bar chart illustrates the residual risk for ovarian cancer in the age range of {{age}} to 80. Residual cancer risk denotes the persisting probability of developing cancer. Upon examination of the graph, a discernible trend emerges, revealing a gradual reduction in residual risk with each successive year within the specified age bracket</p>
+              </div>
+
+              <div class="mx-10 p-2 col-span-5 bg-gradient-to-r from-[#017BBC] to-[#5F3395] rounded-lg grid grid-cols-5 mb-5">
+                <p v-if="!question000" @click="question00=true;question000=true" class=" underline hover:cursor-pointer hover:text-orange-400 text-2xl col-span-5 text-slate-200 mb-1">Explore Your Risk Mitigation Plans</p>
+                <p v-else class=" underline text-2xl col-span-5 text-slate-200 mb-1">Explore Your Risk Mitigation Plans</p>
+                <!-- <p @click="question000=true;question00=true" v-if="!question000" class=" hover: cursor-pointer hover:text-orange-400 text-xl col-span-5 text-white underline"></p> -->
+
+                <div v-if="question00" class=" col-span-5">
+                  <p class=" text-white text-xl p-1">"Have you undergone any risk-reducing surgery to manage your cancer risk, such as bilateral risk-reducing breast surgery?"</p>
+                  <div class="pb-1" role="group">
+                    <button @click="question01=true;question00=false;NewRisk()" class=" font-bold text-slate-800 px-3 py-1 bg-slate-100 hover:bg-orange-400 rounded m-1">Yes</button>
+                    <button @click="question02=true;question00=false" class=" font-bold text-slate-800 px-3 py-1 bg-slate-100 hover:bg-orange-400 rounded m-1">No</button>
+                  </div>
+                </div>
+                <div v-if="question01" class=" col-span-5 grid grid-cols-5">
+                  <p class=" text-white text-xl p-2 px-10 text-justify col-span-3">Thank you for sharing this information. Undergoing bilateral risk-reducing breast surgery is a significant step towards managing your health. This procedure has been proven to substantially reduce the risk of breast cancer, often by 90-95%. As a result, your overall breast cancer risk is considerably lower.</p>
+                  <div class=" col-span-2">
+                    <pie :data="dataBoolean1" class="pb-4 max-h-44 bg-white rounded-lg"/>
+                  </div>
+                  <div class=" col-span-5 pt-1 flex justify-between" role="group">
+                    <button @click="question01=false;question00=true" class=" hover:text-orange-400 text-white pb-2 pl-10">←Back</button>
+                    <button @click="question03=true;question01=false" class=" hover:text-orange-400 text-white underline pb-2 pr-10">Would you like to learn more?</button>
+                  </div>
+                </div>
+                <div v-if="question02" class=" col-span-5">
+                  <p class=" text-white text-xl p-2 px-10 text-justify">Without having undergone risk-reducing surgery, it is crucial to manage your health using alternative strategies. Keeping a healthy lifestyle and engaging in regular screenings are important in managing your breast cancer risk effectively. In case of further questions or concerns, please contact your physician.</p>
+                  <div class="flex justify-between" role="group">
+                    <button @click="question02=false;question00=true" class=" hover:text-orange-400 text-white pb-2 pl-10">←Back</button>
+                    <button @click="question03=true;question02=false" class=" hover:text-orange-400 text-white underline float-right pb-2 pr-10">Would you like to learn more?</button>
+                  </div>
+                </div>
+                <div v-if="question03" class=" col-span-5">
+                  <p class=" text-white text-xl p-1">"Would you like to learn more about risk-reducing ovary removal surgery for BRCA1/BRCA2 carriers, including recommended ages and potential risks?"</p>
+                  <div class="pb-1" role="group">
+                    <button @click="question04=true;question03=false" class=" font-bold text-slate-800 px-3 py-1 bg-slate-100 hover:bg-orange-400 rounded m-1">Yes</button>
+                    <button @click="question05=true;question03=false" class=" font-bold text-slate-800 px-3 py-1 bg-slate-100 hover:bg-orange-400 rounded m-1">No</button>
+                  </div>
+                  <div class="flex justify-between" role="group">
+                    <button @click="question03=false;question00=true" class=" hover:text-orange-400 text-white pb-2 pl-10">←Back</button>
+                  </div>
+                </div>
+                <div v-if="question04" class=" col-span-5">
+                  <p class=" text-white text-xl p-2 px-10 text-justify">Thank you for your interest. For individuals carrying BRCA1 mutations, it is commonly recommended to consider risk-reducing ovary removal around age 40, while for those with BRCA2 mutations, around age 45. This surgical approach notably lowers the risk of ovarian cancer, although it brings along particular considerations like a 3% chance of encountering abnormal findings on the removed tissue. A thorough discussion with your healthcare provider will help you navigate these aspects mindfully.</p>
+                  <div class="flex justify-between" role="group">
+                    <button @click="question04=false;question03=true" class=" hover:text-orange-400 text-white pb-2 pl-10">←Back</button>
+                  </div>
+                </div>
+                <div v-if="question07" class=" col-span-5">
+                  <p class=" text-white text-xl p-2 px-10 text-justify">Thanks for your valuable time.</p>
+                  <div class="flex justify-between" role="group">
+                    <button @click="question07=false;question05=true" class=" hover:text-orange-400 text-white pb-2 pl-10">←Back</button>
+                  </div>
+                </div>
+                <div v-if="question05" class=" col-span-5">
+                  <p class=" text-white text-xl p-1">"Would you be interested in a tool that helps you decide whether to take risk-reducing medications like tamoxifen?"</p>
+                  <div class="pb-1" role="group">
+                    <button @click="question06=true;question05=false" class=" font-bold text-slate-800 px-3 py-1 bg-slate-100 hover:bg-orange-400 rounded m-1">Yes</button>
+                    <button @click="question07=true;question05=false" class=" font-bold text-slate-800 px-3 py-1 bg-slate-100 hover:bg-orange-400 rounded m-1">No</button>
+                  </div>
+                  <div class="flex justify-between" role="group">
+                    <button @click="question05=false;question03=true" class=" hover:text-orange-400 text-white pb-2 pl-10">←Back</button>
+                  </div>
+                </div>
+                <div v-if="question06" class=" col-span-5 text-white text-left">
+                  <p class=" text-white text-xl p-1">Before discussing Tamoxifen in more detail, we'd like to conduct a preliminary screening to determine if it's a suitable treatment option based on your individual circumstances. Please indicate if any of the following applies to you:</p>
+                  
+                   <input v-model="checkbox1" class="ml-10" type="checkbox"> <label @click="checkbox1=!checkbox1" value="1">Smoke.</label><br>
+                   <input v-model="checkbox2" class="ml-10" type="checkbox"> <label @click="checkbox2=!checkbox2" value="2">Have had previous bilateral mastectomy.</label><br>
+                   <input v-model="checkbox3" class="ml-10" type="checkbox"> <label @click="checkbox3=!checkbox3" value="3">Have had any sort of blood clot (DVT, lung clot, or stroke).</label><br>
+                   <input v-model="checkbox4" class="ml-10" type="checkbox"> <label @click="checkbox4=!checkbox4" value="4">Have been diagnosed with endometrial cancer or are currently diagnosed.</label><br>
+                   <input v-model="checkbox5" class="ml-10" type="checkbox"> <label @click="checkbox5=!checkbox5" value="5">Are pregnant, breastfeeding, or planning a pregnancy within the next 3 years?</label><br>
+                   <input v-model="checkbox6" class="ml-10" type="checkbox"> <label @click="checkbox6=!checkbox6" value="6">Are on blood-thinning medication, hormone contraceptives, or hormone replacement therapy.</label><br>
+                
+                  <div class="pb-1" role="group">
+                    <button @click="question08=true;question06=false" class=" font-bold text-slate-800 px-3 py-1 bg-slate-100 hover:bg-orange-400 rounded ml-3 m-1">Submit</button>
+                  </div>
+                  <div class="flex justify-between" role="group">
+                    <button @click="question06=false;question05=true" class=" hover:text-orange-400 text-white pb-2 pl-3">←Back</button>
+                  </div>
+                </div>
+                <div v-if="question08" class=" col-span-5 text-white text-left">
+                  <p class=" text-white text-xl p-1">Before discussing Tamoxifen in more detail, we'd like to conduct a preliminary screening to determine if it's a suitable treatment option based on your individual circumstances. Please indicate if any of the following applies to you:Thank you for sharing this important information. Based on your responses, Tamoxifen may not be the recommended option for you due to potential risks and contraindications. It is crucial to consider the following factors:</p>
+                  
+                   <p v-if="checkbox1" class="pl-8"> &#x2022; Smoking: Individuals who smoke while taking Tamoxifen may face an enhanced risk of developing blood clots or strokes.</p>
+                   <p v-if="checkbox2" class="pl-8"> &#x2022; Bilateral Mastectomy: For those who have undergone a bilateral mastectomy, Tamoxifen may not offer additional risk-reducing benefits.</p>
+                   <p v-if="checkbox3" class="pl-8"> &#x2022; Blood Clot History: A history of blood clots poses an elevated risk when considering Tamoxifen due to its potential to increase clotting risk further.</p>
+                   <p v-if="checkbox4" class="pl-8"> &#x2022; Endometrial Cancer: Tamoxifen use has been linked to an increased risk of endometrial cancer, and thus, it's critical to navigate this risk carefully, especially with a relevant medical history.</p>
+                   <p v-if="checkbox5" class="pl-8"> &#x2022; Pregnancy and Breastfeeding: Tamoxifen is not recommended during pregnancy or breastfeeding due to potential risks to the baby.</p>
+                   <p v-if="checkbox6" class="pl-8"> &#x2022; Use of Specific Medications: Concurrent use of blood thinners or hormonal therapies may interact with Tamoxifen or compound certain risks.</p>
+                  <p class=" italian text-justify text-xm pt-2 px-2">**Choosing the right course of action requires consideration of your health history and plans for the future. Before making any decisions regarding managing breast cancer risk, please consult with your healthcare professional. As part of your decision-making process, a comprehensive consultation is strongly recommended.</p>
+                  <div class="pb-1" role="group">
+                    <button @click="question09=true;question08=false" class=" font-bold text-slate-800 px-3 py-1 bg-slate-100 hover:bg-orange-400 rounded ml-3 m-1">Next</button>
+                  </div>
+                  <div class="flex justify-between" role="group">
+                    <button @click="question08=false;question06=true" class=" hover:text-orange-400 text-white pb-2 pl-3">←Back</button>
+                  </div>
+                </div>
+                <div v-if="question09" class=" col-span-5 text-left text-white pl-10">
+                  <p class=" text-white text-xl p-1">Please select your menopausal status:</p>
+                  <input type="radio" id="html" name="fav_language" value="HTML" v-model="radioB">
+                  <label for="html">Premenopausal</label><br>
+                  <input type="radio" id="css" name="fav_language" value="CSS" v-model="radioB">
+                  <label for="css">Postmenopausal</label><br>
+                  <input type="radio" id="javascript" name="fav_language" value="JavaScript" v-model="radioB">
+                  <label for="javascript">Have had ovaries removed.</label>
+                  <div class="pb-1" role="group">
+                    <button @click="question10=true;question09=false" class=" font-bold text-slate-800 px-3 py-1 bg-slate-100 hover:bg-orange-400 rounded ml-3 m-1">Submit</button>
+                  </div>
+                  <div class="flex justify-between" role="group">
+                    <button @click="question09=false;question08=true" class=" hover:text-orange-400 text-white pb-2 pl-3">←Back</button>
+                  </div>
+                </div>
+                <div v-if="question10" class=" col-span-5 text-left text-white pl-10">
+                  <div v-if="radioB=='HTML'">
+                    <p class=" text-white text-xl p-1">Thank you for selecting your menopausal status as Premenopausal. Here's essential information about considering Tamoxifen for Breast Cancer Risk Reduction:</p>
+                    <p class=" font-bold pl-4">Potential Benefit:</p>
+                    <p class="px-6 text-justify">• Taking Tamoxifen at a dose of 20 mg daily for 5 years can reduce the relative risk of estrogen receptor-positive (ER+) breast cancer for up to 20 years by approximately 30%. Please note that data beyond the 20-year mark is not available, and any projections are hypothetical and should be discussed thoroughly with a healthcare professional.</p>
+                    <p class=" font-bold pl-4">Common Adverse Events:</p>
+                    <p class="px-6 text-justify">• Taking Tamoxifen at a dose of 20 mg daily for 5 years can reduce the relative risk of estrogen receptor-positive (ER+) breast cancer for up to 20 years by approximately 30%. Please note that data beyond the 20-year mark is not available, and any projections are hypothetical and should be discussed thoroughly with a healthcare professional.• Menopausal Symptoms: About 1 in 10 women may experience symptoms like hot flashes, sweating, and insomnia while on Tamoxifen. These symptoms do not persist upon discontinuation of the medication. Therefore, while they may be inconvenient, they are not permanent and can be a reversible downside to consider against the long-term benefit.</p>
+                    <p class="px-6 text-justify">• Cataracts: The risk of developing cataracts is increased slightly, affecting approximately 1 in 250 women. It is vital to explore the baseline cataract development rate, especially tailored to demographics like those in Australia, for a comprehensive risk assessment.</p>
+                    <p class=" font-bold pl-4">Serious Adverse Events:</p>
+                    <p class="px-6 text-justify">• Taking Tamoxifen at a dose of 20 mg daily for 5 years can reduce the relative risk of estrogen receptor-positive (ER+) breast cancer for up to 20 years by approximately 30%. Please note that data beyond the 20-year mark is not available, and any projections are hypothetical and should be discussed thoroughly with a healthcare professional.• Menopausal Symptoms: About 1 in 10 women may experience symptoms like hot flashes, sweating, and insomnia while on Tamoxifen. These symptoms do not persist upon discontinuation of the medication. Therefore, while they may be inconvenient, they are not permanent and can be a reversible downside to consider against the long-term benefit.• Blood Clots: Over a 5-year period, there is an increased risk of blood clots (an additional risk affecting 1 in every 250 women). It’s notable that this risk is also present with oral contraceptive use, which might be more readily accepted in societal contexts. Therefore, it might be beneficial to reflect upon this when contemplating the risk-benefit ratio of Tamoxifen usage.</p>
+                    <p class=" font-bold pl-4">Additional Note:</p>
+                    <p class="px-6 text-justify">Engage in an in-depth discussion with your healthcare provider to understand fully the implications, benefits, and risks associated with Tamoxifen use, and ensure that your decision is made considering all available information and supported by professional advice.</p>
+                  </div>
+                  <div v-if="radioB=='CSS'">
+                    <p class=" text-white text-xl p-1">Thank you for selecting your menopausal status as Postmenopausal. Here's essential information about considering Tamoxifen for Breast Cancer Risk Reduction:</p>
+                    <p class=" font-bold pl-4">Potential Benefit:</p>
+                    <p class="px-6 text-justify">• Breast Cancer Risk Mitigation: Tamoxifen, when utilized at a daily dose of 20 mg for a duration of 5 years, has been evidenced to diminish the relative risk of estrogen receptor-positive (ER+) breast cancer for a speculated duration of 20 years by an estimated 30%. Kindly be aware that there is no data available beyond the 20-year threshold, making any further projections purely speculative and a topic for a thorough discussion with your healthcare professional.</p>
+                    <p class="px-6 text-justify">• Bone Fracture Reduction: Notably, postmenopausal women using Tamoxifen may experience a reduction in bone fractures, presenting an additional health benefit beyond breast cancer risk management..</p>
+                    <p class=" font-bold pl-4">Common Adverse Events:</p>
+                    <p class="px-6 text-justify">• Cataract Development: An enhanced risk, although slight, of developing cataracts is associated with Tamoxifen usage, impacting an estimated 1 in 250 women. A thorough exploration of baseline rates for cataract development, specifically pertaining to localized demographics (e.g., in Australia), is pivotal for a holistic risk assessment.</p>
+                    <p class=" font-bold pl-4">Serious Adverse Events:</p>
+                    <p class="px-6 text-justify">• Endometrial Cancer Risk: Over a 5-year period, there is an excess absolute risk of endometrial cancer affecting 1 in 250 postmenopausal women. This risk can be contextualized with additional detailed baseline data, such as that available from AIHW cancer tables, to facilitate a well-rounded decision-making process.</p>
+                    <p class="px-6 text-justify">• Blood Clot Formation: Within a 5-year timeframe, there is an excess absolute risk of blood clot formation affecting 1 in every 250 women. As with premenopausal women, it is essential to consider this risk in the broader context of other factors.</p>
+                   </div>
+                   <div v-if="radioB=='JavaScript'">
+                    <p class=" text-white text-xl p-1">Thank you for sharing your status. Ovary removal, or oophorectomy, places a woman into immediate postmenopausal status due to the cessation of ovarian hormone production. Thus, discussions around Tamoxifen use and its potential benefits and risks in the context of postmenopausal status will be relevant to you:</p>
+                    <p class=" font-bold pl-4">Potential Benefit:</p>
+                    <p class="px-6 text-justify">• Breast Cancer Risk Mitigation: Tamoxifen, when utilized at a daily dose of 20 mg for a duration of 5 years, has been evidenced to diminish the relative risk of estrogen receptor-positive (ER+) breast cancer for a speculated duration of 20 years by an estimated 30%. Kindly be aware that there is no data available beyond the 20-year threshold, making any further projections purely speculative and a topic for a thorough discussion with your healthcare professional.</p>
+                    <p class="px-6 text-justify">• Bone Fracture Reduction: Notably, postmenopausal women using Tamoxifen may experience a reduction in bone fractures, presenting an additional health benefit beyond breast cancer risk management..</p>
+                    <p class=" font-bold pl-4">Common Adverse Events:</p>
+                    <p class="px-6 text-justify">• Cataract Development: An enhanced risk, although slight, of developing cataracts is associated with Tamoxifen usage, impacting an estimated 1 in 250 women. A thorough exploration of baseline rates for cataract development, specifically pertaining to localized demographics (e.g., in Australia), is pivotal for a holistic risk assessment.</p>
+                    <p class=" font-bold pl-4">Serious Adverse Events:</p>
+                    <p class="px-6 text-justify">• Taking Tamoxifen at a dose of 20 mg daily for 5 years can reduce the relative risk of estrogen receptor-positive (ER+) breast cancer for up to 20 years by approximately 30%. Please note that data beyond the 20-year mark is not available, and any projections are hypothetical and should be discussed thoroughly with a healthcare professional.• Menopausal Symptoms: About 1 in 10 women may experience symptoms like hot flashes, sweating, and insomnia while on Tamoxifen. These symptoms do not persist upon discontinuation of the medication. Therefore, while they may be inconvenient, they are not permanent and can be a reversible downside to consider against the long-term benefit.• Blood Clots: Over a 5-year period, there is an increased risk of blood clots (an additional risk affecting 1 in every 250 women). It’s notable that this risk is also present with oral contraceptive use, which might be more readily accepted in societal contexts. Therefore, it might be beneficial to reflect upon this when contemplating the risk-benefit ratio of Tamoxifen usage.</p>
+                    <p class=" font-bold pl-4">Additional Note:</p>
+                    <p class="px-6 text-justify">• Endometrial Cancer Risk: Over a 5-year period, there is an excess absolute risk of endometrial cancer affecting 1 in 250 postmenopausal women. This risk can be contextualized with additional detailed baseline data, such as that available from AIHW cancer tables, to facilitate a well-rounded decision-making process.</p>
+                    <p class="px-6 text-justify">• Blood Clot Formation: Within a 5-year timeframe, there is an excess absolute risk of blood clot formation affecting 1 in every 250 women. As with premenopausal women, it is essential to consider this risk in the broader context of other factors.</p>
+                    </div>
+                    <div class="flex justify-between" role="group">
+                      <button @click="question10=false;question09=true" class=" hover:text-orange-400 text-white pb-2 pt-2 pl-2">←Back</button>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-span-1"></div>
+        </div>
+    </div>
+
+    <div v-else-if="page==10" class=" h-[82vh] ">
+      <div class=" min-h-full m-20">
+        <div class="mt-2"><input class="mt-6" type="file" @change="onFileChange" /></div>
+        <button class=" bg-cyan-500 py-1 px-4 rounded text-white" @click="PrintData()">Print</button>
+      </div>
+    </div>
+
+    <div v-if="modalAge" class="opacity-90 fixed inset-0 z-40 bg-black"></div>
+    <div v-if="modalAge" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
+      <div class="relative w-auto my-6 mx-auto max-w-[600px] h-[50vh]">
+        <!--content-->
+        <div class="border-0 rounded shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+          <!--header-->
+          <div class="flex justify-center p-5 border-b border-solid border-slate-200 rounded-t">
+            <h3 class="text-2xl font-semibold text-[#51287B]">Change your Age</h3>
+          </div>
+          <!--body-->
+          <div class="w-[600px] py-5">
+            <div class="mb-[2vh]" >
+              <input v-model="ageV2" type="number" class="text-center rounded py-5 px-10 font-bold ring-2 border-slate-500">
+            </div>
+            <div class="" >
+              <p class=" text-black">*age must be between 20 to 80 years</p>
+            </div>
+          </div>
+          <!--footer-->
+          <div class="flex items-center justify-center p-6 border-t border-solid border-slate-200 rounded-b">
+             <button @click="modalAge=false;ChageAge2()" :disabled="ageV2=='' || ageV2<20 || ageV2>80" class="drop-shadow text-white py-4 px-12 font-bold bg-[#623093] disabled:text-slate-400 disabled:bg-slate-800 mx-2 rounded hover:scale-105">Change Age</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="modalGraph" class="opacity-90 fixed inset-0 z-40 bg-black"></div>
+    <div v-if="modalGraph" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
+      <div class="relative w-auto my-6 mx-auto max-w-[600px] h-[50vh]">
+        <!--content-->
+        <div class="border-0 rounded shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+          <!--header-->
+          <div class="flex justify-center p-5 border-b border-solid border-slate-200 rounded-t">
+            <h3 class="text-2xl font-semibold text-[#51287B]">Change gene</h3>
+          </div>
+          <!--body-->
+          <div class="w-[600px] py-5">
+            <div class="" role="group">
+              <button @click="option1V=true; option3V=false; option4V=false; optionSelectV=true" type="button" :class="{ activeOpV: option1V }" class=" hover:scale-105 text-slate-100 drop-shadow hover:text-white py-3 px-10 font-bold bg-[#408dad] hover:bg-[#623093] mx-2 rounded">BRCA1</button>
+              <button @click="option1V=false; option3V=true; option4V=false; optionSelectV=true" type="button" :class="{ activeOpV: option3V }" class=" hover:scale-105 text-slate-100 drop-shadow hover:text-white py-3 px-10 font-bold bg-[#408dad] hover:bg-[#623093] mx-2 rounded">BRCA2</button>
+              <button @click="option1V=false; option3V=false; option4V=true; optionSelectV=true" type="button" :class="{ activeOpV: option4V }" class=" hover:scale-105 text-slate-100 drop-shadow hover:text-white py-3 px-10 font-bold bg-[#408dad] hover:bg-[#623093] mx-2 rounded">PALB2</button>
+            </div>
+          </div>
+          <!--footer-->
+          <div class="flex items-center justify-center p-6 border-t border-solid border-slate-200 rounded-b">
+              <button @click="modalGraph=false;Page02V();ChageAge()" :disabled="!optionSelectV" class="drop-shadow text-white py-3 px-8 font-bold bg-[#623093] disabled:text-slate-400 disabled:bg-slate-800 mx-2 rounded hover:scale-105">Change GENE</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="boxPlot1" class="opacity-90 fixed inset-0 z-40 bg-black"></div>
+    <div v-if="boxPlot1" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
+      <div class="relative my-6 mx-auto w-[68%]">
+        <!--content-->
+        <div class="border-0 rounded shadow-lg relative flex flex-col w-full h-full bg-white outline-none focus:outline-none">
+          <!--header-->
+          <div class="flex justify-between p-3 border-b border-solid border-slate-200 rounded-t">
+            <h3 class="text-2xl font-semibold text-[#51287B]">Boxplot Graph</h3>
+            <button @click="boxPlotE=true, boxPlot1=false" class="drop-shadow text-[#623093] py-1 px-6 font-bold underline mx-2 rounded hover:scale-105">View Graph Description</button>
+            <button @click="boxPlot1=false" class="drop-shadow text-white float-right py-1 px-6 font-bold bg-[#623093] disabled:text-slate-400 disabled:bg-slate-800 mx-2 rounded hover:scale-105">Close</button>
+          </div>
+          <!--body-->
+          <div class="py-1">
+            <apexchart type="boxPlot" class="" :options="chartOptions" :series="series"></apexchart>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="boxPlot2" class="opacity-90 fixed inset-0 z-40 bg-black"></div>
+    <div v-if="boxPlot2" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
+      <div class="relative my-6 mx-auto w-[68%]">
+        <!--content-->
+        <div class="border-0 rounded shadow-lg relative flex flex-col w-full h-full bg-white outline-none focus:outline-none">
+          <!--header-->
+          <div class="flex justify-between p-3 border-b border-solid border-slate-200 rounded-t">
+            <h3 class="text-2xl font-semibold text-[#51287B]">Boxplot Graph</h3>
+            <button @click="boxPlotE2=true, boxPlot2=false" class="drop-shadow text-[#623093] py-1 px-6 font-bold underline mx-2 rounded hover:scale-105">View Graph Description</button>
+            <button @click="boxPlot2=false" class="drop-shadow text-white float-right py-1 px-6 font-bold bg-[#623093] disabled:text-slate-400 disabled:bg-slate-800 mx-2 rounded hover:scale-105">Close</button>
+          </div>
+          <!--body-->
+          <div class="py-1">
+            <apexchart type="boxPlot" class="" :options="chartOptions" :series="series2"></apexchart>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="boxPlot3" class="opacity-90 fixed inset-0 z-40 bg-black"></div>
+    <div v-if="boxPlot3" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
+      <div class="relative my-6 mx-auto w-[68%]">
+        <!--content-->
+        <div class="border-0 rounded shadow-lg relative flex flex-col w-full h-full bg-white outline-none focus:outline-none">
+          <!--header-->
+          <div class="flex justify-between p-3 border-b border-solid border-slate-200 rounded-t">
+            <h3 class="text-2xl font-semibold text-[#51287B]">Boxplot Graph</h3>
+            <button @click="boxPlotE3=true, boxPlot3=false" class="drop-shadow text-[#623093] py-1 px-6 font-bold underline mx-2 rounded hover:scale-105">View Graph Description</button>
+            <button @click="boxPlot3=false" class="drop-shadow text-white float-right py-1 px-6 font-bold bg-[#623093] disabled:text-slate-400 disabled:bg-slate-800 mx-2 rounded hover:scale-105">Close</button>
+          </div>
+          <!--body-->
+          <div class="py-1">
+            <apexchart type="boxPlot" class="" :options="chartOptions" :series="series3"></apexchart>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="boxPlot4" class="opacity-90 fixed inset-0 z-40 bg-black"></div>
+    <div v-if="boxPlot4" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
+      <div class="relative my-6 mx-auto w-[68%]">
+        <!--content-->
+        <div class="border-0 rounded shadow-lg relative flex flex-col w-full h-full bg-white outline-none focus:outline-none">
+          <!--header-->
+          <div class="flex justify-between p-3 border-b border-solid border-slate-200 rounded-t">
+            <h3 class="text-2xl font-semibold text-[#51287B]">Boxplot Graph</h3>
+            <button @click="boxPlotE4=true, boxPlot4=false" class="drop-shadow text-[#623093] py-1 px-6 font-bold underline mx-2 rounded hover:scale-105">View Graph Description</button>
+            <button @click="boxPlot4=false" class="drop-shadow text-white float-right py-1 px-6 font-bold bg-[#623093] disabled:text-slate-400 disabled:bg-slate-800 mx-2 rounded hover:scale-105">Close</button>
+          </div>
+          <!--body-->
+          <div class="py-1">
+            <apexchart type="boxPlot" class="" :options="chartOptions" :series="series4"></apexchart>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="boxPlotE" class="opacity-90 fixed inset-0 z-40 bg-black"></div>
+    <div v-if="boxPlotE" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
+      <div class="relative my-6 mx-auto w-[68%]">
+        <!--content-->
+        <div class="border-0 rounded shadow-lg relative flex flex-col w-full h-full bg-white outline-none focus:outline-none">
+          <!--header-->
+          <div class="flex justify-between p-3 border-b border-solid border-slate-200 rounded-t">
+            <h3 class="text-2xl font-semibold text-[#51287B]">Boxplot Graph Explanation</h3>
+            <button @click="boxPlotE=false; boxPlot1=true" class="drop-shadow text-white float-right py-1 px-6 font-bold bg-[#623093] disabled:text-slate-400 disabled:bg-slate-800 mx-2 rounded hover:scale-105">Close</button>
+          </div>
+          <!--body-->
+          <div class="p-2 text-justify text-lg">
+            <p class="px-5 pb-1 font-semibold">This graph shows breast cancer risk for people aged 20 to 80.</p>
+            <p class="px-5 pb-1"><span class=" font-bold">Box:</span> Most risk info is here, middle part covers middle 50% of risk.</p>
+            <p class="px-5 pb-1"><span class=" font-bold">Median Line:</span> Inside box, it's the average risk for these ages.</p>
+            <p class="px-5 pb-1"><span class=" font-bold">Whiskers:</span> Lines from the box show how far risk goes beyond the middle.</p>
+            <p class="px-5 pb-2"><span class=" font-bold">Outliers:</span> Points outside the whiskers are special cases, very high or low risk.</p>
+            <p class="px-5 pb-1 font-semibold">Things that can help to easily understand the graph-</p>
+            <p class="px-5 pb-1"><span class=" font-bold">Short Box:</span> Similar risk for most ages.</p>
+            <p class="px-5 pb-1"><span class=" font-bold">Median Position:</span> Tells if risk is lower or higher on average.</p>
+            <p class="px-5 pb-2"><span class=" font-bold">Long box, extended whiskers:</span> Wide range of risk, some ages have much higher or lower risk than average. </p>
+            <p v-if="option1" class="px-5 pb-1"><span class=" font-bold">Graph Highlights:</span> By examining the boxplot, we notice a consistent rise in risk with advancing age. This implies a potential link between age and cancer risk, suggesting that, on average, the likelihood of cancer increases as one gets older, reaching a peak of 81% at age 80.</p>
+            <p v-if="option3" class="px-5 pb-1"><span class=" font-bold">Graph Highlights:</span> By examining the boxplot, we notice a consistent rise in risk with advancing age. This implies a potential link between age and cancer risk, suggesting that, on average, the likelihood of cancer increases as one gets older, reaching a peak of 79% at age 80.</p>
+            <p v-if="option4" class="px-5 pb-1"><span class=" font-bold">Graph Highlights:</span> By examining the boxplot, we notice a consistent rise in risk with advancing age. This implies a potential link between age and cancer risk, suggesting that, on average, the likelihood of cancer increases as one gets older, reaching a peak of 68% at age 80.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="boxPlotE2" class="opacity-90 fixed inset-0 z-40 bg-black"></div>
+    <div v-if="boxPlotE2" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
+      <div class="relative my-6 mx-auto w-[68%]">
+        <!--content-->
+        <div class="border-0 rounded shadow-lg relative flex flex-col w-full h-full bg-white outline-none focus:outline-none">
+          <!--header-->
+          <div class="flex justify-between p-3 border-b border-solid border-slate-200 rounded-t">
+            <h3 class="text-2xl font-semibold text-[#51287B]">Boxplot Graph Explanation</h3>
+            <button @click="boxPlotE2=false; boxPlot2=true" class="drop-shadow text-white float-right py-1 px-6 font-bold bg-[#623093] disabled:text-slate-400 disabled:bg-slate-800 mx-2 rounded hover:scale-105">Close</button>
+          </div>
+          <!--body-->
+          <div class="p-4 text-justify">
+            <p class="px-5 pb-1 font-semibold">This graph shows breast cancer risk for people aged 20 to 80.</p>
+            <p class="px-5 pb-1"><span class=" font-bold">Box:</span> Most risk info is here, middle part covers middle 50% of risk.</p>
+            <p class="px-5 pb-1"><span class=" font-bold">Median Line:</span> Inside box, it's the average risk for these ages.</p>
+            <p class="px-5 pb-1"><span class=" font-bold">Whiskers:</span> Lines from the box show how far risk goes beyond the middle.</p>
+            <p class="px-5 pb-2"><span class=" font-bold">Outliers:</span> Points outside the whiskers are special cases, very high or low risk.</p>
+            <p class="px-5 pb-1 font-semibold">Things that can help to easily understand the graph-</p>
+            <p class="px-5 pb-1"><span class=" font-bold">Short Box:</span> Similar risk for most ages.</p>
+            <p class="px-5 pb-1"><span class=" font-bold">Median Position:</span> Tells if risk is lower or higher on average.</p>
+            <p class="px-5 pb-2"><span class=" font-bold">Long box, extended whiskers:</span> Wide range of risk, some ages have much higher or lower risk than average. </p>
+            <p v-if="option1" class="px-5 pb-1"><span class=" font-bold">Graph Highlights:</span> After observing the graph, we can see a distinctive pattern. The 10-year risk gradually increases till age 33 reaching its peak at 20%. Beyond this point, there is a gradual decrease in average risk over the remaining years till age 80.</p>
+            <p v-if="option3" class="px-5 pb-1"><span class=" font-bold">Graph Highlights:</span> After observing the graph, we can see a distinctive pattern. The 10-year risk gradually increases till age 42 reaching its peak at 19%. Beyond this point, there is a gradual decrease in average risk over the remaining years till age 80.</p>
+            <p v-if="option4" class="px-5 pb-1"><span class=" font-bold">Graph Highlights:</span> After observing the graph, we can see a distinctive pattern. The 10-year risk gradually increases till age 45 reaching its peak at 19%. Beyond this point, there is a gradual decrease in average risk over the remaining years till age 80.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="boxPlotE3" class="opacity-90 fixed inset-0 z-40 bg-black"></div>
+    <div v-if="boxPlotE3" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
+      <div class="relative my-6 mx-auto w-[68%]">
+        <!--content-->
+        <div class="border-0 rounded shadow-lg relative flex flex-col w-full h-full bg-white outline-none focus:outline-none">
+          <!--header-->
+          <div class="flex justify-between p-3 border-b border-solid border-slate-200 rounded-t">
+            <h3 class="text-2xl font-semibold text-[#51287B]">Boxplot Graph Explanation</h3>
+            <button @click="boxPlotE3=false; boxPlot3=true" class="drop-shadow text-white float-right py-1 px-6 font-bold bg-[#623093] disabled:text-slate-400 disabled:bg-slate-800 mx-2 rounded hover:scale-105">Close</button>
+          </div>
+          <!--body-->
+          <div class="p-4 text-justify">
+            <p class="px-5 pb-1 font-semibold">This graph shows ovarian cancer risk for people aged 20 to 80.</p>
+            <p class="px-5 pb-1"><span class=" font-bold">Box:</span> Most risk info is here, middle part covers middle 50% of risk.</p>
+            <p class="px-5 pb-1"><span class=" font-bold">Median Line:</span> Inside box, it's the average risk for these ages.</p>
+            <p class="px-5 pb-1"><span class=" font-bold">Whiskers:</span> Lines from the box show how far risk goes beyond the middle.</p>
+            <p class="px-5 pb-2"><span class=" font-bold">Outliers:</span> Points outside the whiskers are special cases, very high or low risk.</p>
+            <p class="px-5 pb-1 font-semibold">Things that can help to easily understand the graph-</p>
+            <p class="px-5 pb-1"><span class=" font-bold">Short Box:</span> Similar risk for most ages.</p>
+            <p class="px-5 pb-1"><span class=" font-bold">Median Position:</span> Tells if risk is lower or higher on average.</p>
+            <p class="px-5 pb-2"><span class=" font-bold">Long box, extended whiskers:</span> Wide range of risk, some ages have much higher or lower risk than average. </p>
+            <p v-if="option1" class="px-5 pb-1"><span class=" font-bold">Graph Highlights:</span> By examining the boxplot, we notice a consistent rise in risk with advancing age. This implies a potential link between age and cancer risk, suggesting that, on average, the likelihood of cancer increases as one gets older, reaching a peak of 60% at age 80.</p>
+            <p v-if="option3" class="px-5 pb-1"><span class=" font-bold">Graph Highlights:</span> By examining the boxplot, we notice that there is no risk till age 38, after that, there is consistent rise in risk with advancing age. This implies a potential link between age and cancer risk, suggesting that, on average, the likelihood of cancer increases as one gets older, reaching a peak of 32% at age 80.</p>
+            <p v-if="option4" class="px-5 pb-1"><span class=" font-bold">Graph Highlights:</span> By examining the boxplot, we notice that there is no risk till age 49, after that, there is a consistent rise in risk with advancing age. This implies a potential link between age and cancer risk, suggesting that, on average, the likelihood of cancer increases as one gets older, reaching a peak of 6% at age 80.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="boxPlotE4" class="opacity-90 fixed inset-0 z-40 bg-black"></div>
+    <div v-if="boxPlotE4" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
+      <div class="relative my-6 mx-auto w-[68%]">
+        <!--content-->
+        <div class="border-0 rounded shadow-lg relative flex flex-col w-full h-full bg-white outline-none focus:outline-none">
+          <!--header-->
+          <div class="flex justify-between p-3 border-b border-solid border-slate-200 rounded-t">
+            <h3 class="text-2xl font-semibold text-[#51287B]">Boxplot Graph Explanation</h3>
+            <button @click="boxPlotE4=false; boxPlot4=true" class="drop-shadow text-white float-right py-1 px-6 font-bold bg-[#623093] disabled:text-slate-400 disabled:bg-slate-800 mx-2 rounded hover:scale-105">Close</button>
+          </div>
+          <!--body-->
+          <div class="p-4 text-justify">
+            <p class="px-5 pb-1 font-semibold">This graph shows ovarian cancer risk for people aged 20 to 80.</p>
+            <p class="px-5 pb-1"><span class=" font-bold">Box:</span> Most risk info is here, middle part covers middle 50% of risk.</p>
+            <p class="px-5 pb-1"><span class=" font-bold">Median Line:</span> Inside box, it's the average risk for these ages.</p>
+            <p class="px-5 pb-1"><span class=" font-bold">Whiskers:</span> Lines from the box show how far risk goes beyond the middle.</p>
+            <p class="px-5 pb-2"><span class=" font-bold">Outliers:</span> Points outside the whiskers are special cases, very high or low risk.</p>
+            <p class="px-5 pb-1 font-semibold">Things that can help to easily understand the graph-</p>
+            <p class="px-5 pb-1"><span class=" font-bold">Short Box:</span> Similar risk for most ages.</p>
+            <p class="px-5 pb-1"><span class=" font-bold">Median Position:</span> Tells if risk is lower or higher on average.</p>
+            <p class="px-5 pb-2"><span class=" font-bold">Long box, extended whiskers:</span> Wide range of risk, some ages have much higher or lower risk than average. </p>
+            <p v-if="option1" class="px-5 pb-1"><span class=" font-bold">Graph Highlights:</span> After observing the graph, we can see a distinctive pattern. The 10-year risk gradually increases till age 60 reaching its peak at 25%. Beyond this point, there is a gradual decrease in average risk over the remaining years till age 80.</p>
+            <p v-if="option3" class="px-5 pb-1"><span class=" font-bold">Graph Highlights:</span> After observing the graph, we can see a distinctive pattern. The 10-year risk gradually increases till age 60 reaching its peak at 14%. Beyond this point, there is a gradual decrease in average risk over the remaining years till age 80.</p>
+            <p v-if="option4" class="px-5 pb-1"><span class=" font-bold">Graph Highlights:</span> By examining the boxplot, we notice that there is no risk till age 47. The 10-year risk gradually increases in two parts, with maximum risk of 1% from age 48 to age 63 for the first shift, Beyond this, there is a second shift with maximum risk of 2% from age 64 to age 80, there is a gradual decrease in average risk over the remaining years till age 80.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+   
+   <!-- footer -->
+    <div class=" h-[8vh] bottom-0 left-0 right-0 bg-gradient-to-r from-[#0577BA] to-[#603194]">
+      <div class=" h-full w-full flex justify-center items-center">
+       <p class=" text-white">© 2023 Western & Central Melbourne Integrated Cancer Service</p>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script >
+// import LineChart from '../components/lineChart.ts';
+import { Chart as ChartJS,
+  RadialLinearScale,
+  Tooltip,
+  Legend,
+  ArcElement,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title
+} from 'chart.js'
+import { Doughnut } from 'vue-chartjs'
+import { PolarArea } from 'vue-chartjs'
+import { Bar } from 'vue-chartjs'
+import { Pie } from 'vue-chartjs'
+import api from '../../boot/axios.js';
+import readXlsxFile from 'read-excel-file';
+import VueApexCharts from "vue3-apexcharts";
+import slider from "vue3-slider"
+
+ChartJS.register(ArcElement, Tooltip, Legend, RadialLinearScale, CategoryScale, LinearScale, BarElement, Title)
+export default {
+  components: {
+    Doughnut ,PolarArea, Bar, Pie, apexchart: VueApexCharts, "vue3-slider": slider
+  },
+  data() {
+    return {
+      page:1,
+      // page:5,
+      option1:false,
+      option3:false,
+      option4:false,
+      option1V:false,
+      option3V:false,
+      option4V:false,
+      option11:false,
+      option22:false,
+      optionSelect:false,
+      optionSelectV:false,
+      optionSelect2:false,
+      selectAge:1,
+      selectAge2:1,
+      selectGraph:1,
+      selectGraph2:1,
+      age:0,
+      ageMin:20,
+      ageMax:80,
+      age2:0,
+      ageV:0,
+      ageV2:0,
+      ageR:0,
+      ageRU:'',
+      ageRL:'',
+      ageRU2:'',
+      ageRL2:'',
+      ageR2:'',
+      sliderHeight:10,
+
+      dataUpload:[],
+
+      dataB1Breast:[],
+      dataB1Ovarin:[],
+      dataB2Breast:[],
+      dataB2Ovarin:[],
+      dataP2Breast:[],
+      dataP2Ovarin:[],
+
+      modalAge:false,
+      modalGraph:false,
+      boxPlot1:false,
+      boxPlotE:false,
+      boxPlotE2:false,
+      boxPlotE3:false,
+      boxPlotE4:false,
+      boxPlot2:false,
+      boxPlot3:false,
+      boxPlot4:false,
+
+      question000:false,
+      question00:false,
+      question01:false,
+      question02:false,
+      question03:false,
+      question04:false,
+      question05:false,
+      question06:false,
+      question07:false,
+      question08:false,
+      question09:false,
+      question10:false,
+
+      checkbox1:false,
+      checkbox2:false,
+      checkbox3:false,
+      checkbox4:false,
+      checkbox5:false,
+      checkbox6:false,
+
+      radioB:'',
+
+      options: {
+        responsive: true,
+        // maintainAspectRatio: false,
+        scales: {
+        y: {
+          min: 0,
+          max: 100,
+        }
+      }
+      },
+
+      dataR: {
+        labels: [
+          'Age 20-30',
+          'Age 31-40',
+          'Age 41-50',
+          'Age 51-60',
+          'Age 61-70',
+          'Age 71-80',
+        ],
+        datasets: [
+          {
+            label: 'Your lifetime residual risk until age 80',
+            backgroundColor: ['#bf3232'],
+            pointBackgroundColor: '#e34040',
+            pointBorderColor: '#e34040',
+            pointHoverBackgroundColor: '#e34040',
+            pointHoverBorderColor: 'rgba(179,181,198,1)',
+            data: [20,30,40,50,60,10]
+          }
+        ]
+      },
+
+      dataR2: {
+        labels: [
+          'Age 20-30',
+          'Age 31-40',
+          'Age 41-50',
+          'Age 51-60',
+          'Age 61-70',
+          'Age 71-80',
+        ],
+        datasets: [
+          {
+            label: 'Your lifetime residual risk until age 80',
+            backgroundColor: ['#bf3232'],
+            pointBackgroundColor: '#e34040',
+            pointBorderColor: '#e34040',
+            pointHoverBackgroundColor: '#e34040',
+            pointHoverBorderColor: 'rgba(179,181,198,1)',
+            data: []
+          }
+        ]
+      },
+
+      dataF: {
+        labels: [
+          'Age 20-30',
+          'Age 31-40',
+          'Age 41-50',
+          'Age 51-60',
+          'Age 61-70',
+          'Age 71-80',
+        ],
+        datasets: [
+          {
+            label: 'Your cumulative risk until age 80',
+            backgroundColor: ['#49A9B4'],
+            pointBackgroundColor: '#009BBC',
+            pointBorderColor: '#009BBC',
+            pointHoverBackgroundColor: '#009BBC',
+            pointHoverBorderColor: 'rgba(179,181,198,1)',
+            data: []
+          }
+        ]
+      },
+      dataF2: {
+        labels: [
+          '20-30',
+          '31-40',
+          '41-50',
+          '51-60',
+          '61-70',
+          '71-80',
+        ],
+        datasets: [
+          {
+            label: 'Your cumulative 10 year risk until age 80',
+            backgroundColor: ['#646FA9'],
+            pointBackgroundColor: '#009BBC',
+            pointBorderColor: '#009BBC',
+            pointHoverBackgroundColor: '#009BBC',
+            pointHoverBorderColor: 'rgba(179,181,198,1)',
+            data: []
+          },
+        ]
+      },
+      dataJ: {
+        labels: [
+          'Age 20-30',
+          'Age 31-40',
+          'Age 41-50',
+          'Age 51-60',
+          'Age 61-70',
+          'Age 71-80',
+        ],
+        datasets: [
+          {
+            label: 'Your cumulative risk until age 80',
+             backgroundColor: ['#048a96'],
+            pointBackgroundColor: '#009BBC',
+            pointBorderColor: '#009BBC',
+            pointHoverBackgroundColor: '#009BBC',
+            pointHoverBorderColor: 'rgba(179,181,198,1)',
+            data: []
+          },
+        ]
+      },
+      dataJ2: {
+        labels: [
+          '20-30',
+          '31-40',
+          '41-50',
+          '51-60',
+          '61-70',
+          '71-80',
+        ],
+        datasets: [
+          {
+            label: 'Your cumulative 10 year risk until age 80',
+            backgroundColor: ['#364382'],
+            pointBackgroundColor: '#009BBC',
+            pointBorderColor: '#009BBC',
+            pointHoverBackgroundColor: '#009BBC',
+            pointHoverBorderColor: 'rgba(179,181,198,1)',
+            data: []
+          },
+        ]
+      },
+      dataS:{
+        labels: ['Probability of remaining cancer-free', 'Probability of developing cancer'],
+        datasets: [
+          {
+            backgroundColor: ['#23C552', '#F84F31'],
+            data: []
+          }
+        ],
+      },
+      dataS2:{
+        labels: ['Probability of remaining cancer-free', 'Probability of developing cancer'],
+        datasets: [
+          {
+            backgroundColor: ['#23C552', '#F84F31'],
+            data: []
+          }
+        ],
+      },
+      series: [
+        {
+          type: 'boxPlot',
+          name: 'boxPlot',
+          data:[]
+        }
+      ],
+      series2: [
+        {
+          type: 'boxPlot',
+          data:[]
+        }
+      ],
+      series3: [
+        {
+          type: 'boxPlot',
+          data:[]
+        }
+      ],
+      series4: [
+        {
+          type: 'boxPlot',
+          data:[]
+        }
+      ],
+      chartOptions: {
+        chart: {
+          type: 'boxPlot',
+        },
+        yaxis: {
+          min: 0,
+          max: 100,
+        },
+        plotOptions: {
+          boxPlot: {
+            colors: {
+              upper: '#623093',
+              lower: '#cfbce2'
+            },
+            responsive: [{
+                breakpoint: undefined,
+                options: {},
+            }]
+          }
+        }
+      },
+      dataBoolean1:{
+        labels: ['Probability of remaining cancer-free', 'Probability of developing cancer'],
+        datasets: [
+          {
+            backgroundColor: ['#23C552', '#F84F31'],
+            data: [40,60]
+          }
+        ],
+      },
+      
+    };
+  },
+  created() {
+    // this.getData();
+    this.dataFill();
+  },
+  methods: {
+    dataFill(){
+      this.dataB1Breast = [
+    {
+        "id": 7,
+        "age": 20,
+        "averageTen": "5.2697780000",
+        "lowerCentile": "2.7591920000",
+        "upperCentile": "8.4984360000",
+        "averageLifetime": "0.0010750000",
+        "lowerCentileLifetime": "0.0010750000",
+        "upperCentileLifetime": "0.0010750000",
+        "residualLifetime": "67.9449170000"
+    },
+    {
+        "id": 8,
+        "age": 21,
+        "averageTen": "6.7051650000",
+        "lowerCentile": "4.0912870000",
+        "upperCentile": "9.9570410000",
+        "averageLifetime": "0.5399080000",
+        "lowerCentileLifetime": "0.2794060000",
+        "upperCentileLifetime": "0.8842090000",
+        "residualLifetime": "67.4060840000"
+    },
+    {
+        "id": 9,
+        "age": 22,
+        "averageTen": "8.1022780000",
+        "lowerCentile": "5.3974560000",
+        "upperCentile": "11.3634780000",
+        "averageLifetime": "1.0769010000",
+        "lowerCentileLifetime": "0.5580320000",
+        "upperCentileLifetime": "1.7606000000",
+        "residualLifetime": "66.8690910000"
+    },
+    {
+        "id": 10,
+        "age": 23,
+        "averageTen": "9.4619620000",
+        "lowerCentile": "6.6781400000",
+        "upperCentile": "12.7192150000",
+        "averageLifetime": "1.6109950000",
+        "lowerCentileLifetime": "0.8358790000",
+        "upperCentileLifetime": "2.6292410000",
+        "residualLifetime": "66.3349970000"
+    },
+    {
+        "id": 11,
+        "age": 24,
+        "averageTen": "10.7850400000",
+        "lowerCentile": "7.9337730000",
+        "upperCentile": "14.0256790000",
+        "averageLifetime": "2.1422060000",
+        "lowerCentileLifetime": "1.1129490000",
+        "upperCentileLifetime": "3.4902020000",
+        "residualLifetime": "65.8037860000"
+    },
+    {
+        "id": 12,
+        "age": 25,
+        "averageTen": "12.0723210000",
+        "lowerCentile": "9.1647790000",
+        "upperCentile": "15.2842600000",
+        "averageLifetime": "2.6705480000",
+        "lowerCentileLifetime": "1.3892460000",
+        "upperCentileLifetime": "4.3435500000",
+        "residualLifetime": "65.2754440000"
+    },
+    {
+        "id": 13,
+        "age": 26,
+        "averageTen": "13.3245950000",
+        "lowerCentile": "10.3715770000",
+        "upperCentile": "16.4963130000",
+        "averageLifetime": "3.1960380000",
+        "lowerCentileLifetime": "1.6647700000",
+        "upperCentileLifetime": "5.1893530000",
+        "residualLifetime": "64.7499540000"
+    },
+    {
+        "id": 14,
+        "age": 27,
+        "averageTen": "14.5426380000",
+        "lowerCentile": "11.5545800000",
+        "upperCentile": "17.6631560000",
+        "averageLifetime": "3.7186900000",
+        "lowerCentileLifetime": "1.9395250000",
+        "upperCentileLifetime": "6.0276770000",
+        "residualLifetime": "64.2273020000"
+    },
+    {
+        "id": 15,
+        "age": 28,
+        "averageTen": "15.7272050000",
+        "lowerCentile": "12.7141930000",
+        "upperCentile": "18.7860700000",
+        "averageLifetime": "4.2385210000",
+        "lowerCentileLifetime": "2.2135120000",
+        "upperCentileLifetime": "6.8585890000",
+        "residualLifetime": "63.7074710000"
+    },
+    {
+        "id": 16,
+        "age": 29,
+        "averageTen": "16.8790390000",
+        "lowerCentile": "13.8508120000",
+        "upperCentile": "19.8663050000",
+        "averageLifetime": "4.7555450000",
+        "lowerCentileLifetime": "2.4867330000",
+        "upperCentileLifetime": "7.6821540000",
+        "residualLifetime": "63.1904470000"
+    },
+    {
+        "id": 17,
+        "age": 30,
+        "averageTen": "17.9988660000",
+        "lowerCentile": "14.9648310000",
+        "upperCentile": "20.9050780000",
+        "averageLifetime": "5.2697780000",
+        "lowerCentileLifetime": "2.7591920000",
+        "upperCentileLifetime": "8.4984360000",
+        "residualLifetime": "62.6762140000"
+    },
+    {
+        "id": 18,
+        "age": 31,
+        "averageTen": "17.8983020000",
+        "lowerCentile": "14.9563690000",
+        "upperCentile": "20.6743360000",
+        "averageLifetime": "7.2450730000",
+        "lowerCentileLifetime": "4.3706930000",
+        "upperCentileLifetime": "10.8412500000",
+        "residualLifetime": "60.7009190000"
+    },
+    {
+        "id": 19,
+        "age": 32,
+        "averageTen": "17.7931210000",
+        "lowerCentile": "14.9433800000",
+        "upperCentile": "20.4403920000",
+        "averageLifetime": "9.1791800000",
+        "lowerCentileLifetime": "5.9554880000",
+        "upperCentileLifetime": "13.1240780000",
+        "residualLifetime": "58.7668120000"
+    },
+    {
+        "id": 20,
+        "age": 33,
+        "averageTen": "17.6835860000",
+        "lowerCentile": "14.9260300000",
+        "upperCentile": "20.2036000000",
+        "averageLifetime": "11.0729570000",
+        "lowerCentileLifetime": "7.5140190000",
+        "upperCentileLifetime": "15.3484560000",
+        "residualLifetime": "56.8730350000"
+    },
+    {
+        "id": 21,
+        "age": 34,
+        "averageTen": "17.5699450000",
+        "lowerCentile": "14.9044800000",
+        "upperCentile": "19.9642970000",
+        "averageLifetime": "12.9272450000",
+        "lowerCentileLifetime": "9.0467220000",
+        "upperCentileLifetime": "17.5158810000",
+        "residualLifetime": "55.0187470000"
+    },
+    {
+        "id": 22,
+        "age": 35,
+        "averageTen": "17.4524420000",
+        "lowerCentile": "14.8788880000",
+        "upperCentile": "19.7228050000",
+        "averageLifetime": "14.7428690000",
+        "lowerCentileLifetime": "10.5540240000",
+        "upperCentileLifetime": "19.6278110000",
+        "residualLifetime": "53.2031230000"
+    },
+    {
+        "id": 23,
+        "age": 36,
+        "averageTen": "17.3313090000",
+        "lowerCentile": "14.8494060000",
+        "upperCentile": "19.4794280000",
+        "averageLifetime": "16.5206330000",
+        "lowerCentileLifetime": "12.0363480000",
+        "upperCentileLifetime": "21.6856670000",
+        "residualLifetime": "51.4253590000"
+    },
+    {
+        "id": 24,
+        "age": 37,
+        "averageTen": "17.2067690000",
+        "lowerCentile": "14.8161830000",
+        "upperCentile": "19.2344560000",
+        "averageLifetime": "18.2613280000",
+        "lowerCentileLifetime": "13.4941050000",
+        "upperCentileLifetime": "23.6908330000",
+        "residualLifetime": "49.6846640000"
+    },
+    {
+        "id": 25,
+        "age": 38,
+        "averageTen": "17.0790400000",
+        "lowerCentile": "14.7793630000",
+        "upperCentile": "18.9881640000",
+        "averageLifetime": "19.9657260000",
+        "lowerCentileLifetime": "14.9277050000",
+        "upperCentileLifetime": "25.6446590000",
+        "residualLifetime": "47.9802660000"
+    },
+    {
+        "id": 26,
+        "age": 39,
+        "averageTen": "16.9483290000",
+        "lowerCentile": "14.7390870000",
+        "upperCentile": "18.7408120000",
+        "averageLifetime": "21.6345840000",
+        "lowerCentileLifetime": "16.3375460000",
+        "upperCentileLifetime": "27.5484590000",
+        "residualLifetime": "46.3114080000"
+    },
+    {
+        "id": 27,
+        "age": 40,
+        "averageTen": "16.8148360000",
+        "lowerCentile": "14.6954910000",
+        "upperCentile": "18.4926490000",
+        "averageLifetime": "23.2686440000",
+        "lowerCentileLifetime": "17.7240230000",
+        "upperCentileLifetime": "29.4035140000",
+        "residualLifetime": "44.6773480000"
+    },
+    {
+        "id": 28,
+        "age": 41,
+        "averageTen": "16.3415520000",
+        "lowerCentile": "14.2494100000",
+        "upperCentile": "17.9748220000",
+        "averageLifetime": "25.1433750000",
+        "lowerCentileLifetime": "19.3270620000",
+        "upperCentileLifetime": "31.5155860000",
+        "residualLifetime": "42.8026180000"
+    },
+    {
+        "id": 29,
+        "age": 42,
+        "averageTen": "15.8812920000",
+        "lowerCentile": "13.8147550000",
+        "upperCentile": "17.4714030000",
+        "averageLifetime": "26.9723010000",
+        "lowerCentileLifetime": "20.8988670000",
+        "upperCentileLifetime": "33.5644700000",
+        "residualLifetime": "40.9736910000"
+    },
+    {
+        "id": 30,
+        "age": 43,
+        "averageTen": "15.4337040000",
+        "lowerCentile": "13.3912570000",
+        "upperCentile": "16.9819950000",
+        "averageLifetime": "28.7565430000",
+        "lowerCentileLifetime": "22.4400490000",
+        "upperCentileLifetime": "35.5520560000",
+        "residualLifetime": "39.1894490000"
+    },
+    {
+        "id": 31,
+        "age": 44,
+        "averageTen": "14.9984460000",
+        "lowerCentile": "12.9786530000",
+        "upperCentile": "16.5062100000",
+        "averageLifetime": "30.4971910000",
+        "lowerCentileLifetime": "23.9512020000",
+        "upperCentileLifetime": "37.4801780000",
+        "residualLifetime": "37.4488010000"
+    },
+    {
+        "id": 32,
+        "age": 45,
+        "averageTen": "14.5751820000",
+        "lowerCentile": "12.5766840000",
+        "upperCentile": "16.0436710000",
+        "averageLifetime": "32.1953110000",
+        "lowerCentileLifetime": "25.4329130000",
+        "upperCentileLifetime": "39.3506160000",
+        "residualLifetime": "35.7506810000"
+    },
+    {
+        "id": 33,
+        "age": 46,
+        "averageTen": "14.1635890000",
+        "lowerCentile": "12.1851000000",
+        "upperCentile": "15.5940130000",
+        "averageLifetime": "33.8519420000",
+        "lowerCentileLifetime": "26.8857540000",
+        "upperCentileLifetime": "41.1650950000",
+        "residualLifetime": "34.0940500000"
+    },
+    {
+        "id": 34,
+        "age": 47,
+        "averageTen": "13.7633500000",
+        "lowerCentile": "11.8036540000",
+        "upperCentile": "15.1568800000",
+        "averageLifetime": "35.4680970000",
+        "lowerCentileLifetime": "28.3102880000",
+        "upperCentileLifetime": "42.9252890000",
+        "residualLifetime": "32.4778950000"
+    },
+    {
+        "id": 35,
+        "age": 48,
+        "averageTen": "13.3741570000",
+        "lowerCentile": "11.4321060000",
+        "upperCentile": "14.7319260000",
+        "averageLifetime": "37.0447660000",
+        "lowerCentileLifetime": "29.7070680000",
+        "upperCentileLifetime": "44.6328230000",
+        "residualLifetime": "30.9012260000"
+    },
+    {
+        "id": 36,
+        "age": 49,
+        "averageTen": "12.9957100000",
+        "lowerCentile": "11.0702210000",
+        "upperCentile": "14.3188130000",
+        "averageLifetime": "38.5829130000",
+        "lowerCentileLifetime": "31.0766330000",
+        "upperCentileLifetime": "46.2892710000",
+        "residualLifetime": "29.3630790000"
+    },
+    {
+        "id": 37,
+        "age": 50,
+        "averageTen": "12.6277190000",
+        "lowerCentile": "10.7177680000",
+        "upperCentile": "13.9172130000",
+        "averageLifetime": "40.0834790000",
+        "lowerCentileLifetime": "32.4195140000",
+        "upperCentileLifetime": "47.8961630000",
+        "residualLifetime": "27.8625130000"
+    },
+    {
+        "id": 38,
+        "age": 51,
+        "averageTen": "12.2685520000",
+        "lowerCentile": "10.2947660000",
+        "upperCentile": "13.6026910000",
+        "averageLifetime": "41.4849260000",
+        "lowerCentileLifetime": "33.5764720000",
+        "upperCentileLifetime": "49.4904080000",
+        "residualLifetime": "26.4610660000"
+    },
+    {
+        "id": 39,
+        "age": 52,
+        "averageTen": "11.9191910000",
+        "lowerCentile": "9.8820980000",
+        "upperCentile": "13.2940610000",
+        "averageLifetime": "42.8535930000",
+        "lowerCentileLifetime": "34.7136220000",
+        "upperCentileLifetime": "51.0358730000",
+        "residualLifetime": "25.0923990000"
+    },
+    {
+        "id": 40,
+        "age": 53,
+        "averageTen": "11.5793770000",
+        "lowerCentile": "9.4795450000",
+        "upperCentile": "12.9912700000",
+        "averageLifetime": "44.1902470000",
+        "lowerCentileLifetime": "35.8313060000",
+        "upperCentileLifetime": "52.5340500000",
+        "residualLifetime": "23.7557450000"
+    },
+    {
+        "id": 41,
+        "age": 54,
+        "averageTen": "11.2488560000",
+        "lowerCentile": "9.0868970000",
+        "upperCentile": "12.6942590000",
+        "averageLifetime": "45.4956370000",
+        "lowerCentileLifetime": "36.9298550000",
+        "upperCentileLifetime": "53.9863880000",
+        "residualLifetime": "22.4503560000"
+    },
+    {
+        "id": 42,
+        "age": 55,
+        "averageTen": "10.9273820000",
+        "lowerCentile": "8.7039440000",
+        "upperCentile": "12.4029690000",
+        "averageLifetime": "46.7704930000",
+        "lowerCentileLifetime": "38.0095970000",
+        "upperCentileLifetime": "55.3942870000",
+        "residualLifetime": "21.1754990000"
+    },
+    {
+        "id": 43,
+        "age": 56,
+        "averageTen": "10.6147130000",
+        "lowerCentile": "8.3304820000",
+        "upperCentile": "12.1173360000",
+        "averageLifetime": "48.0155310000",
+        "lowerCentileLifetime": "39.0708540000",
+        "upperCentileLifetime": "56.7591080000",
+        "residualLifetime": "19.9304610000"
+    },
+    {
+        "id": 44,
+        "age": 57,
+        "averageTen": "10.3106160000",
+        "lowerCentile": "7.9663110000",
+        "upperCentile": "11.8372970000",
+        "averageLifetime": "49.2314470000",
+        "lowerCentileLifetime": "40.1139420000",
+        "upperCentileLifetime": "58.0821700000",
+        "residualLifetime": "18.7145450000"
+    },
+    {
+        "id": 45,
+        "age": 58,
+        "averageTen": "10.0148620000",
+        "lowerCentile": "7.6112340000",
+        "upperCentile": "11.5627860000",
+        "averageLifetime": "50.4189230000",
+        "lowerCentileLifetime": "41.1391740000",
+        "upperCentileLifetime": "59.3647490000",
+        "residualLifetime": "17.5270690000"
+    },
+    {
+        "id": 46,
+        "age": 59,
+        "averageTen": "9.7272280000",
+        "lowerCentile": "7.2650580000",
+        "upperCentile": "11.2937370000",
+        "averageLifetime": "51.5786240000",
+        "lowerCentileLifetime": "42.1468540000",
+        "upperCentileLifetime": "60.6080840000",
+        "residualLifetime": "16.3673690000"
+    },
+    {
+        "id": 47,
+        "age": 60,
+        "averageTen": "9.4474990000",
+        "lowerCentile": "6.9275960000",
+        "upperCentile": "11.0300790000",
+        "averageLifetime": "52.7111990000",
+        "lowerCentileLifetime": "43.1372820000",
+        "upperCentileLifetime": "61.8133760000",
+        "residualLifetime": "15.2347930000"
+    },
+    {
+        "id": 48,
+        "age": 61,
+        "averageTen": "9.0281230000",
+        "lowerCentile": "6.4194200000",
+        "upperCentile": "10.7225330000",
+        "averageLifetime": "53.7534780000",
+        "lowerCentileLifetime": "43.8712380000",
+        "upperCentileLifetime": "63.0930980000",
+        "residualLifetime": "14.1925140000"
+    },
+    {
+        "id": 49,
+        "age": 62,
+        "averageTen": "8.6214650000",
+        "lowerCentile": "5.9196970000",
+        "upperCentile": "10.4230700000",
+        "averageLifetime": "54.7727840000",
+        "lowerCentileLifetime": "44.5957200000",
+        "upperCentileLifetime": "64.3299340000",
+        "residualLifetime": "13.1732080000"
+    },
+    {
+        "id": 50,
+        "age": 63,
+        "averageTen": "8.2271890000",
+        "lowerCentile": "5.4283100000",
+        "upperCentile": "10.1314990000",
+        "averageLifetime": "55.7696240000",
+        "lowerCentileLifetime": "45.3108510000",
+        "upperCentileLifetime": "65.5253210000",
+        "residualLifetime": "12.1763680000"
+    },
+    {
+        "id": 51,
+        "age": 64,
+        "averageTen": "7.8449650000",
+        "lowerCentile": "4.9451410000",
+        "upperCentile": "9.8476330000",
+        "averageLifetime": "56.7444930000",
+        "lowerCentileLifetime": "46.0167520000",
+        "upperCentileLifetime": "66.6806470000",
+        "residualLifetime": "11.2014990000"
+    },
+    {
+        "id": 52,
+        "age": 65,
+        "averageTen": "7.4744720000",
+        "lowerCentile": "4.4700760000",
+        "upperCentile": "9.5712870000",
+        "averageLifetime": "57.6978750000",
+        "lowerCentileLifetime": "46.7135410000",
+        "upperCentileLifetime": "67.7972560000",
+        "residualLifetime": "10.2481170000"
+    },
+    {
+        "id": 53,
+        "age": 66,
+        "averageTen": "7.1153980000",
+        "lowerCentile": "4.0030030000",
+        "upperCentile": "9.3022810000",
+        "averageLifetime": "58.6302440000",
+        "lowerCentileLifetime": "47.4013360000",
+        "upperCentileLifetime": "68.8764440000",
+        "residualLifetime": "9.3157480000"
+    },
+    {
+        "id": 54,
+        "age": 67,
+        "averageTen": "6.7674370000",
+        "lowerCentile": "3.5438090000",
+        "upperCentile": "9.0404370000",
+        "averageLifetime": "59.5420630000",
+        "lowerCentileLifetime": "48.0802530000",
+        "upperCentileLifetime": "69.9194670000",
+        "residualLifetime": "8.4039290000"
+    },
+    {
+        "id": 55,
+        "age": 68,
+        "averageTen": "6.4302920000",
+        "lowerCentile": "3.0923850000",
+        "upperCentile": "8.7855820000",
+        "averageLifetime": "60.4337840000",
+        "lowerCentileLifetime": "48.7504080000",
+        "upperCentileLifetime": "70.9275350000",
+        "residualLifetime": "7.5122080000"
+    },
+    {
+        "id": 56,
+        "age": 69,
+        "averageTen": "6.1036710000",
+        "lowerCentile": "2.6486220000",
+        "upperCentile": "8.5375450000",
+        "averageLifetime": "61.3058520000",
+        "lowerCentileLifetime": "49.4119120000",
+        "upperCentileLifetime": "71.9018210000",
+        "residualLifetime": "6.6401400000"
+    },
+    {
+        "id": 57,
+        "age": 70,
+        "averageTen": "5.7872940000",
+        "lowerCentile": "2.2124130000",
+        "upperCentile": "8.2961600000",
+        "averageLifetime": "62.1586980000",
+        "lowerCentileLifetime": "50.0648780000",
+        "upperCentileLifetime": "72.8434560000",
+        "residualLifetime": "5.7872940000"
+    },
+    {
+        "id": 58,
+        "age": 71,
+        "averageTen": "5.6920300000",
+        "lowerCentile": "2.2024100000",
+        "upperCentile": "7.9991670000",
+        "averageLifetime": "62.7816000000",
+        "lowerCentileLifetime": "50.2906580000",
+        "upperCentileLifetime": "73.8156310000",
+        "residualLifetime": "5.1643920000"
+    },
+    {
+        "id": 59,
+        "age": 72,
+        "averageTen": "5.5983340000",
+        "lowerCentile": "2.1924520000",
+        "upperCentile": "7.7128050000",
+        "averageLifetime": "63.3942490000",
+        "lowerCentileLifetime": "50.5154180000",
+        "upperCentileLifetime": "74.7530040000",
+        "residualLifetime": "4.5517430000"
+    },
+    {
+        "id": 60,
+        "age": 73,
+        "averageTen": "5.5061800000",
+        "lowerCentile": "2.1825390000",
+        "upperCentile": "7.4366950000",
+        "averageLifetime": "63.9968130000",
+        "lowerCentileLifetime": "50.7391610000",
+        "upperCentileLifetime": "75.6568200000",
+        "residualLifetime": "3.9491790000"
+    },
+    {
+        "id": 61,
+        "age": 74,
+        "averageTen": "5.4155430000",
+        "lowerCentile": "2.1726700000",
+        "upperCentile": "7.1704690000",
+        "averageLifetime": "64.5894580000",
+        "lowerCentileLifetime": "50.9618920000",
+        "upperCentileLifetime": "76.5282800000",
+        "residualLifetime": "3.3565340000"
+    },
+    {
+        "id": 62,
+        "age": 75,
+        "averageTen": "5.3263990000",
+        "lowerCentile": "2.1628470000",
+        "upperCentile": "6.9137740000",
+        "averageLifetime": "65.1723470000",
+        "lowerCentileLifetime": "51.1836170000",
+        "upperCentileLifetime": "77.3685430000",
+        "residualLifetime": "2.7736450000"
+    },
+    {
+        "id": 63,
+        "age": 76,
+        "averageTen": "5.2387210000",
+        "lowerCentile": "2.1530670000",
+        "upperCentile": "6.6662680000",
+        "averageLifetime": "65.7456420000",
+        "lowerCentileLifetime": "51.4043390000",
+        "upperCentileLifetime": "78.1787250000",
+        "residualLifetime": "2.2003500000"
+    },
+    {
+        "id": 64,
+        "age": 77,
+        "averageTen": "5.1524870000",
+        "lowerCentile": "2.1433320000",
+        "upperCentile": "6.4276220000",
+        "averageLifetime": "66.3095000000",
+        "lowerCentileLifetime": "51.6240620000",
+        "upperCentileLifetime": "78.9599040000",
+        "residualLifetime": "1.6364920000"
+    },
+    {
+        "id": 65,
+        "age": 78,
+        "averageTen": "5.0676730000",
+        "lowerCentile": "2.1336410000",
+        "upperCentile": "6.1975200000",
+        "averageLifetime": "66.8640760000",
+        "lowerCentileLifetime": "51.8427930000",
+        "upperCentileLifetime": "79.7131170000",
+        "residualLifetime": "1.0819160000"
+    },
+    {
+        "id": 66,
+        "age": 79,
+        "averageTen": "4.9842540000",
+        "lowerCentile": "2.1239940000",
+        "upperCentile": "5.9756560000",
+        "averageLifetime": "67.4095230000",
+        "lowerCentileLifetime": "52.0605340000",
+        "upperCentileLifetime": "80.4393660000",
+        "residualLifetime": "0.5364690000"
+    },
+    {
+        "id": 67,
+        "age": 80,
+        "averageTen": "4.9022090000",
+        "lowerCentile": "2.1143910000",
+        "upperCentile": "5.7617330000",
+        "averageLifetime": "67.9459920000",
+        "lowerCentileLifetime": "52.2772910000",
+        "upperCentileLifetime": "81.1396160000",
+        "residualLifetime": "0.0000000000"
+    }
+      ]
+      this.dataB1Ovarin = [
+      {
+          "id": 1,
+          "age": 20,
+          "averageTen": "0.0710590000",
+          "lowerCentile": "0.0000000000",
+          "upperCentile": "0.0010000000",
+          "averageLifetime": "0.0014210000",
+          "lowerCentileLifetime": "0.0127930000",
+          "upperCentileLifetime": "0.0000000000",
+          "residualLifetime": "44.1828710000"
+      },
+      {
+          "id": 2,
+          "age": 21,
+          "averageTen": "0.2520540000",
+          "lowerCentile": "0.0871330000",
+          "upperCentile": "0.3109860000",
+          "averageLifetime": "0.0018950000",
+          "lowerCentileLifetime": "0.0146260000",
+          "upperCentileLifetime": "0.0001000000",
+          "residualLifetime": "44.1823970000"
+      },
+      {
+          "id": 3,
+          "age": 22,
+          "averageTen": "0.4327190000",
+          "lowerCentile": "0.1741910000",
+          "upperCentile": "0.6200100000",
+          "averageLifetime": "0.0023690000",
+          "lowerCentileLifetime": "0.0164580000",
+          "upperCentileLifetime": "0.0002000000",
+          "residualLifetime": "44.1819230000"
+      },
+      {
+          "id": 4,
+          "age": 23,
+          "averageTen": "0.6067840000",
+          "lowerCentile": "0.2611730000",
+          "upperCentile": "0.9280760000",
+          "averageLifetime": "0.0091140000",
+          "lowerCentileLifetime": "0.0182900000",
+          "upperCentileLifetime": "0.0003000000",
+          "residualLifetime": "44.1751780000"
+      },
+      {
+          "id": 5,
+          "age": 24,
+          "averageTen": "0.7805200000",
+          "lowerCentile": "0.3480790000",
+          "upperCentile": "1.2351860000",
+          "averageLifetime": "0.0158590000",
+          "lowerCentileLifetime": "0.0201220000",
+          "upperCentileLifetime": "0.0004000000",
+          "residualLifetime": "44.1684320000"
+      },
+      {
+          "id": 6,
+          "age": 25,
+          "averageTen": "0.9539300000",
+          "lowerCentile": "0.4349090000",
+          "upperCentile": "1.5413440000",
+          "averageLifetime": "0.0226040000",
+          "lowerCentileLifetime": "0.0221460000",
+          "upperCentileLifetime": "0.0005000000",
+          "residualLifetime": "44.1616880000"
+      },
+      {
+          "id": 7,
+          "age": 26,
+          "averageTen": "1.1270120000",
+          "lowerCentile": "0.5216630000",
+          "upperCentile": "1.8465520000",
+          "averageLifetime": "0.0293480000",
+          "lowerCentileLifetime": "0.0241690000",
+          "upperCentileLifetime": "0.0006000000",
+          "residualLifetime": "44.1549430000"
+      },
+      {
+          "id": 8,
+          "age": 27,
+          "averageTen": "1.2997690000",
+          "lowerCentile": "0.6083420000",
+          "upperCentile": "2.1508130000",
+          "averageLifetime": "0.0360920000",
+          "lowerCentileLifetime": "0.0261920000",
+          "upperCentileLifetime": "0.0007000000",
+          "residualLifetime": "44.1482000000"
+      },
+      {
+          "id": 9,
+          "age": 28,
+          "averageTen": "1.4722000000",
+          "lowerCentile": "0.6949460000",
+          "upperCentile": "2.4541300000",
+          "averageLifetime": "0.0428360000",
+          "lowerCentileLifetime": "0.0282150000",
+          "upperCentileLifetime": "0.0008000000",
+          "residualLifetime": "44.1414560000"
+      },
+      {
+          "id": 10,
+          "age": 29,
+          "averageTen": "1.6443060000",
+          "lowerCentile": "0.7814740000",
+          "upperCentile": "2.7565070000",
+          "averageLifetime": "0.0495790000",
+          "lowerCentileLifetime": "0.0302380000",
+          "upperCentileLifetime": "0.0009000000",
+          "residualLifetime": "44.1347130000"
+      },
+      {
+          "id": 11,
+          "age": 30,
+          "averageTen": "1.7999280000",
+          "lowerCentile": "0.8679260000",
+          "upperCentile": "3.0579460000",
+          "averageLifetime": "0.0724800000",
+          "lowerCentileLifetime": "0.0332600000",
+          "upperCentileLifetime": "0.0010000000",
+          "residualLifetime": "44.1118120000"
+      },
+      {
+          "id": 12,
+          "age": 31,
+          "averageTen": "2.3079070000",
+          "lowerCentile": "1.2321570000",
+          "upperCentile": "3.7194310000",
+          "averageLifetime": "0.2539490000",
+          "lowerCentileLifetime": "0.0871330000",
+          "upperCentileLifetime": "0.3110860000",
+          "residualLifetime": "43.9303430000"
+      },
+      {
+          "id": 13,
+          "age": 32,
+          "averageTen": "2.8113700000",
+          "lowerCentile": "1.5944090000",
+          "upperCentile": "4.3721410000",
+          "averageLifetime": "0.4350880000",
+          "lowerCentileLifetime": "0.1741910000",
+          "upperCentileLifetime": "0.6202100000",
+          "residualLifetime": "43.7492040000"
+      },
+      {
+          "id": 14,
+          "age": 33,
+          "averageTen": "3.3103530000",
+          "lowerCentile": "1.9546910000",
+          "upperCentile": "5.0161690000",
+          "averageLifetime": "0.6158980000",
+          "lowerCentileLifetime": "0.2611730000",
+          "upperCentileLifetime": "0.9283760000",
+          "residualLifetime": "43.5683940000"
+      },
+      {
+          "id": 15,
+          "age": 34,
+          "averageTen": "3.8048880000",
+          "lowerCentile": "2.3130120000",
+          "upperCentile": "5.6516100000",
+          "averageLifetime": "0.7963800000",
+          "lowerCentileLifetime": "0.3480790000",
+          "upperCentileLifetime": "1.2355860000",
+          "residualLifetime": "43.3879120000"
+      },
+      {
+          "id": 16,
+          "age": 35,
+          "averageTen": "4.2950070000",
+          "lowerCentile": "2.6693820000",
+          "upperCentile": "6.2785560000",
+          "averageLifetime": "0.9765340000",
+          "lowerCentileLifetime": "0.4349090000",
+          "upperCentileLifetime": "1.5418440000",
+          "residualLifetime": "43.2077580000"
+      },
+      {
+          "id": 17,
+          "age": 36,
+          "averageTen": "4.7807450000",
+          "lowerCentile": "3.0238100000",
+          "upperCentile": "6.8970990000",
+          "averageLifetime": "1.1563610000",
+          "lowerCentileLifetime": "0.5216630000",
+          "upperCentileLifetime": "1.8471520000",
+          "residualLifetime": "43.0279310000"
+      },
+      {
+          "id": 18,
+          "age": 37,
+          "averageTen": "5.2621330000",
+          "lowerCentile": "3.3763040000",
+          "upperCentile": "7.5073290000",
+          "averageLifetime": "1.3358610000",
+          "lowerCentileLifetime": "0.6083420000",
+          "upperCentileLifetime": "2.1515130000",
+          "residualLifetime": "42.8484310000"
+      },
+      {
+          "id": 19,
+          "age": 38,
+          "averageTen": "5.7392030000",
+          "lowerCentile": "3.7268740000",
+          "upperCentile": "8.1093370000",
+          "averageLifetime": "1.5150350000",
+          "lowerCentileLifetime": "0.6949460000",
+          "upperCentileLifetime": "2.4549300000",
+          "residualLifetime": "42.6692570000"
+      },
+      {
+          "id": 20,
+          "age": 39,
+          "averageTen": "6.2119880000",
+          "lowerCentile": "4.0755290000",
+          "upperCentile": "8.7032110000",
+          "averageLifetime": "1.6938840000",
+          "lowerCentileLifetime": "0.7814740000",
+          "upperCentileLifetime": "2.7574070000",
+          "residualLifetime": "42.4904080000"
+      },
+      {
+          "id": 21,
+          "age": 40,
+          "averageTen": "6.6805200000",
+          "lowerCentile": "4.4222780000",
+          "upperCentile": "9.2890400000",
+          "averageLifetime": "1.8724080000",
+          "lowerCentileLifetime": "0.8679260000",
+          "upperCentileLifetime": "3.0589460000",
+          "residualLifetime": "42.3118830000"
+      },
+      {
+          "id": 22,
+          "age": 41,
+          "averageTen": "7.2490140000",
+          "lowerCentile": "4.8079710000",
+          "upperCentile": "10.0465450000",
+          "averageLifetime": "2.5618550000",
+          "lowerCentileLifetime": "1.3192910000",
+          "upperCentileLifetime": "4.0305170000",
+          "residualLifetime": "41.6224370000"
+      },
+      {
+          "id": 23,
+          "age": 42,
+          "averageTen": "7.8050480000",
+          "lowerCentile": "5.1883200000",
+          "upperCentile": "10.7796780000",
+          "averageLifetime": "3.2464580000",
+          "lowerCentileLifetime": "1.7686000000",
+          "upperCentileLifetime": "4.9923510000",
+          "residualLifetime": "40.9378340000"
+      },
+      {
+          "id": 24,
+          "age": 43,
+          "averageTen": "8.3488260000",
+          "lowerCentile": "5.5633830000",
+          "upperCentile": "11.4890160000",
+          "averageLifetime": "3.9262510000",
+          "lowerCentileLifetime": "2.2158640000",
+          "upperCentileLifetime": "5.9445450000",
+          "residualLifetime": "40.2580410000"
+      },
+      {
+          "id": 25,
+          "age": 44,
+          "averageTen": "8.8805490000",
+          "lowerCentile": "5.9332140000",
+          "upperCentile": "12.1751200000",
+          "averageLifetime": "4.6012670000",
+          "lowerCentileLifetime": "2.6610910000",
+          "upperCentileLifetime": "6.8871960000",
+          "residualLifetime": "39.5830250000"
+      },
+      {
+          "id": 26,
+          "age": 45,
+          "averageTen": "9.4004140000",
+          "lowerCentile": "6.2978690000",
+          "upperCentile": "12.8385420000",
+          "averageLifetime": "5.2715410000",
+          "lowerCentileLifetime": "3.1042910000",
+          "upperCentileLifetime": "7.8204000000",
+          "residualLifetime": "38.9127510000"
+      },
+      {
+          "id": 27,
+          "age": 46,
+          "averageTen": "9.9086180000",
+          "lowerCentile": "6.6574010000",
+          "upperCentile": "13.4798200000",
+          "averageLifetime": "5.9371060000",
+          "lowerCentileLifetime": "3.5454730000",
+          "upperCentileLifetime": "8.7442500000",
+          "residualLifetime": "38.2471860000"
+      },
+      {
+          "id": 28,
+          "age": 47,
+          "averageTen": "10.4053520000",
+          "lowerCentile": "7.0118660000",
+          "upperCentile": "14.0994830000",
+          "averageLifetime": "6.5979940000",
+          "lowerCentileLifetime": "3.9846460000",
+          "upperCentileLifetime": "9.6588420000",
+          "residualLifetime": "37.5862980000"
+      },
+      {
+          "id": 29,
+          "age": 48,
+          "averageTen": "10.8908040000",
+          "lowerCentile": "7.3613160000",
+          "upperCentile": "14.6980470000",
+          "averageLifetime": "7.2542390000",
+          "lowerCentileLifetime": "4.4218200000",
+          "upperCentileLifetime": "10.5642670000",
+          "residualLifetime": "36.9300530000"
+      },
+      {
+          "id": 30,
+          "age": 49,
+          "averageTen": "11.3651630000",
+          "lowerCentile": "7.7058050000",
+          "upperCentile": "15.2760170000",
+          "averageLifetime": "7.9058730000",
+          "lowerCentileLifetime": "4.8570030000",
+          "upperCentileLifetime": "11.4606180000",
+          "residualLifetime": "36.2784190000"
+      },
+      {
+          "id": 31,
+          "age": 50,
+          "averageTen": "11.8286110000",
+          "lowerCentile": "8.0453840000",
+          "upperCentile": "15.8338860000",
+          "averageLifetime": "8.5529280000",
+          "lowerCentileLifetime": "5.2902050000",
+          "upperCentileLifetime": "12.3479860000",
+          "residualLifetime": "35.6313640000"
+      },
+      {
+          "id": 32,
+          "age": 51,
+          "averageTen": "12.9086640000",
+          "lowerCentile": "8.8485950000",
+          "upperCentile": "17.1196650000",
+          "averageLifetime": "9.8108690000",
+          "lowerCentileLifetime": "6.1272620000",
+          "upperCentileLifetime": "14.0770620000",
+          "residualLifetime": "34.3734230000"
+      },
+      {
+          "id": 33,
+          "age": 52,
+          "averageTen": "13.9373670000",
+          "lowerCentile": "9.6281600000",
+          "upperCentile": "18.3129910000",
+          "averageLifetime": "11.0515060000",
+          "lowerCentileLifetime": "6.9569200000",
+          "upperCentileLifetime": "15.7720290000",
+          "residualLifetime": "33.1327860000"
+      },
+      {
+          "id": 34,
+          "age": 53,
+          "averageTen": "14.9164970000",
+          "lowerCentile": "10.3846000000",
+          "upperCentile": "19.4185060000",
+          "averageLifetime": "12.2750770000",
+          "lowerCentileLifetime": "7.7792470000",
+          "upperCentileLifetime": "17.4335610000",
+          "residualLifetime": "31.9092150000"
+      },
+      {
+          "id": 35,
+          "age": 54,
+          "averageTen": "15.8477750000",
+          "lowerCentile": "11.1184270000",
+          "upperCentile": "20.4406390000",
+          "averageLifetime": "13.4818160000",
+          "lowerCentileLifetime": "8.5943050000",
+          "upperCentileLifetime": "19.0623160000",
+          "residualLifetime": "30.7024760000"
+      },
+      {
+          "id": 36,
+          "age": 55,
+          "averageTen": "16.7328710000",
+          "lowerCentile": "11.8301420000",
+          "upperCentile": "21.3836210000",
+          "averageLifetime": "14.6719560000",
+          "lowerCentileLifetime": "9.4021600000",
+          "upperCentileLifetime": "20.6589410000",
+          "residualLifetime": "29.5123360000"
+      },
+      {
+          "id": 37,
+          "age": 56,
+          "averageTen": "17.5733990000",
+          "lowerCentile": "12.5202370000",
+          "upperCentile": "22.2514880000",
+          "averageLifetime": "15.8457240000",
+          "lowerCentileLifetime": "10.2028750000",
+          "upperCentileLifetime": "22.2240710000",
+          "residualLifetime": "28.3385680000"
+      },
+      {
+          "id": 38,
+          "age": 57,
+          "averageTen": "18.3709240000",
+          "lowerCentile": "13.1891930000",
+          "upperCentile": "23.0480950000",
+          "averageLifetime": "17.0033450000",
+          "lowerCentileLifetime": "10.9965130000",
+          "upperCentileLifetime": "23.7583250000",
+          "residualLifetime": "27.1809460000"
+      },
+      {
+          "id": 39,
+          "age": 58,
+          "averageTen": "19.1269600000",
+          "lowerCentile": "13.8374810000",
+          "upperCentile": "23.7771200000",
+          "averageLifetime": "18.1450430000",
+          "lowerCentileLifetime": "11.7831360000",
+          "upperCentileLifetime": "25.2623140000",
+          "residualLifetime": "26.0392490000"
+      },
+      {
+          "id": 40,
+          "age": 59,
+          "averageTen": "19.8429740000",
+          "lowerCentile": "14.4655630000",
+          "upperCentile": "24.4420740000",
+          "averageLifetime": "19.2710350000",
+          "lowerCentileLifetime": "12.5628080000",
+          "upperCentileLifetime": "26.7366350000",
+          "residualLifetime": "24.9132570000"
+      },
+      {
+          "id": 41,
+          "age": 60,
+          "averageTen": "20.5203860000",
+          "lowerCentile": "15.0738920000",
+          "upperCentile": "25.0463070000",
+          "averageLifetime": "20.3815390000",
+          "lowerCentileLifetime": "13.3355880000",
+          "upperCentileLifetime": "28.1818720000",
+          "residualLifetime": "23.8027530000"
+      },
+      {
+          "id": 42,
+          "age": 61,
+          "averageTen": "18.5191330000",
+          "lowerCentile": "13.4832200000",
+          "upperCentile": "22.7711680000",
+          "averageLifetime": "22.7195330000",
+          "lowerCentileLifetime": "14.9758570000",
+          "upperCentileLifetime": "31.1967270000",
+          "residualLifetime": "21.4647580000"
+      },
+      {
+          "id": 43,
+          "age": 62,
+          "averageTen": "16.5846160000",
+          "lowerCentile": "11.9235580000",
+          "upperCentile": "20.6108900000",
+          "averageLifetime": "24.9888730000",
+          "lowerCentileLifetime": "16.5850800000",
+          "upperCentileLifetime": "34.0850210000",
+          "residualLifetime": "19.1954190000"
+      },
+      {
+          "id": 44,
+          "age": 63,
+          "averageTen": "14.7148300000",
+          "lowerCentile": "10.3943200000",
+          "upperCentile": "18.5603460000",
+          "averageLifetime": "27.1915730000",
+          "lowerCentileLifetime": "18.1638460000",
+          "upperCentileLifetime": "36.8520670000",
+          "residualLifetime": "16.9927190000"
+      },
+      {
+          "id": 45,
+          "age": 64,
+          "averageTen": "12.9078290000",
+          "lowerCentile": "8.8949280000",
+          "upperCentile": "16.6146280000",
+          "averageLifetime": "29.3295920000",
+          "lowerCentileLifetime": "19.7127320000",
+          "upperCentileLifetime": "39.5029550000",
+          "residualLifetime": "14.8547000000"
+      },
+      {
+          "id": 46,
+          "age": 65,
+          "averageTen": "11.1617260000",
+          "lowerCentile": "7.4248160000",
+          "upperCentile": "14.7690400000",
+          "averageLifetime": "31.4048270000",
+          "lowerCentileLifetime": "21.2323020000",
+          "upperCentileLifetime": "42.0425620000",
+          "residualLifetime": "12.7794650000"
+      },
+      {
+          "id": 47,
+          "age": 66,
+          "averageTen": "9.4746860000",
+          "lowerCentile": "5.9834310000",
+          "upperCentile": "13.0190850000",
+          "averageLifetime": "33.4191230000",
+          "lowerCentileLifetime": "22.7231120000",
+          "upperCentileLifetime": "44.4755580000",
+          "residualLifetime": "10.7651690000"
+      },
+      {
+          "id": 48,
+          "age": 67,
+          "averageTen": "7.8449310000",
+          "lowerCentile": "4.5702280000",
+          "upperCentile": "11.3604630000",
+          "averageLifetime": "35.3742690000",
+          "lowerCentileLifetime": "24.1857050000",
+          "upperCentileLifetime": "46.8064200000",
+          "residualLifetime": "8.8100230000"
+      },
+      {
+          "id": 49,
+          "age": 68,
+          "averageTen": "6.2707350000",
+          "lowerCentile": "3.1846730000",
+          "upperCentile": "9.7890560000",
+          "averageLifetime": "37.2720030000",
+          "lowerCentileLifetime": "25.6206170000",
+          "upperCentileLifetime": "49.0394340000",
+          "residualLifetime": "6.9122890000"
+      },
+      {
+          "id": 50,
+          "age": 69,
+          "averageTen": "4.7504220000",
+          "lowerCentile": "1.8262410000",
+          "upperCentile": "8.3009260000",
+          "averageLifetime": "39.1140090000",
+          "lowerCentileLifetime": "27.0283710000",
+          "upperCentileLifetime": "51.1787090000",
+          "residualLifetime": "5.0702830000"
+      },
+      {
+          "id": 51,
+          "age": 70,
+          "averageTen": "3.2823670000",
+          "lowerCentile": "0.4944200000",
+          "upperCentile": "6.8923020000",
+          "averageLifetime": "40.9019250000",
+          "lowerCentileLifetime": "28.4094800000",
+          "upperCentileLifetime": "53.2281790000",
+          "residualLifetime": "3.2823670000"
+      },
+      {
+          "id": 52,
+          "age": 71,
+          "averageTen": "3.2636640000",
+          "lowerCentile": "0.4940770000",
+          "upperCentile": "6.7832970000",
+          "averageLifetime": "41.2386660000",
+          "lowerCentileLifetime": "28.4590770000",
+          "upperCentileLifetime": "53.9678940000",
+          "residualLifetime": "2.9456260000"
+      },
+      {
+          "id": 53,
+          "age": 72,
+          "averageTen": "3.2450670000",
+          "lowerCentile": "0.4937350000",
+          "upperCentile": "6.6760170000",
+          "averageLifetime": "41.5734890000",
+          "lowerCentileLifetime": "28.5086380000",
+          "upperCentileLifetime": "54.6959100000",
+          "residualLifetime": "2.6108030000"
+      },
+      {
+          "id": 54,
+          "age": 73,
+          "averageTen": "3.2265770000",
+          "lowerCentile": "0.4933930000",
+          "upperCentile": "6.5704330000",
+          "averageLifetime": "41.9064030000",
+          "lowerCentileLifetime": "28.5581660000",
+          "upperCentileLifetime": "55.4124130000",
+          "residualLifetime": "2.2778890000"
+      },
+      {
+          "id": 55,
+          "age": 74,
+          "averageTen": "3.2081920000",
+          "lowerCentile": "0.4930510000",
+          "upperCentile": "6.4665190000",
+          "averageLifetime": "42.2374210000",
+          "lowerCentileLifetime": "28.6076590000",
+          "upperCentileLifetime": "56.1175840000",
+          "residualLifetime": "1.9468710000"
+      },
+      {
+          "id": 56,
+          "age": 75,
+          "averageTen": "3.1899120000",
+          "lowerCentile": "0.4927090000",
+          "upperCentile": "6.3642480000",
+          "averageLifetime": "42.5665520000",
+          "lowerCentileLifetime": "28.6571180000",
+          "upperCentileLifetime": "56.8116020000",
+          "residualLifetime": "1.6177390000"
+      },
+      {
+          "id": 57,
+          "age": 76,
+          "averageTen": "3.1717360000",
+          "lowerCentile": "0.4923680000",
+          "upperCentile": "6.2635950000",
+          "averageLifetime": "42.8938090000",
+          "lowerCentileLifetime": "28.7065430000",
+          "upperCentileLifetime": "57.4946440000",
+          "residualLifetime": "1.2904830000"
+      },
+      {
+          "id": 58,
+          "age": 77,
+          "averageTen": "3.1536630000",
+          "lowerCentile": "0.4920270000",
+          "upperCentile": "6.1645340000",
+          "averageLifetime": "43.2192000000",
+          "lowerCentileLifetime": "28.7559330000",
+          "upperCentileLifetime": "58.1668830000",
+          "residualLifetime": "0.9650920000"
+      },
+      {
+          "id": 59,
+          "age": 78,
+          "averageTen": "3.1356930000",
+          "lowerCentile": "0.4916860000",
+          "upperCentile": "6.0670390000",
+          "averageLifetime": "43.5427370000",
+          "lowerCentileLifetime": "28.8052900000",
+          "upperCentileLifetime": "58.8284910000",
+          "residualLifetime": "0.6415550000"
+      },
+      {
+          "id": 60,
+          "age": 79,
+          "averageTen": "3.1178260000",
+          "lowerCentile": "0.4913450000",
+          "upperCentile": "5.9710860000",
+          "averageLifetime": "43.8644310000",
+          "lowerCentileLifetime": "28.8546120000",
+          "upperCentileLifetime": "59.4796350000",
+          "residualLifetime": "0.3198610000"
+      },
+      {
+          "id": 61,
+          "age": 80,
+          "averageTen": "3.1000610000",
+          "lowerCentile": "0.4910050000",
+          "upperCentile": "5.8766510000",
+          "averageLifetime": "44.1842920000",
+          "lowerCentileLifetime": "28.9039000000",
+          "upperCentileLifetime": "60.1204810000",
+          "residualLifetime": "0.0000000000"
+      }
+      ]
+      this.dataB2Breast = [
+        {
+            "id": 1,
+            "age": 20,
+            "averageTen": "3.7554230000",
+            "lowerCentile": "1.0380080000",
+            "upperCentile": "8.0511410000",
+            "averageLifetime": "0.0010750000",
+            "lowerCentileLifetime": "0.0010750000",
+            "upperCentileLifetime": "0.0010750000",
+            "residualLifetime": "63.9004010000"
+        },
+        {
+            "id": 2,
+            "age": 21,
+            "averageTen": "4.1368330000",
+            "lowerCentile": "1.3918830000",
+            "upperCentile": "8.3279890000",
+            "averageLifetime": "0.3820440000",
+            "lowerCentileLifetime": "0.1042890000",
+            "upperCentileLifetime": "0.8358640000",
+            "residualLifetime": "63.5194320000"
+        },
+        {
+            "id": 3,
+            "age": 22,
+            "averageTen": "4.5136460000",
+            "lowerCentile": "1.7437450000",
+            "upperCentile": "8.5983580000",
+            "averageLifetime": "0.7626280000",
+            "lowerCentileLifetime": "0.2084690000",
+            "upperCentileLifetime": "1.6647400000",
+            "residualLifetime": "63.1388480000"
+        },
+        {
+            "id": 4,
+            "age": 23,
+            "averageTen": "4.8859060000",
+            "lowerCentile": "2.0936050000",
+            "upperCentile": "8.8623530000",
+            "averageLifetime": "1.1417590000",
+            "lowerCentileLifetime": "0.3125410000",
+            "upperCentileLifetime": "2.4866890000",
+            "residualLifetime": "62.7597180000"
+        },
+        {
+            "id": 5,
+            "age": 24,
+            "averageTen": "5.2536530000",
+            "lowerCentile": "2.4414710000",
+            "upperCentile": "9.1200770000",
+            "averageLifetime": "1.5194410000",
+            "lowerCentileLifetime": "0.4165040000",
+            "upperCentileLifetime": "3.3017670000",
+            "residualLifetime": "62.3820360000"
+        },
+        {
+            "id": 6,
+            "age": 25,
+            "averageTen": "5.6169310000",
+            "lowerCentile": "2.7873540000",
+            "upperCentile": "9.3716310000",
+            "averageLifetime": "1.8956800000",
+            "lowerCentileLifetime": "0.5203580000",
+            "upperCentileLifetime": "4.1100320000",
+            "residualLifetime": "62.0057970000"
+        },
+        {
+            "id": 7,
+            "age": 26,
+            "averageTen": "5.9757790000",
+            "lowerCentile": "3.1312640000",
+            "upperCentile": "9.6171160000",
+            "averageLifetime": "2.2704810000",
+            "lowerCentileLifetime": "0.6241040000",
+            "upperCentileLifetime": "4.9115420000",
+            "residualLifetime": "61.6309950000"
+        },
+        {
+            "id": 8,
+            "age": 27,
+            "averageTen": "6.3302400000",
+            "lowerCentile": "3.4732080000",
+            "upperCentile": "9.8566300000",
+            "averageLifetime": "2.6438510000",
+            "lowerCentileLifetime": "0.7277420000",
+            "upperCentileLifetime": "5.7063510000",
+            "residualLifetime": "61.2576250000"
+        },
+        {
+            "id": 9,
+            "age": 28,
+            "averageTen": "6.6803540000",
+            "lowerCentile": "3.8131990000",
+            "upperCentile": "10.0902720000",
+            "averageLifetime": "3.0157940000",
+            "lowerCentileLifetime": "0.8312720000",
+            "upperCentileLifetime": "6.4945180000",
+            "residualLifetime": "60.8856820000"
+        },
+        {
+            "id": 10,
+            "age": 29,
+            "averageTen": "7.0261610000",
+            "lowerCentile": "4.1512430000",
+            "upperCentile": "10.3181350000",
+            "averageLifetime": "3.3863160000",
+            "lowerCentileLifetime": "0.9346940000",
+            "upperCentileLifetime": "7.2760960000",
+            "residualLifetime": "60.5151600000"
+        },
+        {
+            "id": 11,
+            "age": 30,
+            "averageTen": "7.3677010000",
+            "lowerCentile": "4.4873520000",
+            "upperCentile": "10.5403170000",
+            "averageLifetime": "3.7554230000",
+            "lowerCentileLifetime": "1.0380080000",
+            "upperCentileLifetime": "8.0511410000",
+            "residualLifetime": "60.1460530000"
+        },
+        {
+            "id": 12,
+            "age": 31,
+            "averageTen": "8.4999900000",
+            "lowerCentile": "5.5340270000",
+            "upperCentile": "11.6654420000",
+            "averageLifetime": "4.5188770000",
+            "lowerCentileLifetime": "1.4961720000",
+            "upperCentileLifetime": "9.1638520000",
+            "residualLifetime": "59.3825990000"
+        },
+        {
+            "id": 13,
+            "age": 32,
+            "averageTen": "9.5978990000",
+            "lowerCentile": "6.5588530000",
+            "upperCentile": "12.7425160000",
+            "averageLifetime": "5.2762750000",
+            "lowerCentileLifetime": "1.9522140000",
+            "upperCentileLifetime": "10.2630980000",
+            "residualLifetime": "58.6252020000"
+        },
+        {
+            "id": 14,
+            "age": 33,
+            "averageTen": "10.6622420000",
+            "lowerCentile": "7.5622020000",
+            "upperCentile": "13.7730680000",
+            "averageLifetime": "6.0276640000",
+            "lowerCentileLifetime": "2.4061450000",
+            "upperCentileLifetime": "11.3490420000",
+            "residualLifetime": "57.8738120000"
+        },
+        {
+            "id": 15,
+            "age": 34,
+            "averageTen": "11.6938160000",
+            "lowerCentile": "8.5444410000",
+            "upperCentile": "14.7585820000",
+            "averageLifetime": "6.7730940000",
+            "lowerCentileLifetime": "2.8579750000",
+            "upperCentileLifetime": "12.4218440000",
+            "residualLifetime": "57.1283820000"
+        },
+        {
+            "id": 16,
+            "age": 35,
+            "averageTen": "12.6933990000",
+            "lowerCentile": "9.5059290000",
+            "upperCentile": "15.7004970000",
+            "averageLifetime": "7.5126100000",
+            "lowerCentileLifetime": "3.3077120000",
+            "upperCentileLifetime": "13.4816630000",
+            "residualLifetime": "56.3888660000"
+        },
+        {
+            "id": 17,
+            "age": 36,
+            "averageTen": "13.6617540000",
+            "lowerCentile": "10.4470210000",
+            "upperCentile": "16.6002110000",
+            "averageLifetime": "8.2462600000",
+            "lowerCentileLifetime": "3.7553680000",
+            "upperCentileLifetime": "14.5286580000",
+            "residualLifetime": "55.6552160000"
+        },
+        {
+            "id": 18,
+            "age": 37,
+            "averageTen": "14.5996240000",
+            "lowerCentile": "11.3680640000",
+            "upperCentile": "17.4590830000",
+            "averageLifetime": "8.9740910000",
+            "lowerCentileLifetime": "4.2009510000",
+            "upperCentileLifetime": "15.5629820000",
+            "residualLifetime": "54.9273850000"
+        },
+        {
+            "id": 19,
+            "age": 38,
+            "averageTen": "15.5077390000",
+            "lowerCentile": "12.2694020000",
+            "upperCentile": "18.2784290000",
+            "averageLifetime": "9.6961480000",
+            "lowerCentileLifetime": "4.6444710000",
+            "upperCentileLifetime": "16.5847890000",
+            "residualLifetime": "54.2053280000"
+        },
+        {
+            "id": 20,
+            "age": 39,
+            "averageTen": "16.3868100000",
+            "lowerCentile": "13.1513720000",
+            "upperCentile": "19.0595300000",
+            "averageLifetime": "10.4124770000",
+            "lowerCentileLifetime": "5.0859380000",
+            "upperCentileLifetime": "17.5942310000",
+            "residualLifetime": "53.4889990000"
+        },
+        {
+            "id": 21,
+            "age": 40,
+            "averageTen": "17.2375330000",
+            "lowerCentile": "14.0143050000",
+            "upperCentile": "19.8036260000",
+            "averageLifetime": "11.1231240000",
+            "lowerCentileLifetime": "5.5253600000",
+            "upperCentileLifetime": "18.5914580000",
+            "residualLifetime": "52.7783520000"
+        },
+        {
+            "id": 22,
+            "age": 41,
+            "averageTen": "17.0085060000",
+            "lowerCentile": "13.8109610000",
+            "upperCentile": "19.5118050000",
+            "averageLifetime": "13.0188670000",
+            "lowerCentileLifetime": "7.0301990000",
+            "upperCentileLifetime": "20.8292940000",
+            "residualLifetime": "50.8826090000"
+        },
+        {
+            "id": 23,
+            "age": 42,
+            "averageTen": "16.7811380000",
+            "lowerCentile": "13.6105330000",
+            "upperCentile": "19.2200270000",
+            "averageLifetime": "14.8741730000",
+            "lowerCentileLifetime": "8.5110670000",
+            "upperCentileLifetime": "23.0056140000",
+            "residualLifetime": "49.0273030000"
+        },
+        {
+            "id": 24,
+            "age": 43,
+            "averageTen": "16.5554690000",
+            "lowerCentile": "13.4129820000",
+            "upperCentile": "18.9285440000",
+            "averageLifetime": "16.6899060000",
+            "lowerCentileLifetime": "9.9683480000",
+            "upperCentileLifetime": "25.1221100000",
+            "residualLifetime": "47.2115700000"
+        },
+        {
+            "id": 25,
+            "age": 44,
+            "averageTen": "16.3315360000",
+            "lowerCentile": "13.2182660000",
+            "upperCentile": "18.6375920000",
+            "averageLifetime": "18.4669090000",
+            "lowerCentileLifetime": "11.4024160000",
+            "upperCentileLifetime": "27.1804250000",
+            "residualLifetime": "45.4345670000"
+        },
+        {
+            "id": 26,
+            "age": 45,
+            "averageTen": "16.1093740000",
+            "lowerCentile": "13.0263450000",
+            "upperCentile": "18.3473920000",
+            "averageLifetime": "20.2060090000",
+            "lowerCentileLifetime": "12.8136420000",
+            "upperCentileLifetime": "29.1821600000",
+            "residualLifetime": "43.6954670000"
+        },
+        {
+            "id": 27,
+            "age": 46,
+            "averageTen": "15.8890150000",
+            "lowerCentile": "12.8371810000",
+            "upperCentile": "18.0581530000",
+            "averageLifetime": "21.9080140000",
+            "lowerCentileLifetime": "14.2023890000",
+            "upperCentileLifetime": "31.1288690000",
+            "residualLifetime": "41.9934620000"
+        },
+        {
+            "id": 28,
+            "age": 47,
+            "averageTen": "15.6704880000",
+            "lowerCentile": "12.6507320000",
+            "upperCentile": "17.7700700000",
+            "averageLifetime": "23.5737150000",
+            "lowerCentileLifetime": "15.5690150000",
+            "upperCentileLifetime": "33.0220650000",
+            "residualLifetime": "40.3277610000"
+        },
+        {
+            "id": 29,
+            "age": 48,
+            "averageTen": "15.4538220000",
+            "lowerCentile": "12.4669620000",
+            "upperCentile": "17.4833250000",
+            "averageLifetime": "25.2038870000",
+            "lowerCentileLifetime": "16.9138730000",
+            "upperCentileLifetime": "34.8632190000",
+            "residualLifetime": "38.6975890000"
+        },
+        {
+            "id": 30,
+            "age": 49,
+            "averageTen": "15.2390420000",
+            "lowerCentile": "12.2858330000",
+            "upperCentile": "17.1980900000",
+            "averageLifetime": "26.7992870000",
+            "lowerCentileLifetime": "18.2373100000",
+            "upperCentileLifetime": "36.6537610000",
+            "residualLifetime": "37.1021890000"
+        },
+        {
+            "id": 31,
+            "age": 50,
+            "averageTen": "15.0261710000",
+            "lowerCentile": "12.1073060000",
+            "upperCentile": "16.9145240000",
+            "averageLifetime": "28.3606570000",
+            "lowerCentileLifetime": "19.5396660000",
+            "upperCentileLifetime": "38.3950830000",
+            "residualLifetime": "35.5408190000"
+        },
+        {
+            "id": 32,
+            "age": 51,
+            "averageTen": "14.6415400000",
+            "lowerCentile": "11.6571660000",
+            "upperCentile": "16.5661390000",
+            "averageLifetime": "30.0273730000",
+            "lowerCentileLifetime": "20.8411590000",
+            "upperCentileLifetime": "40.3410980000",
+            "residualLifetime": "33.8741040000"
+        },
+        {
+            "id": 33,
+            "age": 52,
+            "averageTen": "14.2666510000",
+            "lowerCentile": "11.2174740000",
+            "upperCentile": "16.2221110000",
+            "averageLifetime": "31.6553110000",
+            "lowerCentileLifetime": "22.1216000000",
+            "upperCentileLifetime": "42.2256410000",
+            "residualLifetime": "32.2461650000"
+        },
+        {
+            "id": 34,
+            "age": 53,
+            "averageTen": "13.9012590000",
+            "lowerCentile": "10.7880230000",
+            "upperCentile": "15.8825430000",
+            "averageLifetime": "33.2453750000",
+            "lowerCentileLifetime": "23.3813300000",
+            "upperCentileLifetime": "44.0506540000",
+            "residualLifetime": "30.6561010000"
+        },
+        {
+            "id": 35,
+            "age": 54,
+            "averageTen": "13.5451270000",
+            "lowerCentile": "10.3686070000",
+            "upperCentile": "15.5475210000",
+            "averageLifetime": "34.7984460000",
+            "lowerCentileLifetime": "24.6206820000",
+            "upperCentileLifetime": "45.8180180000",
+            "residualLifetime": "29.1030310000"
+        },
+        {
+            "id": 36,
+            "age": 55,
+            "averageTen": "13.1980210000",
+            "lowerCentile": "9.9590260000",
+            "upperCentile": "15.2171230000",
+            "averageLifetime": "36.3153830000",
+            "lowerCentileLifetime": "25.8399870000",
+            "upperCentileLifetime": "47.5295520000",
+            "residualLifetime": "27.5860930000"
+        },
+        {
+            "id": 37,
+            "age": 56,
+            "averageTen": "12.8597150000",
+            "lowerCentile": "9.5590820000",
+            "upperCentile": "14.8914160000",
+            "averageLifetime": "37.7970290000",
+            "lowerCentileLifetime": "27.0395690000",
+            "upperCentileLifetime": "49.1870220000",
+            "residualLifetime": "26.1044470000"
+        },
+        {
+            "id": 38,
+            "age": 57,
+            "averageTen": "12.5299870000",
+            "lowerCentile": "9.1685830000",
+            "upperCentile": "14.5704570000",
+            "averageLifetime": "39.2442040000",
+            "lowerCentileLifetime": "28.2197470000",
+            "upperCentileLifetime": "50.7921340000",
+            "residualLifetime": "24.6572730000"
+        },
+        {
+            "id": 39,
+            "age": 58,
+            "averageTen": "12.2086220000",
+            "lowerCentile": "8.7873390000",
+            "upperCentile": "14.2542950000",
+            "averageLifetime": "40.6577090000",
+            "lowerCentileLifetime": "29.3808360000",
+            "upperCentileLifetime": "52.3465430000",
+            "residualLifetime": "23.2437670000"
+        },
+        {
+            "id": 40,
+            "age": 59,
+            "averageTen": "11.8954090000",
+            "lowerCentile": "8.4151620000",
+            "upperCentile": "13.9429690000",
+            "averageLifetime": "42.0383290000",
+            "lowerCentileLifetime": "30.5231420000",
+            "upperCentileLifetime": "53.8518510000",
+            "residualLifetime": "21.8631470000"
+        },
+        {
+            "id": 41,
+            "age": 60,
+            "averageTen": "11.5901450000",
+            "lowerCentile": "8.0518710000",
+            "upperCentile": "13.6365090000",
+            "averageLifetime": "43.3868280000",
+            "lowerCentileLifetime": "31.6469720000",
+            "upperCentileLifetime": "55.3096080000",
+            "residualLifetime": "20.5146480000"
+        },
+        {
+            "id": 42,
+            "age": 61,
+            "averageTen": "11.2918120000",
+            "lowerCentile": "7.6883170000",
+            "upperCentile": "13.3471730000",
+            "averageLifetime": "44.6689120000",
+            "lowerCentileLifetime": "32.4983250000",
+            "upperCentileLifetime": "56.9072370000",
+            "residualLifetime": "19.2325640000"
+        },
+        {
+            "id": 43,
+            "age": 62,
+            "averageTen": "11.0010190000",
+            "lowerCentile": "7.3314210000",
+            "upperCentile": "13.0598320000",
+            "averageLifetime": "45.9219620000",
+            "lowerCentileLifetime": "33.3390750000",
+            "upperCentileLifetime": "58.4477530000",
+            "residualLifetime": "17.9795140000"
+        },
+        {
+            "id": 44,
+            "age": 63,
+            "averageTen": "10.7175780000",
+            "lowerCentile": "6.9810830000",
+            "upperCentile": "12.7747670000",
+            "averageLifetime": "47.1466340000",
+            "lowerCentileLifetime": "34.1693520000",
+            "upperCentileLifetime": "59.9331970000",
+            "residualLifetime": "16.7548420000"
+        },
+        {
+            "id": 45,
+            "age": 64,
+            "averageTen": "10.4413050000",
+            "lowerCentile": "6.6372030000",
+            "upperCentile": "12.4922330000",
+            "averageLifetime": "48.3435730000",
+            "lowerCentileLifetime": "34.9892890000",
+            "upperCentileLifetime": "61.3655380000",
+            "residualLifetime": "15.5579040000"
+        },
+        {
+            "id": 46,
+            "age": 65,
+            "averageTen": "10.1720230000",
+            "lowerCentile": "6.2996850000",
+            "upperCentile": "12.2124620000",
+            "averageLifetime": "49.5134040000",
+            "lowerCentileLifetime": "35.7990130000",
+            "upperCentileLifetime": "62.7466750000",
+            "residualLifetime": "14.3880720000"
+        },
+        {
+            "id": 47,
+            "age": 66,
+            "averageTen": "9.9095550000",
+            "lowerCentile": "5.9684320000",
+            "upperCentile": "11.9356650000",
+            "averageLifetime": "50.6567440000",
+            "lowerCentileLifetime": "36.5986520000",
+            "upperCentileLifetime": "64.0784380000",
+            "residualLifetime": "13.2447330000"
+        },
+        {
+            "id": 48,
+            "age": 67,
+            "averageTen": "9.6537330000",
+            "lowerCentile": "5.6433510000",
+            "upperCentile": "11.6620320000",
+            "averageLifetime": "51.7741900000",
+            "lowerCentileLifetime": "37.3883310000",
+            "upperCentileLifetime": "65.3625920000",
+            "residualLifetime": "12.1272860000"
+        },
+        {
+            "id": 49,
+            "age": 68,
+            "averageTen": "9.4043910000",
+            "lowerCentile": "5.3243460000",
+            "upperCentile": "11.3917320000",
+            "averageLifetime": "52.8663310000",
+            "lowerCentileLifetime": "38.1681740000",
+            "upperCentileLifetime": "66.6008390000",
+            "residualLifetime": "11.0351450000"
+        },
+        {
+            "id": 50,
+            "age": 69,
+            "averageTen": "9.1613670000",
+            "lowerCentile": "5.0113270000",
+            "upperCentile": "11.1249190000",
+            "averageLifetime": "53.9337390000",
+            "lowerCentileLifetime": "38.9383040000",
+            "upperCentileLifetime": "67.7948190000",
+            "residualLifetime": "9.9677380000"
+        },
+        {
+            "id": 51,
+            "age": 70,
+            "averageTen": "8.9245030000",
+            "lowerCentile": "4.7042020000",
+            "upperCentile": "10.8617280000",
+            "averageLifetime": "54.9769730000",
+            "lowerCentileLifetime": "39.6988420000",
+            "upperCentileLifetime": "68.9461170000",
+            "residualLifetime": "8.9245030000"
+        },
+        {
+            "id": 52,
+            "age": 71,
+            "averageTen": "8.7295030000",
+            "lowerCentile": "4.6661480000",
+            "upperCentile": "10.4041260000",
+            "averageLifetime": "55.9607250000",
+            "lowerCentileLifetime": "40.1866420000",
+            "upperCentileLifetime": "70.2544100000",
+            "residualLifetime": "7.9407510000"
+        },
+        {
+            "id": 53,
+            "age": 72,
+            "averageTen": "8.5387640000",
+            "lowerCentile": "4.6284020000",
+            "upperCentile": "9.9658030000",
+            "averageLifetime": "56.9229810000",
+            "lowerCentileLifetime": "40.6704960000",
+            "upperCentileLifetime": "71.5075850000",
+            "residualLifetime": "6.9784950000"
+        },
+        {
+            "id": 54,
+            "age": 73,
+            "averageTen": "8.3521920000",
+            "lowerCentile": "4.5909610000",
+            "upperCentile": "9.5459460000",
+            "averageLifetime": "57.8642130000",
+            "lowerCentileLifetime": "41.1504350000",
+            "upperCentileLifetime": "72.7079640000",
+            "residualLifetime": "6.0372640000"
+        },
+        {
+            "id": 55,
+            "age": 74,
+            "averageTen": "8.1696970000",
+            "lowerCentile": "4.5538230000",
+            "upperCentile": "9.1437770000",
+            "averageLifetime": "58.7848780000",
+            "lowerCentileLifetime": "41.6264920000",
+            "upperCentileLifetime": "73.8577710000",
+            "residualLifetime": "5.1165980000"
+        },
+        {
+            "id": 56,
+            "age": 75,
+            "averageTen": "7.9911890000",
+            "lowerCentile": "4.5169850000",
+            "upperCentile": "8.7585520000",
+            "averageLifetime": "59.6854270000",
+            "lowerCentileLifetime": "42.0986980000",
+            "upperCentileLifetime": "74.9591370000",
+            "residualLifetime": "4.2160490000"
+        },
+        {
+            "id": 57,
+            "age": 76,
+            "averageTen": "7.8165820000",
+            "lowerCentile": "4.4804450000",
+            "upperCentile": "8.3895560000",
+            "averageLifetime": "60.5662990000",
+            "lowerCentileLifetime": "42.5670840000",
+            "upperCentileLifetime": "76.0141030000",
+            "residualLifetime": "3.3351770000"
+        },
+        {
+            "id": 58,
+            "age": 77,
+            "averageTen": "7.6457900000",
+            "lowerCentile": "4.4442010000",
+            "upperCentile": "8.0361060000",
+            "averageLifetime": "61.4279240000",
+            "lowerCentileLifetime": "43.0316810000",
+            "upperCentileLifetime": "77.0246230000",
+            "residualLifetime": "2.4735520000"
+        },
+        {
+            "id": 59,
+            "age": 78,
+            "averageTen": "7.4787300000",
+            "lowerCentile": "4.4082500000",
+            "upperCentile": "7.6975470000",
+            "averageLifetime": "62.2707220000",
+            "lowerCentileLifetime": "43.4925200000",
+            "upperCentileLifetime": "77.9925710000",
+            "residualLifetime": "1.6307540000"
+        },
+        {
+            "id": 60,
+            "age": 79,
+            "averageTen": "7.3153200000",
+            "lowerCentile": "4.3725900000",
+            "upperCentile": "7.3732510000",
+            "averageLifetime": "63.0951060000",
+            "lowerCentileLifetime": "43.9496310000",
+            "upperCentileLifetime": "78.9197390000",
+            "residualLifetime": "0.8063710000"
+        },
+        {
+            "id": 61,
+            "age": 80,
+            "averageTen": "7.1554800000",
+            "lowerCentile": "4.3372190000",
+            "upperCentile": "7.0626180000",
+            "averageLifetime": "63.9014760000",
+            "lowerCentileLifetime": "44.4030450000",
+            "upperCentileLifetime": "79.8078450000",
+            "residualLifetime": "0.0000000000"
+        }
+      ]
+      this.dataB2Ovarin = [
+        {
+            "id": 1,
+            "age": 20,
+            "averageTen": "0.0000000000",
+            "lowerCentile": "0.0000000000",
+            "upperCentile": "0.0000200000",
+            "averageLifetime": "0.0127930000",
+            "lowerCentileLifetime": "0.0000000000",
+            "upperCentileLifetime": "0.0000000000",
+            "residualLifetime": "17.8284620000"
+        },
+        {
+            "id": 2,
+            "age": 21,
+            "averageTen": "0.0000000000",
+            "lowerCentile": "0.0000000000",
+            "upperCentile": "0.1249020000",
+            "averageLifetime": "0.0146260000",
+            "lowerCentileLifetime": "0.0000010000",
+            "upperCentileLifetime": "0.0000020000",
+            "residualLifetime": "17.8266300000"
+        },
+        {
+            "id": 3,
+            "age": 22,
+            "averageTen": "0.0000000000",
+            "lowerCentile": "0.0000000000",
+            "upperCentile": "0.2496280000",
+            "averageLifetime": "0.0164580000",
+            "lowerCentileLifetime": "0.0000020000",
+            "upperCentileLifetime": "0.0000040000",
+            "residualLifetime": "17.8247970000"
+        },
+        {
+            "id": 4,
+            "age": 23,
+            "averageTen": "0.0000000000",
+            "lowerCentile": "0.0000000000",
+            "upperCentile": "0.3741980000",
+            "averageLifetime": "0.0182900000",
+            "lowerCentileLifetime": "0.0000030000",
+            "upperCentileLifetime": "0.0000060000",
+            "residualLifetime": "17.8229650000"
+        },
+        {
+            "id": 5,
+            "age": 24,
+            "averageTen": "0.0170000000",
+            "lowerCentile": "0.0034370000",
+            "upperCentile": "0.4986130000",
+            "averageLifetime": "0.0201220000",
+            "lowerCentileLifetime": "0.0000040000",
+            "upperCentileLifetime": "0.0000080000",
+            "residualLifetime": "17.8211330000"
+        },
+        {
+            "id": 6,
+            "age": 25,
+            "averageTen": "0.0339970000",
+            "lowerCentile": "0.0042930000",
+            "upperCentile": "0.6228720000",
+            "averageLifetime": "0.0221460000",
+            "lowerCentileLifetime": "0.0000050000",
+            "upperCentileLifetime": "0.0000100000",
+            "residualLifetime": "17.8191100000"
+        },
+        {
+            "id": 7,
+            "age": 26,
+            "averageTen": "0.0509910000",
+            "lowerCentile": "0.0051500000",
+            "upperCentile": "0.7469760000",
+            "averageLifetime": "0.0241690000",
+            "lowerCentileLifetime": "0.0000060000",
+            "upperCentileLifetime": "0.0000120000",
+            "residualLifetime": "17.8170860000"
+        },
+        {
+            "id": 8,
+            "age": 27,
+            "averageTen": "0.0679830000",
+            "lowerCentile": "0.0060060000",
+            "upperCentile": "0.8709250000",
+            "averageLifetime": "0.0261920000",
+            "lowerCentileLifetime": "0.0000070000",
+            "upperCentileLifetime": "0.0000140000",
+            "residualLifetime": "17.8150630000"
+        },
+        {
+            "id": 9,
+            "age": 28,
+            "averageTen": "0.0849710000",
+            "lowerCentile": "0.0068630000",
+            "upperCentile": "0.9947200000",
+            "averageLifetime": "0.0282150000",
+            "lowerCentileLifetime": "0.0000080000",
+            "upperCentileLifetime": "0.0000160000",
+            "residualLifetime": "17.8130400000"
+        },
+        {
+            "id": 10,
+            "age": 29,
+            "averageTen": "0.1019570000",
+            "lowerCentile": "0.0077200000",
+            "upperCentile": "1.1183600000",
+            "averageLifetime": "0.0302380000",
+            "lowerCentileLifetime": "0.0000090000",
+            "upperCentileLifetime": "0.0000180000",
+            "residualLifetime": "17.8110170000"
+        },
+        {
+            "id": 11,
+            "age": 30,
+            "averageTen": "0.1357860000",
+            "lowerCentile": "0.0085760000",
+            "upperCentile": "1.2418450000",
+            "averageLifetime": "0.0332600000",
+            "lowerCentileLifetime": "0.0000100000",
+            "upperCentileLifetime": "0.0000200000",
+            "residualLifetime": "17.8079950000"
+        },
+        {
+            "id": 12,
+            "age": 31,
+            "averageTen": "0.1696040000",
+            "lowerCentile": "0.0085760000",
+            "upperCentile": "1.2402940000",
+            "averageLifetime": "0.0362830000",
+            "lowerCentileLifetime": "0.0008680000",
+            "upperCentileLifetime": "0.1249040000",
+            "residualLifetime": "17.8049720000"
+        },
+        {
+            "id": 13,
+            "age": 32,
+            "averageTen": "0.2034100000",
+            "lowerCentile": "0.0085760000",
+            "upperCentile": "1.2387450000",
+            "averageLifetime": "0.0393050000",
+            "lowerCentileLifetime": "0.0017250000",
+            "upperCentileLifetime": "0.2496320000",
+            "residualLifetime": "17.8019500000"
+        },
+        {
+            "id": 14,
+            "age": 33,
+            "averageTen": "0.2372050000",
+            "lowerCentile": "0.0085760000",
+            "upperCentile": "1.2371980000",
+            "averageLifetime": "0.0423270000",
+            "lowerCentileLifetime": "0.0025830000",
+            "upperCentileLifetime": "0.3742040000",
+            "residualLifetime": "17.7989280000"
+        },
+        {
+            "id": 15,
+            "age": 34,
+            "averageTen": "0.2539890000",
+            "lowerCentile": "0.0085760000",
+            "upperCentile": "1.2356530000",
+            "averageLifetime": "0.0170000000",
+            "lowerCentileLifetime": "0.0034410000",
+            "upperCentileLifetime": "0.4986210000",
+            "residualLifetime": "17.8242550000"
+        },
+        {
+            "id": 16,
+            "age": 35,
+            "averageTen": "0.2707640000",
+            "lowerCentile": "0.0085760000",
+            "upperCentile": "1.2341100000",
+            "averageLifetime": "0.0339970000",
+            "lowerCentileLifetime": "0.0042980000",
+            "upperCentileLifetime": "0.6228820000",
+            "residualLifetime": "17.8072580000"
+        },
+        {
+            "id": 17,
+            "age": 36,
+            "averageTen": "0.2875300000",
+            "lowerCentile": "0.0085760000",
+            "upperCentile": "1.2325690000",
+            "averageLifetime": "0.0509910000",
+            "lowerCentileLifetime": "0.0051560000",
+            "upperCentileLifetime": "0.7469880000",
+            "residualLifetime": "17.7902640000"
+        },
+        {
+            "id": 18,
+            "age": 37,
+            "averageTen": "0.3042880000",
+            "lowerCentile": "0.0085760000",
+            "upperCentile": "1.2310290000",
+            "averageLifetime": "0.0679830000",
+            "lowerCentileLifetime": "0.0060130000",
+            "upperCentileLifetime": "0.8709390000",
+            "residualLifetime": "17.7732720000"
+        },
+        {
+            "id": 19,
+            "age": 38,
+            "averageTen": "0.3210380000",
+            "lowerCentile": "0.0085760000",
+            "upperCentile": "1.2294920000",
+            "averageLifetime": "0.0849710000",
+            "lowerCentileLifetime": "0.0068710000",
+            "upperCentileLifetime": "0.9947360000",
+            "residualLifetime": "17.7562840000"
+        },
+        {
+            "id": 20,
+            "age": 39,
+            "averageTen": "0.3377780000",
+            "lowerCentile": "0.0085750000",
+            "upperCentile": "1.2279570000",
+            "averageLifetime": "0.1019570000",
+            "lowerCentileLifetime": "0.0077290000",
+            "upperCentileLifetime": "1.1183780000",
+            "residualLifetime": "17.7392980000"
+        },
+        {
+            "id": 21,
+            "age": 40,
+            "averageTen": "0.3376640000",
+            "lowerCentile": "0.0085750000",
+            "upperCentile": "1.2264230000",
+            "averageLifetime": "0.1357860000",
+            "lowerCentileLifetime": "0.0085860000",
+            "upperCentileLifetime": "1.2418650000",
+            "residualLifetime": "17.7054690000"
+        },
+        {
+            "id": 22,
+            "age": 41,
+            "averageTen": "0.9541690000",
+            "lowerCentile": "0.3459170000",
+            "upperCentile": "2.1464480000",
+            "averageLifetime": "0.1696040000",
+            "lowerCentileLifetime": "0.0094440000",
+            "upperCentileLifetime": "1.3651980000",
+            "residualLifetime": "17.6716510000"
+        },
+        {
+            "id": 23,
+            "age": 42,
+            "averageTen": "1.5664370000",
+            "lowerCentile": "0.6821140000",
+            "upperCentile": "3.0554660000",
+            "averageLifetime": "0.2034100000",
+            "lowerCentileLifetime": "0.0103010000",
+            "upperCentileLifetime": "1.4883770000",
+            "residualLifetime": "17.6378450000"
+        },
+        {
+            "id": 24,
+            "age": 43,
+            "averageTen": "2.1744940000",
+            "lowerCentile": "1.0171710000",
+            "upperCentile": "3.9535950000",
+            "averageLifetime": "0.2372050000",
+            "lowerCentileLifetime": "0.0111590000",
+            "upperCentileLifetime": "1.6114020000",
+            "residualLifetime": "17.6040500000"
+        },
+        {
+            "id": 25,
+            "age": 44,
+            "averageTen": "2.7783690000",
+            "lowerCentile": "1.3510920000",
+            "upperCentile": "4.8409540000",
+            "averageLifetime": "0.2709890000",
+            "lowerCentileLifetime": "0.0120160000",
+            "upperCentileLifetime": "1.7342740000",
+            "residualLifetime": "17.5702660000"
+        },
+        {
+            "id": 26,
+            "age": 45,
+            "averageTen": "3.3780890000",
+            "lowerCentile": "1.6838800000",
+            "upperCentile": "5.7176590000",
+            "averageLifetime": "0.3047610000",
+            "lowerCentileLifetime": "0.0128740000",
+            "upperCentileLifetime": "1.8569920000",
+            "residualLifetime": "17.5364940000"
+        },
+        {
+            "id": 27,
+            "age": 46,
+            "averageTen": "3.9736800000",
+            "lowerCentile": "2.0155400000",
+            "upperCentile": "6.5838270000",
+            "averageLifetime": "0.3385220000",
+            "lowerCentileLifetime": "0.0137310000",
+            "upperCentileLifetime": "1.9795570000",
+            "residualLifetime": "17.5027340000"
+        },
+        {
+            "id": 28,
+            "age": 47,
+            "averageTen": "4.5651710000",
+            "lowerCentile": "2.3460750000",
+            "upperCentile": "7.4395700000",
+            "averageLifetime": "0.3722710000",
+            "lowerCentileLifetime": "0.0145890000",
+            "upperCentileLifetime": "2.1019690000",
+            "residualLifetime": "17.4689840000"
+        },
+        {
+            "id": 29,
+            "age": 48,
+            "averageTen": "5.1525880000",
+            "lowerCentile": "2.6754890000",
+            "upperCentile": "8.2850020000",
+            "averageLifetime": "0.4060090000",
+            "lowerCentileLifetime": "0.0154460000",
+            "upperCentileLifetime": "2.2242280000",
+            "residualLifetime": "17.4352460000"
+        },
+        {
+            "id": 30,
+            "age": 49,
+            "averageTen": "5.7359580000",
+            "lowerCentile": "3.0037860000",
+            "upperCentile": "9.1202350000",
+            "averageLifetime": "0.4397350000",
+            "lowerCentileLifetime": "0.0163040000",
+            "upperCentileLifetime": "2.3463340000",
+            "residualLifetime": "17.4015200000"
+        },
+        {
+            "id": 31,
+            "age": 50,
+            "averageTen": "6.3153070000",
+            "lowerCentile": "3.3309700000",
+            "upperCentile": "9.9453790000",
+            "averageLifetime": "0.4734500000",
+            "lowerCentileLifetime": "0.0171620000",
+            "upperCentileLifetime": "2.4682880000",
+            "residualLifetime": "17.3678050000"
+        },
+        {
+            "id": 32,
+            "age": 51,
+            "averageTen": "6.6219780000",
+            "lowerCentile": "3.4701490000",
+            "upperCentile": "10.4335550000",
+            "averageLifetime": "1.1237730000",
+            "lowerCentileLifetime": "0.3553600000",
+            "upperCentileLifetime": "3.5116460000",
+            "residualLifetime": "16.7174820000"
+        },
+        {
+            "id": 33,
+            "age": 52,
+            "averageTen": "6.9230730000",
+            "lowerCentile": "3.6081140000",
+            "upperCentile": "10.9061110000",
+            "averageLifetime": "1.7698470000",
+            "lowerCentileLifetime": "0.6924150000",
+            "upperCentileLifetime": "4.5438430000",
+            "residualLifetime": "16.0714080000"
+        },
+        {
+            "id": 34,
+            "age": 53,
+            "averageTen": "7.2186650000",
+            "lowerCentile": "3.7448740000",
+            "upperCentile": "11.3633980000",
+            "averageLifetime": "2.4116990000",
+            "lowerCentileLifetime": "1.0283300000",
+            "upperCentileLifetime": "5.5649970000",
+            "residualLifetime": "15.4295560000"
+        },
+        {
+            "id": 35,
+            "age": 54,
+            "averageTen": "7.5088260000",
+            "lowerCentile": "3.8804350000",
+            "upperCentile": "11.8057570000",
+            "averageLifetime": "3.0493580000",
+            "lowerCentileLifetime": "1.3631080000",
+            "upperCentileLifetime": "6.5752280000",
+            "residualLifetime": "14.7918970000"
+        },
+        {
+            "id": 36,
+            "age": 55,
+            "averageTen": "7.7936280000",
+            "lowerCentile": "4.0148050000",
+            "upperCentile": "12.2335220000",
+            "averageLifetime": "3.6828500000",
+            "lowerCentileLifetime": "1.6967540000",
+            "upperCentileLifetime": "7.5746510000",
+            "residualLifetime": "14.1584050000"
+        },
+        {
+            "id": 37,
+            "age": 56,
+            "averageTen": "8.0731410000",
+            "lowerCentile": "4.1479930000",
+            "upperCentile": "12.6470240000",
+            "averageLifetime": "4.3122020000",
+            "lowerCentileLifetime": "2.0292710000",
+            "upperCentileLifetime": "8.5633840000",
+            "residualLifetime": "13.5290530000"
+        },
+        {
+            "id": 38,
+            "age": 57,
+            "averageTen": "8.3474360000",
+            "lowerCentile": "4.2800050000",
+            "upperCentile": "13.0465830000",
+            "averageLifetime": "4.9374420000",
+            "lowerCentileLifetime": "2.3606640000",
+            "upperCentileLifetime": "9.5415390000",
+            "residualLifetime": "12.9038130000"
+        },
+        {
+            "id": 39,
+            "age": 58,
+            "averageTen": "8.6165800000",
+            "lowerCentile": "4.4108490000",
+            "upperCentile": "13.4325150000",
+            "averageLifetime": "5.5585970000",
+            "lowerCentileLifetime": "2.6909350000",
+            "upperCentileLifetime": "10.5092300000",
+            "residualLifetime": "12.2826580000"
+        },
+        {
+            "id": 40,
+            "age": 59,
+            "averageTen": "8.8806420000",
+            "lowerCentile": "4.5405320000",
+            "upperCentile": "13.8051300000",
+            "averageLifetime": "6.1756930000",
+            "lowerCentileLifetime": "3.0200900000",
+            "upperCentileLifetime": "11.4665690000",
+            "residualLifetime": "11.6655620000"
+        },
+        {
+            "id": 41,
+            "age": 60,
+            "averageTen": "9.1396900000",
+            "lowerCentile": "4.6690630000",
+            "upperCentile": "14.1647310000",
+            "averageLifetime": "6.7887570000",
+            "lowerCentileLifetime": "3.3481310000",
+            "upperCentileLifetime": "12.4136670000",
+            "residualLifetime": "11.0524980000"
+        },
+        {
+            "id": 42,
+            "age": 61,
+            "averageTen": "8.3759640000",
+            "lowerCentile": "4.1970510000",
+            "upperCentile": "13.2546150000",
+            "averageLifetime": "7.7457510000",
+            "lowerCentileLifetime": "3.8255090000",
+            "upperCentileLifetime": "13.9452000000",
+            "residualLifetime": "10.0955040000"
+        },
+        {
+            "id": 43,
+            "age": 62,
+            "averageTen": "7.6216180000",
+            "lowerCentile": "3.7273960000",
+            "upperCentile": "12.3660210000",
+            "averageLifetime": "8.6929200000",
+            "lowerCentileLifetime": "4.3005290000",
+            "upperCentileLifetime": "15.4499540000",
+            "residualLifetime": "9.1483350000"
+        },
+        {
+            "id": 44,
+            "age": 63,
+            "averageTen": "6.8765540000",
+            "lowerCentile": "3.2600870000",
+            "upperCentile": "11.4985240000",
+            "averageLifetime": "9.6303640000",
+            "lowerCentileLifetime": "4.7732030000",
+            "upperCentileLifetime": "16.9283950000",
+            "residualLifetime": "8.2108910000"
+        },
+        {
+            "id": 45,
+            "age": 64,
+            "averageTen": "6.1406730000",
+            "lowerCentile": "2.7951130000",
+            "upperCentile": "10.6517080000",
+            "averageLifetime": "10.5581840000",
+            "lowerCentileLifetime": "5.2435430000",
+            "upperCentileLifetime": "18.3809850000",
+            "residualLifetime": "7.2830710000"
+        },
+        {
+            "id": 46,
+            "age": 65,
+            "averageTen": "5.4138760000",
+            "lowerCentile": "2.3324610000",
+            "upperCentile": "9.8251640000",
+            "averageLifetime": "11.4764780000",
+            "lowerCentileLifetime": "5.7115590000",
+            "upperCentileLifetime": "19.8081740000",
+            "residualLifetime": "6.3647770000"
+        },
+        {
+            "id": 47,
+            "age": 66,
+            "averageTen": "4.6960670000",
+            "lowerCentile": "1.8721200000",
+            "upperCentile": "9.0184930000",
+            "averageLifetime": "12.3853440000",
+            "lowerCentileLifetime": "6.1772640000",
+            "upperCentileLifetime": "21.2104070000",
+            "residualLifetime": "5.4559120000"
+        },
+        {
+            "id": 48,
+            "age": 67,
+            "averageTen": "3.9871500000",
+            "lowerCentile": "1.4140800000",
+            "upperCentile": "8.2313010000",
+            "averageLifetime": "13.2848780000",
+            "lowerCentileLifetime": "6.6406680000",
+            "upperCentileLifetime": "22.5881220000",
+            "residualLifetime": "4.5563770000"
+        },
+        {
+            "id": 49,
+            "age": 68,
+            "averageTen": "3.2870300000",
+            "lowerCentile": "0.9583270000",
+            "upperCentile": "7.4632010000",
+            "averageLifetime": "14.1751770000",
+            "lowerCentileLifetime": "7.1017840000",
+            "upperCentileLifetime": "23.9417450000",
+            "residualLifetime": "3.6660780000"
+        },
+        {
+            "id": 50,
+            "age": 69,
+            "averageTen": "2.5956140000",
+            "lowerCentile": "0.5048520000",
+            "upperCentile": "6.7138150000",
+            "averageLifetime": "15.0563350000",
+            "lowerCentileLifetime": "7.5606220000",
+            "upperCentileLifetime": "25.2716990000",
+            "residualLifetime": "2.7849200000"
+        },
+        {
+            "id": 51,
+            "age": 70,
+            "averageTen": "1.9128080000",
+            "lowerCentile": "0.0536430000",
+            "upperCentile": "5.9827710000",
+            "averageLifetime": "15.9284470000",
+            "lowerCentileLifetime": "8.0171940000",
+            "upperCentileLifetime": "26.5783970000",
+            "residualLifetime": "1.9128080000"
+        },
+        {
+            "id": 52,
+            "age": 71,
+            "averageTen": "1.9084110000",
+            "lowerCentile": "0.0536400000",
+            "upperCentile": "5.9321350000",
+            "averageLifetime": "16.1217150000",
+            "lowerCentileLifetime": "8.0225600000",
+            "upperCentileLifetime": "27.1998160000",
+            "residualLifetime": "1.7195400000"
+        },
+        {
+            "id": 53,
+            "age": 72,
+            "averageTen": "1.9040240000",
+            "lowerCentile": "0.0536370000",
+            "upperCentile": "5.8819270000",
+            "averageLifetime": "16.3145380000",
+            "lowerCentileLifetime": "8.0279250000",
+            "upperCentileLifetime": "27.8159750000",
+            "residualLifetime": "1.5267170000"
+        },
+        {
+            "id": 54,
+            "age": 73,
+            "averageTen": "1.8996470000",
+            "lowerCentile": "0.0536340000",
+            "upperCentile": "5.8321440000",
+            "averageLifetime": "16.5069190000",
+            "lowerCentileLifetime": "8.0332910000",
+            "upperCentileLifetime": "28.4269190000",
+            "residualLifetime": "1.3343360000"
+        },
+        {
+            "id": 55,
+            "age": 74,
+            "averageTen": "1.8952800000",
+            "lowerCentile": "0.0536310000",
+            "upperCentile": "5.7827830000",
+            "averageLifetime": "16.6988570000",
+            "lowerCentileLifetime": "8.0386550000",
+            "upperCentileLifetime": "29.0326920000",
+            "residualLifetime": "1.1423980000"
+        },
+        {
+            "id": 56,
+            "age": 75,
+            "averageTen": "1.8909230000",
+            "lowerCentile": "0.0536280000",
+            "upperCentile": "5.7338390000",
+            "averageLifetime": "16.8903540000",
+            "lowerCentileLifetime": "8.0440200000",
+            "upperCentileLifetime": "29.6333380000",
+            "residualLifetime": "0.9509010000"
+        },
+        {
+            "id": 57,
+            "age": 76,
+            "averageTen": "1.8865760000",
+            "lowerCentile": "0.0536250000",
+            "upperCentile": "5.6853090000",
+            "averageLifetime": "17.0814110000",
+            "lowerCentileLifetime": "8.0493840000",
+            "upperCentileLifetime": "30.2289010000",
+            "residualLifetime": "0.7598450000"
+        },
+        {
+            "id": 58,
+            "age": 77,
+            "averageTen": "1.8822390000",
+            "lowerCentile": "0.0536220000",
+            "upperCentile": "5.6371910000",
+            "averageLifetime": "17.2720280000",
+            "lowerCentileLifetime": "8.0547480000",
+            "upperCentileLifetime": "30.8194220000",
+            "residualLifetime": "0.5692270000"
+        },
+        {
+            "id": 59,
+            "age": 78,
+            "averageTen": "1.8779120000",
+            "lowerCentile": "0.0536180000",
+            "upperCentile": "5.5894790000",
+            "averageLifetime": "17.4622070000",
+            "lowerCentileLifetime": "8.0601110000",
+            "upperCentileLifetime": "31.4049460000",
+            "residualLifetime": "0.3790480000"
+        },
+        {
+            "id": 60,
+            "age": 79,
+            "averageTen": "1.8735950000",
+            "lowerCentile": "0.0536150000",
+            "upperCentile": "5.5421720000",
+            "averageLifetime": "17.6519490000",
+            "lowerCentileLifetime": "8.0654750000",
+            "upperCentileLifetime": "31.9855140000",
+            "residualLifetime": "0.1893060000"
+        },
+        {
+            "id": 61,
+            "age": 80,
+            "averageTen": "1.8692880000",
+            "lowerCentile": "0.0536120000",
+            "upperCentile": "5.4952640000",
+            "averageLifetime": "17.8412550000",
+            "lowerCentileLifetime": "8.0708380000",
+            "upperCentileLifetime": "32.5611690000",
+            "residualLifetime": "0.0000000000"
+        }
+      ]
+      this.dataP2Breast = [
+    {
+        "id": 1,
+        "age": 20,
+        "averageTen": "0.9138540000",
+        "lowerCentile": "0.5719930000",
+        "upperCentile": "1.3607100000",
+        "averageLifetime": "0.0156780000",
+        "lowerCentileLifetime": "0.0097990000",
+        "upperCentileLifetime": "0.0233880000",
+        "residualLifetime": "53.3490010000"
+    },
+    {
+        "id": 2,
+        "age": 21,
+        "averageTen": "1.2012420000",
+        "lowerCentile": "0.7522750000",
+        "upperCentile": "1.7873720000",
+        "averageLifetime": "0.0310270000",
+        "lowerCentileLifetime": "0.0193930000",
+        "upperCentileLifetime": "0.0462860000",
+        "residualLifetime": "53.3336510000"
+    },
+    {
+        "id": 3,
+        "age": 22,
+        "averageTen": "1.4817540000",
+        "lowerCentile": "0.9284560000",
+        "upperCentile": "2.2031650000",
+        "averageLifetime": "0.0460560000",
+        "lowerCentileLifetime": "0.0287860000",
+        "upperCentileLifetime": "0.0687020000",
+        "residualLifetime": "53.3186230000"
+    },
+    {
+        "id": 4,
+        "age": 23,
+        "averageTen": "1.7555730000",
+        "lowerCentile": "1.1006370000",
+        "upperCentile": "2.6084080000",
+        "averageLifetime": "0.0607690000",
+        "lowerCentileLifetime": "0.0379840000",
+        "upperCentileLifetime": "0.0906470000",
+        "residualLifetime": "53.3039090000"
+    },
+    {
+        "id": 5,
+        "age": 24,
+        "averageTen": "2.0228760000",
+        "lowerCentile": "1.2689150000",
+        "upperCentile": "3.0034060000",
+        "averageLifetime": "0.0751750000",
+        "lowerCentileLifetime": "0.0469900000",
+        "upperCentileLifetime": "0.1121320000",
+        "residualLifetime": "53.2895030000"
+    },
+    {
+        "id": 6,
+        "age": 25,
+        "averageTen": "2.5520880000",
+        "lowerCentile": "1.6028630000",
+        "upperCentile": "3.7829910000",
+        "averageLifetime": "0.1888870000",
+        "lowerCentileLifetime": "0.1180800000",
+        "upperCentileLifetime": "0.2817070000",
+        "residualLifetime": "53.1757910000"
+    },
+    {
+        "id": 7,
+        "age": 26,
+        "averageTen": "3.0662940000",
+        "lowerCentile": "1.9282940000",
+        "upperCentile": "4.5375520000",
+        "averageLifetime": "0.3001100000",
+        "lowerCentileLifetime": "0.1876440000",
+        "upperCentileLifetime": "0.4474770000",
+        "residualLifetime": "53.0645690000"
+    },
+    {
+        "id": 8,
+        "age": 27,
+        "averageTen": "3.5659970000",
+        "lowerCentile": "2.2454540000",
+        "upperCentile": "5.2680570000",
+        "averageLifetime": "0.4088990000",
+        "lowerCentileLifetime": "0.2557140000",
+        "upperCentileLifetime": "0.6095320000",
+        "residualLifetime": "52.9557790000"
+    },
+    {
+        "id": 9,
+        "age": 28,
+        "averageTen": "4.0516810000",
+        "lowerCentile": "2.5545850000",
+        "upperCentile": "5.9754290000",
+        "averageLifetime": "0.5153120000",
+        "lowerCentileLifetime": "0.3223250000",
+        "upperCentileLifetime": "0.7679620000",
+        "residualLifetime": "52.8493660000"
+    },
+    {
+        "id": 10,
+        "age": 29,
+        "averageTen": "4.5238080000",
+        "lowerCentile": "2.8559170000",
+        "upperCentile": "6.6605490000",
+        "averageLifetime": "0.6194020000",
+        "lowerCentileLifetime": "0.3875070000",
+        "upperCentileLifetime": "0.9228510000",
+        "residualLifetime": "52.7452760000"
+    },
+    {
+        "id": 11,
+        "age": 30,
+        "averageTen": "5.3741590000",
+        "lowerCentile": "3.4014620000",
+        "upperCentile": "7.8860010000",
+        "averageLifetime": "0.9295320000",
+        "lowerCentileLifetime": "0.5817920000",
+        "upperCentileLifetime": "1.3840980000",
+        "residualLifetime": "52.4351460000"
+    },
+    {
+        "id": 12,
+        "age": 31,
+        "averageTen": "6.1938840000",
+        "lowerCentile": "3.9305020000",
+        "upperCentile": "9.0579440000",
+        "averageLifetime": "1.2322690000",
+        "lowerCentileLifetime": "0.7716670000",
+        "upperCentileLifetime": "1.8336570000",
+        "residualLifetime": "52.1324090000"
+    },
+    {
+        "id": 13,
+        "age": 32,
+        "averageTen": "6.9843130000",
+        "lowerCentile": "4.4436320000",
+        "upperCentile": "10.1791640000",
+        "averageLifetime": "1.5278100000",
+        "lowerCentileLifetime": "0.9572420000",
+        "upperCentileLifetime": "2.2718670000",
+        "residualLifetime": "51.8368690000"
+    },
+    {
+        "id": 14,
+        "age": 33,
+        "averageTen": "7.7467070000",
+        "lowerCentile": "4.9414220000",
+        "upperCentile": "11.2522750000",
+        "averageLifetime": "1.8163430000",
+        "lowerCentileLifetime": "1.1386210000",
+        "upperCentileLifetime": "2.6990550000",
+        "residualLifetime": "51.5483360000"
+    },
+    {
+        "id": 15,
+        "age": 34,
+        "averageTen": "8.4822650000",
+        "lowerCentile": "5.4244190000",
+        "upperCentile": "12.2797380000",
+        "averageLifetime": "2.0980510000",
+        "lowerCentileLifetime": "1.3159050000",
+        "upperCentileLifetime": "3.1155370000",
+        "residualLifetime": "51.2666270000"
+    },
+    {
+        "id": 16,
+        "age": 35,
+        "averageTen": "9.3864040000",
+        "lowerCentile": "6.0278200000",
+        "upperCentile": "13.5142490000",
+        "averageLifetime": "2.7409750000",
+        "lowerCentileLifetime": "1.7209440000",
+        "upperCentileLifetime": "4.0646980000",
+        "residualLifetime": "50.6237030000"
+    },
+    {
+        "id": 17,
+        "age": 36,
+        "averageTen": "10.2496790000",
+        "lowerCentile": "6.6096330000",
+        "upperCentile": "14.6770200000",
+        "averageLifetime": "3.3664030000",
+        "lowerCentileLifetime": "2.1159380000",
+        "upperCentileLifetime": "4.9850290000",
+        "residualLifetime": "49.9982750000"
+    },
+    {
+        "id": 18,
+        "age": 37,
+        "averageTen": "11.0742560000",
+        "lowerCentile": "7.1707810000",
+        "upperCentile": "15.7727190000",
+        "averageLifetime": "3.9748970000",
+        "lowerCentileLifetime": "2.5011690000",
+        "upperCentileLifetime": "5.8775890000",
+        "residualLifetime": "49.3897820000"
+    },
+    {
+        "id": 19,
+        "age": 38,
+        "averageTen": "11.8621690000",
+        "lowerCentile": "7.7121440000",
+        "upperCentile": "16.8056750000",
+        "averageLifetime": "4.5669930000",
+        "lowerCentileLifetime": "2.8769090000",
+        "upperCentileLifetime": "6.7433900000",
+        "residualLifetime": "48.7976860000"
+    },
+    {
+        "id": 20,
+        "age": 39,
+        "averageTen": "12.6153310000",
+        "lowerCentile": "8.2345570000",
+        "upperCentile": "17.7799040000",
+        "averageLifetime": "5.1432090000",
+        "lowerCentileLifetime": "3.2434240000",
+        "upperCentileLifetime": "7.5834010000",
+        "residualLifetime": "48.2214690000"
+    },
+    {
+        "id": 21,
+        "age": 40,
+        "averageTen": "13.0399120000",
+        "lowerCentile": "8.5610490000",
+        "upperCentile": "18.2391850000",
+        "averageLifetime": "6.3036900000",
+        "lowerCentileLifetime": "3.9832540000",
+        "upperCentileLifetime": "9.2700990000",
+        "residualLifetime": "47.0609880000"
+    },
+    {
+        "id": 22,
+        "age": 41,
+        "averageTen": "13.4396570000",
+        "lowerCentile": "8.8737180000",
+        "upperCentile": "18.6586470000",
+        "averageLifetime": "7.4261530000",
+        "lowerCentileLifetime": "4.7021690000",
+        "upperCentileLifetime": "10.8916010000",
+        "residualLifetime": "45.9385250000"
+    },
+    {
+        "id": 23,
+        "age": 42,
+        "averageTen": "13.8161320000",
+        "lowerCentile": "9.1732450000",
+        "upperCentile": "19.0415000000",
+        "averageLifetime": "8.5121220000",
+        "lowerCentileLifetime": "5.4008740000",
+        "upperCentileLifetime": "12.4510310000",
+        "residualLifetime": "44.8525560000"
+    },
+    {
+        "id": 24,
+        "age": 43,
+        "averageTen": "14.1707920000",
+        "lowerCentile": "9.4602740000",
+        "upperCentile": "19.3906840000",
+        "averageLifetime": "9.5630500000",
+        "lowerCentileLifetime": "6.0800430000",
+        "upperCentileLifetime": "13.9513300000",
+        "residualLifetime": "43.8016290000"
+    },
+    {
+        "id": 25,
+        "age": 44,
+        "averageTen": "14.5049960000",
+        "lowerCentile": "9.7354110000",
+        "upperCentile": "19.7088960000",
+        "averageLifetime": "10.5803160000",
+        "lowerCentileLifetime": "6.7403230000",
+        "upperCentileLifetime": "15.3952750000",
+        "residualLifetime": "42.7843620000"
+    },
+    {
+        "id": 26,
+        "age": 45,
+        "averageTen": "14.3682730000",
+        "lowerCentile": "9.7097390000",
+        "upperCentile": "19.3478250000",
+        "averageLifetime": "12.1273790000",
+        "lowerCentileLifetime": "7.7487640000",
+        "upperCentileLifetime": "17.5789470000",
+        "residualLifetime": "41.2372990000"
+    },
+    {
+        "id": 27,
+        "age": 46,
+        "averageTen": "14.2346030000",
+        "lowerCentile": "9.6839550000",
+        "upperCentile": "18.9993240000",
+        "averageLifetime": "13.6160820000",
+        "lowerCentileLifetime": "8.7255700000",
+        "upperCentileLifetime": "19.6620490000",
+        "residualLifetime": "39.7485960000"
+    },
+    {
+        "id": 28,
+        "age": 47,
+        "averageTen": "14.1039460000",
+        "lowerCentile": "9.6581050000",
+        "upperCentile": "18.6629070000",
+        "averageLifetime": "15.0491520000",
+        "lowerCentileLifetime": "9.6719490000",
+        "upperCentileLifetime": "21.6503080000",
+        "residualLifetime": "38.3155260000"
+    },
+    {
+        "id": 29,
+        "age": 48,
+        "averageTen": "13.9762620000",
+        "lowerCentile": "9.6322320000",
+        "upperCentile": "18.3381050000",
+        "averageLifetime": "16.4291610000",
+        "lowerCentileLifetime": "10.5890530000",
+        "upperCentileLifetime": "23.5490650000",
+        "residualLifetime": "36.9355170000"
+    },
+    {
+        "id": 30,
+        "age": 49,
+        "averageTen": "13.8515080000",
+        "lowerCentile": "9.6063720000",
+        "upperCentile": "18.0244690000",
+        "averageLifetime": "17.7585410000",
+        "lowerCentileLifetime": "11.4779810000",
+        "upperCentileLifetime": "25.3633050000",
+        "residualLifetime": "35.6061380000"
+    },
+    {
+        "id": 31,
+        "age": 50,
+        "averageTen": "13.7453800000",
+        "lowerCentile": "9.6066490000",
+        "upperCentile": "17.7048410000",
+        "averageLifetime": "19.3436020000",
+        "lowerCentileLifetime": "12.5443030000",
+        "upperCentileLifetime": "27.5092840000",
+        "residualLifetime": "34.0210760000"
+    },
+    {
+        "id": 32,
+        "age": 51,
+        "averageTen": "13.6400540000",
+        "lowerCentile": "9.6053820000",
+        "upperCentile": "17.3945800000",
+        "averageLifetime": "20.8658100000",
+        "lowerCentileLifetime": "13.5758870000",
+        "upperCentileLifetime": "29.5502480000",
+        "residualLifetime": "32.4988680000"
+    },
+    {
+        "id": 33,
+        "age": 52,
+        "averageTen": "13.5356690000",
+        "lowerCentile": "9.6027030000",
+        "upperCentile": "17.0934990000",
+        "averageLifetime": "22.3282540000",
+        "lowerCentileLifetime": "14.5741190000",
+        "upperCentileLifetime": "31.4925300000",
+        "residualLifetime": "31.0364240000"
+    },
+    {
+        "id": 34,
+        "age": 53,
+        "averageTen": "13.4323430000",
+        "lowerCentile": "9.5987370000",
+        "upperCentile": "16.8013950000",
+        "averageLifetime": "23.7338420000",
+        "lowerCentileLifetime": "15.5403170000",
+        "upperCentileLifetime": "33.3420140000",
+        "residualLifetime": "29.6308370000"
+    },
+    {
+        "id": 35,
+        "age": 54,
+        "averageTen": "13.3301790000",
+        "lowerCentile": "9.5935970000",
+        "upperCentile": "16.5180610000",
+        "averageLifetime": "25.0853120000",
+        "lowerCentileLifetime": "16.4757350000",
+        "upperCentileLifetime": "35.1041710000",
+        "residualLifetime": "28.2793660000"
+    },
+    {
+        "id": 36,
+        "age": 55,
+        "averageTen": "13.2600030000",
+        "lowerCentile": "9.6163530000",
+        "upperCentile": "16.2660040000",
+        "averageLifetime": "26.4956520000",
+        "lowerCentileLifetime": "17.4585030000",
+        "upperCentileLifetime": "36.9267720000",
+        "residualLifetime": "26.8690260000"
+    },
+    {
+        "id": 37,
+        "age": 56,
+        "averageTen": "13.1887270000",
+        "lowerCentile": "9.6365680000",
+        "upperCentile": "16.0193830000",
+        "averageLifetime": "27.8506850000",
+        "lowerCentileLifetime": "18.4095260000",
+        "upperCentileLifetime": "38.6613730000",
+        "residualLifetime": "25.5139930000"
+    },
+    {
+        "id": 38,
+        "age": 57,
+        "averageTen": "13.1166050000",
+        "lowerCentile": "9.6544260000",
+        "upperCentile": "15.7782800000",
+        "averageLifetime": "29.1530980000",
+        "lowerCentileLifetime": "19.3300550000",
+        "upperCentileLifetime": "40.3132150000",
+        "residualLifetime": "24.2115800000"
+    },
+    {
+        "id": 39,
+        "age": 58,
+        "averageTen": "13.0438660000",
+        "lowerCentile": "9.6700990000",
+        "upperCentile": "15.5427450000",
+        "averageLifetime": "30.4054240000",
+        "lowerCentileLifetime": "20.2212850000",
+        "upperCentileLifetime": "41.8871700000",
+        "residualLifetime": "22.9592540000"
+    },
+    {
+        "id": 40,
+        "age": 59,
+        "averageTen": "12.9707140000",
+        "lowerCentile": "9.6837470000",
+        "upperCentile": "15.3127980000",
+        "averageLifetime": "31.6100480000",
+        "lowerCentileLifetime": "21.0843530000",
+        "upperCentileLifetime": "43.3877740000",
+        "residualLifetime": "21.7546300000"
+    },
+    {
+        "id": 41,
+        "age": 60,
+        "averageTen": "12.4824640000",
+        "lowerCentile": "9.3906520000",
+        "upperCentile": "14.5878240000",
+        "averageLifetime": "33.0889820000",
+        "lowerCentileLifetime": "22.1509510000",
+        "upperCentileLifetime": "45.2141250000",
+        "residualLifetime": "20.2756960000"
+    },
+    {
+        "id": 42,
+        "age": 61,
+        "averageTen": "12.0183370000",
+        "lowerCentile": "9.1093020000",
+        "upperCentile": "13.9068500000",
+        "averageLifetime": "34.5058640000",
+        "lowerCentileLifetime": "23.1812690000",
+        "upperCentileLifetime": "46.9448290000",
+        "residualLifetime": "18.8588140000"
+    },
+    {
+        "id": 43,
+        "age": 62,
+        "averageTen": "11.5769030000",
+        "lowerCentile": "8.8391270000",
+        "upperCentile": "13.2667220000",
+        "averageLifetime": "35.8639230000",
+        "lowerCentileLifetime": "24.1768230000",
+        "upperCentileLifetime": "48.5860290000",
+        "residualLifetime": "17.5007550000"
+    },
+    {
+        "id": 44,
+        "age": 63,
+        "averageTen": "11.1568330000",
+        "lowerCentile": "8.5795910000",
+        "upperCentile": "12.6645430000",
+        "averageLifetime": "37.1661840000",
+        "lowerCentileLifetime": "25.1390540000",
+        "upperCentileLifetime": "50.1434100000",
+        "residualLifetime": "16.1984940000"
+    },
+    {
+        "id": 45,
+        "age": 64,
+        "averageTen": "10.7568840000",
+        "lowerCentile": "8.3301880000",
+        "upperCentile": "12.0976510000",
+        "averageLifetime": "38.4154910000",
+        "lowerCentileLifetime": "26.0693320000",
+        "upperCentileLifetime": "51.6222320000",
+        "residualLifetime": "14.9491870000"
+    },
+    {
+        "id": 46,
+        "age": 65,
+        "averageTen": "10.1822950000",
+        "lowerCentile": "7.9422190000",
+        "upperCentile": "11.3423260000",
+        "averageLifetime": "39.7556550000",
+        "lowerCentileLifetime": "27.0748560000",
+        "upperCentileLifetime": "53.1927760000",
+        "residualLifetime": "13.6090230000"
+    },
+    {
+        "id": 47,
+        "age": 66,
+        "averageTen": "9.6369120000",
+        "lowerCentile": "7.5700120000",
+        "upperCentile": "10.6346860000",
+        "averageLifetime": "41.0394120000",
+        "lowerCentileLifetime": "28.0460930000",
+        "upperCentileLifetime": "54.6807560000",
+        "residualLifetime": "12.3252660000"
+    },
+    {
+        "id": 48,
+        "age": 67,
+        "averageTen": "9.1189860000",
+        "lowerCentile": "7.2127980000",
+        "upperCentile": "9.9712580000",
+        "averageLifetime": "42.2697030000",
+        "lowerCentileLifetime": "28.9844810000",
+        "upperCentileLifetime": "56.0914950000",
+        "residualLifetime": "11.0949750000"
+    },
+    {
+        "id": 49,
+        "age": 68,
+        "averageTen": "8.6268860000",
+        "lowerCentile": "6.8698550000",
+        "upperCentile": "9.3488520000",
+        "averageLifetime": "43.4492900000",
+        "lowerCentileLifetime": "29.8913840000",
+        "upperCentileLifetime": "57.4299150000",
+        "residualLifetime": "9.9153890000"
+    },
+    {
+        "id": 50,
+        "age": 69,
+        "averageTen": "8.1590930000",
+        "lowerCentile": "6.5404970000",
+        "upperCentile": "8.7645370000",
+        "averageLifetime": "44.5807620000",
+        "lowerCentileLifetime": "30.7681000000",
+        "upperCentileLifetime": "58.7005710000",
+        "residualLifetime": "8.7839160000"
+    },
+    {
+        "id": 51,
+        "age": 70,
+        "averageTen": "7.7932320000",
+        "lowerCentile": "6.2850190000",
+        "upperCentile": "8.3048550000",
+        "averageLifetime": "45.5714460000",
+        "lowerCentileLifetime": "31.5416030000",
+        "upperCentileLifetime": "59.8019500000",
+        "residualLifetime": "7.7932320000"
+    },
+    {
+        "id": 52,
+        "age": 71,
+        "averageTen": "7.4442260000",
+        "lowerCentile": "6.0391210000",
+        "upperCentile": "7.8710930000",
+        "averageLifetime": "46.5242010000",
+        "lowerCentileLifetime": "32.2905710000",
+        "upperCentileLifetime": "60.8516790000",
+        "residualLifetime": "6.8404770000"
+    },
+    {
+        "id": 53,
+        "age": 72,
+        "averageTen": "7.1111510000",
+        "lowerCentile": "5.8023710000",
+        "upperCentile": "7.4615380000",
+        "averageLifetime": "47.4408260000",
+        "lowerCentileLifetime": "33.0159500000",
+        "upperCentileLifetime": "61.8527510000",
+        "residualLifetime": "5.9238520000"
+    },
+    {
+        "id": 54,
+        "age": 73,
+        "averageTen": "6.7931380000",
+        "lowerCentile": "5.5743600000",
+        "upperCentile": "7.0746070000",
+        "averageLifetime": "48.3230170000",
+        "lowerCentileLifetime": "33.7186450000",
+        "upperCentileLifetime": "62.8079520000",
+        "residualLifetime": "5.0416610000"
+    },
+    {
+        "id": 55,
+        "age": 74,
+        "averageTen": "6.4893750000",
+        "lowerCentile": "5.3546980000",
+        "upperCentile": "6.7088330000",
+        "averageLifetime": "49.1723760000",
+        "lowerCentileLifetime": "34.3995190000",
+        "upperCentileLifetime": "63.7198830000",
+        "residualLifetime": "4.1923030000"
+    },
+    {
+        "id": 56,
+        "age": 75,
+        "averageTen": "6.2503510000",
+        "lowerCentile": "5.1843090000",
+        "upperCentile": "6.4175150000",
+        "averageLifetime": "49.9379500000",
+        "lowerCentileLifetime": "35.0170750000",
+        "upperCentileLifetime": "64.5351020000",
+        "residualLifetime": "3.4267280000"
+    },
+    {
+        "id": 57,
+        "age": 76,
+        "averageTen": "6.0214620000",
+        "lowerCentile": "5.0199040000",
+        "upperCentile": "6.1411000000",
+        "averageLifetime": "50.6763240000",
+        "lowerCentileLifetime": "35.6161050000",
+        "upperCentileLifetime": "65.3154420000",
+        "residualLifetime": "2.6883550000"
+    },
+    {
+        "id": 58,
+        "age": 77,
+        "averageTen": "5.8021920000",
+        "lowerCentile": "4.8612290000",
+        "upperCentile": "5.8786820000",
+        "averageLifetime": "51.3886890000",
+        "lowerCentileLifetime": "36.1972790000",
+        "upperCentileLifetime": "66.0627530000",
+        "residualLifetime": "1.9759890000"
+    },
+    {
+        "id": 59,
+        "age": 78,
+        "averageTen": "5.5920560000",
+        "lowerCentile": "4.7080440000",
+        "upperCentile": "5.6294170000",
+        "averageLifetime": "52.0761760000",
+        "lowerCentileLifetime": "36.7612380000",
+        "upperCentileLifetime": "66.7787670000",
+        "residualLifetime": "1.2885020000"
+    },
+    {
+        "id": 60,
+        "age": 79,
+        "averageTen": "5.3905940000",
+        "lowerCentile": "4.5601200000",
+        "upperCentile": "5.3925220000",
+        "averageLifetime": "52.7398550000",
+        "lowerCentileLifetime": "37.3085970000",
+        "upperCentileLifetime": "67.4651090000",
+        "residualLifetime": "0.6248230000"
+    },
+    {
+        "id": 61,
+        "age": 80,
+        "averageTen": "5.2134420000",
+        "lowerCentile": "4.4305590000",
+        "upperCentile": "5.1837650000",
+        "averageLifetime": "53.3646780000",
+        "lowerCentileLifetime": "37.8266230000",
+        "upperCentileLifetime": "68.1068040000",
+        "residualLifetime": "0.0000000000"
+    }
+      ]
+      this.dataP2Ovarin = [
+    {
+        "id": 1,
+        "age": 20,
+        "averageTen": "0.0595340000",
+        "lowerCentile": "0.0286510000",
+        "upperCentile": "0.1234850000",
+        "averageLifetime": "0.0372240000",
+        "lowerCentileLifetime": "0.0179100000",
+        "upperCentileLifetime": "0.0772490000",
+        "residualLifetime": "3.0436320000"
+    },
+    {
+        "id": 2,
+        "age": 21,
+        "averageTen": "0.0629930000",
+        "lowerCentile": "0.0303170000",
+        "upperCentile": "0.1306480000",
+        "averageLifetime": "0.0425550000",
+        "lowerCentileLifetime": "0.0204750000",
+        "upperCentileLifetime": "0.0883090000",
+        "residualLifetime": "3.0383020000"
+    },
+    {
+        "id": 3,
+        "age": 22,
+        "averageTen": "0.0664510000",
+        "lowerCentile": "0.0319820000",
+        "upperCentile": "0.1378100000",
+        "averageLifetime": "0.0478850000",
+        "lowerCentileLifetime": "0.0230400000",
+        "upperCentileLifetime": "0.0993670000",
+        "residualLifetime": "3.0329710000"
+    },
+    {
+        "id": 4,
+        "age": 23,
+        "averageTen": "0.0699080000",
+        "lowerCentile": "0.0336480000",
+        "upperCentile": "0.1449700000",
+        "averageLifetime": "0.0532160000",
+        "lowerCentileLifetime": "0.0256050000",
+        "upperCentileLifetime": "0.1104250000",
+        "residualLifetime": "3.0276410000"
+    },
+    {
+        "id": 5,
+        "age": 24,
+        "averageTen": "0.0733650000",
+        "lowerCentile": "0.0353130000",
+        "upperCentile": "0.1521270000",
+        "averageLifetime": "0.0585450000",
+        "lowerCentileLifetime": "0.0281700000",
+        "upperCentileLifetime": "0.1214810000",
+        "residualLifetime": "3.0223110000"
+    },
+    {
+        "id": 6,
+        "age": 25,
+        "averageTen": "0.0799030000",
+        "lowerCentile": "0.0384610000",
+        "upperCentile": "0.1656680000",
+        "averageLifetime": "0.0644310000",
+        "lowerCentileLifetime": "0.0310020000",
+        "upperCentileLifetime": "0.1336890000",
+        "residualLifetime": "3.0164260000"
+    },
+    {
+        "id": 7,
+        "age": 26,
+        "averageTen": "0.0864390000",
+        "lowerCentile": "0.0416090000",
+        "upperCentile": "0.1792030000",
+        "averageLifetime": "0.0703160000",
+        "lowerCentileLifetime": "0.0338350000",
+        "upperCentileLifetime": "0.1458960000",
+        "residualLifetime": "3.0105410000"
+    },
+    {
+        "id": 8,
+        "age": 27,
+        "averageTen": "0.0929740000",
+        "lowerCentile": "0.0447570000",
+        "upperCentile": "0.1927340000",
+        "averageLifetime": "0.0762000000",
+        "lowerCentileLifetime": "0.0366670000",
+        "upperCentileLifetime": "0.1581010000",
+        "residualLifetime": "3.0046560000"
+    },
+    {
+        "id": 9,
+        "age": 28,
+        "averageTen": "0.0995090000",
+        "lowerCentile": "0.0479050000",
+        "upperCentile": "0.2062590000",
+        "averageLifetime": "0.0820850000",
+        "lowerCentileLifetime": "0.0394990000",
+        "upperCentileLifetime": "0.1703040000",
+        "residualLifetime": "2.9987720000"
+    },
+    {
+        "id": 10,
+        "age": 29,
+        "averageTen": "0.1060410000",
+        "lowerCentile": "0.0510520000",
+        "upperCentile": "0.2197790000",
+        "averageLifetime": "0.0879690000",
+        "lowerCentileLifetime": "0.0423310000",
+        "upperCentileLifetime": "0.1825060000",
+        "residualLifetime": "2.9928880000"
+    },
+    {
+        "id": 11,
+        "age": 30,
+        "averageTen": "0.1160560000",
+        "lowerCentile": "0.0558770000",
+        "upperCentile": "0.2405000000",
+        "averageLifetime": "0.0967590000",
+        "lowerCentileLifetime": "0.0465620000",
+        "upperCentileLifetime": "0.2007330000",
+        "residualLifetime": "2.9840980000"
+    },
+    {
+        "id": 12,
+        "age": 31,
+        "averageTen": "0.1260670000",
+        "lowerCentile": "0.0607020000",
+        "upperCentile": "0.2612090000",
+        "averageLifetime": "0.1055480000",
+        "lowerCentileLifetime": "0.0507920000",
+        "upperCentileLifetime": "0.2189570000",
+        "residualLifetime": "2.9753090000"
+    },
+    {
+        "id": 13,
+        "age": 32,
+        "averageTen": "0.1360760000",
+        "lowerCentile": "0.0655260000",
+        "upperCentile": "0.2819070000",
+        "averageLifetime": "0.1143360000",
+        "lowerCentileLifetime": "0.0550230000",
+        "upperCentileLifetime": "0.2371770000",
+        "residualLifetime": "2.9665210000"
+    },
+    {
+        "id": 14,
+        "age": 33,
+        "averageTen": "0.1460820000",
+        "lowerCentile": "0.0703490000",
+        "upperCentile": "0.3025930000",
+        "averageLifetime": "0.1231240000",
+        "lowerCentileLifetime": "0.0592530000",
+        "upperCentileLifetime": "0.2553940000",
+        "residualLifetime": "2.9577330000"
+    },
+    {
+        "id": 15,
+        "age": 34,
+        "averageTen": "0.1560850000",
+        "lowerCentile": "0.0751710000",
+        "upperCentile": "0.3232660000",
+        "averageLifetime": "0.1319100000",
+        "lowerCentileLifetime": "0.0634830000",
+        "upperCentileLifetime": "0.2736080000",
+        "residualLifetime": "2.9489460000"
+    },
+    {
+        "id": 16,
+        "age": 35,
+        "averageTen": "0.1770690000",
+        "lowerCentile": "0.0852860000",
+        "upperCentile": "0.3666430000",
+        "averageLifetime": "0.1443340000",
+        "lowerCentileLifetime": "0.0694640000",
+        "upperCentileLifetime": "0.2993570000",
+        "residualLifetime": "2.9365230000"
+    },
+    {
+        "id": 17,
+        "age": 36,
+        "averageTen": "0.1980430000",
+        "lowerCentile": "0.0954000000",
+        "upperCentile": "0.4099780000",
+        "averageLifetime": "0.1567550000",
+        "lowerCentileLifetime": "0.0754440000",
+        "upperCentileLifetime": "0.3250990000",
+        "residualLifetime": "2.9241020000"
+    },
+    {
+        "id": 18,
+        "age": 37,
+        "averageTen": "0.2190080000",
+        "lowerCentile": "0.1055110000",
+        "upperCentile": "0.4532710000",
+        "averageLifetime": "0.1691750000",
+        "lowerCentileLifetime": "0.0814240000",
+        "upperCentileLifetime": "0.3508340000",
+        "residualLifetime": "2.9116820000"
+    },
+    {
+        "id": 19,
+        "age": 38,
+        "averageTen": "0.2399630000",
+        "lowerCentile": "0.1156190000",
+        "upperCentile": "0.4965230000",
+        "averageLifetime": "0.1815930000",
+        "lowerCentileLifetime": "0.0874040000",
+        "upperCentileLifetime": "0.3765630000",
+        "residualLifetime": "2.8992630000"
+    },
+    {
+        "id": 20,
+        "age": 39,
+        "averageTen": "0.2609090000",
+        "lowerCentile": "0.1257260000",
+        "upperCentile": "0.5397340000",
+        "averageLifetime": "0.1940100000",
+        "lowerCentileLifetime": "0.0933830000",
+        "upperCentileLifetime": "0.4022850000",
+        "residualLifetime": "2.8868470000"
+    },
+    {
+        "id": 21,
+        "age": 40,
+        "averageTen": "0.2888560000",
+        "lowerCentile": "0.1392150000",
+        "upperCentile": "0.5973480000",
+        "averageLifetime": "0.2128140000",
+        "lowerCentileLifetime": "0.1024390000",
+        "upperCentileLifetime": "0.4412330000",
+        "residualLifetime": "2.8680420000"
+    },
+    {
+        "id": 22,
+        "age": 41,
+        "averageTen": "0.3167840000",
+        "lowerCentile": "0.1527000000",
+        "upperCentile": "0.6548830000",
+        "averageLifetime": "0.2316150000",
+        "lowerCentileLifetime": "0.1114940000",
+        "upperCentileLifetime": "0.4801670000",
+        "residualLifetime": "2.8492420000"
+    },
+    {
+        "id": 23,
+        "age": 42,
+        "averageTen": "0.3446950000",
+        "lowerCentile": "0.1661810000",
+        "upperCentile": "0.7123390000",
+        "averageLifetime": "0.2504120000",
+        "lowerCentileLifetime": "0.1205480000",
+        "upperCentileLifetime": "0.5190840000",
+        "residualLifetime": "2.8304450000"
+    },
+    {
+        "id": 24,
+        "age": 43,
+        "averageTen": "0.3725870000",
+        "lowerCentile": "0.1796580000",
+        "upperCentile": "0.7697160000",
+        "averageLifetime": "0.2692050000",
+        "lowerCentileLifetime": "0.1296010000",
+        "upperCentileLifetime": "0.5579870000",
+        "residualLifetime": "2.8116510000"
+    },
+    {
+        "id": 25,
+        "age": 44,
+        "averageTen": "0.4004600000",
+        "lowerCentile": "0.1931310000",
+        "upperCentile": "0.8270150000",
+        "averageLifetime": "0.2879950000",
+        "lowerCentileLifetime": "0.1386540000",
+        "upperCentileLifetime": "0.5968740000",
+        "residualLifetime": "2.7928620000"
+    },
+    {
+        "id": 26,
+        "age": 45,
+        "averageTen": "0.4255660000",
+        "lowerCentile": "0.2052860000",
+        "upperCentile": "0.8784390000",
+        "averageLifetime": "0.3214020000",
+        "lowerCentileLifetime": "0.1547500000",
+        "upperCentileLifetime": "0.6659990000",
+        "residualLifetime": "2.7594540000"
+    },
+    {
+        "id": 27,
+        "age": 46,
+        "averageTen": "0.4506480000",
+        "lowerCentile": "0.2174360000",
+        "upperCentile": "0.9297640000",
+        "averageLifetime": "0.3547980000",
+        "lowerCentileLifetime": "0.1708440000",
+        "upperCentileLifetime": "0.7350760000",
+        "residualLifetime": "2.7260590000"
+    },
+    {
+        "id": 28,
+        "age": 47,
+        "averageTen": "0.4757060000",
+        "lowerCentile": "0.2295800000",
+        "upperCentile": "0.9809890000",
+        "averageLifetime": "0.3881830000",
+        "lowerCentileLifetime": "0.1869350000",
+        "upperCentileLifetime": "0.8041050000",
+        "residualLifetime": "2.6926740000"
+    },
+    {
+        "id": 29,
+        "age": 48,
+        "averageTen": "0.5007420000",
+        "lowerCentile": "0.2417190000",
+        "upperCentile": "1.0321160000",
+        "averageLifetime": "0.4215560000",
+        "lowerCentileLifetime": "0.2030230000",
+        "upperCentileLifetime": "0.8730860000",
+        "residualLifetime": "2.6593000000"
+    },
+    {
+        "id": 30,
+        "age": 49,
+        "averageTen": "0.5257540000",
+        "lowerCentile": "0.2538520000",
+        "upperCentile": "1.0831430000",
+        "averageLifetime": "0.4549190000",
+        "lowerCentileLifetime": "0.2191090000",
+        "upperCentileLifetime": "0.9420190000",
+        "residualLifetime": "2.6259380000"
+    },
+    {
+        "id": 31,
+        "age": 50,
+        "averageTen": "0.5529140000",
+        "lowerCentile": "0.2670480000",
+        "upperCentile": "1.1383720000",
+        "averageLifetime": "0.5016700000",
+        "lowerCentileLifetime": "0.2416540000",
+        "upperCentileLifetime": "1.0385810000",
+        "residualLifetime": "2.5791870000"
+    },
+    {
+        "id": 32,
+        "age": 51,
+        "averageTen": "0.5800400000",
+        "lowerCentile": "0.2802360000",
+        "upperCentile": "1.1934600000",
+        "averageLifetime": "0.5483990000",
+        "lowerCentileLifetime": "0.2641940000",
+        "upperCentileLifetime": "1.1350490000",
+        "residualLifetime": "2.5324570000"
+    },
+    {
+        "id": 33,
+        "age": 52,
+        "averageTen": "0.6071330000",
+        "lowerCentile": "0.2934160000",
+        "upperCentile": "1.2484070000",
+        "averageLifetime": "0.5951070000",
+        "lowerCentileLifetime": "0.2867300000",
+        "upperCentileLifetime": "1.2314230000",
+        "residualLifetime": "2.4857500000"
+    },
+    {
+        "id": 34,
+        "age": 53,
+        "averageTen": "0.6341930000",
+        "lowerCentile": "0.3065880000",
+        "upperCentile": "1.3032130000",
+        "averageLifetime": "0.6417920000",
+        "lowerCentileLifetime": "0.3092600000",
+        "upperCentileLifetime": "1.3277030000",
+        "residualLifetime": "2.4390650000"
+    },
+    {
+        "id": 35,
+        "age": 54,
+        "averageTen": "0.6612190000",
+        "lowerCentile": "0.3197520000",
+        "upperCentile": "1.3578790000",
+        "averageLifetime": "0.6884550000",
+        "lowerCentileLifetime": "0.3317840000",
+        "upperCentileLifetime": "1.4238890000",
+        "residualLifetime": "2.3924010000"
+    },
+    {
+        "id": 36,
+        "age": 55,
+        "averageTen": "0.6979820000",
+        "lowerCentile": "0.3376620000",
+        "upperCentile": "1.4322130000",
+        "averageLifetime": "0.7469680000",
+        "lowerCentileLifetime": "0.3600360000",
+        "upperCentileLifetime": "1.5444380000",
+        "residualLifetime": "2.3338890000"
+    },
+    {
+        "id": 37,
+        "age": 56,
+        "averageTen": "0.7346880000",
+        "lowerCentile": "0.3555590000",
+        "upperCentile": "1.5063030000",
+        "averageLifetime": "0.8054460000",
+        "lowerCentileLifetime": "0.3882790000",
+        "upperCentileLifetime": "1.6648400000",
+        "residualLifetime": "2.2754110000"
+    },
+    {
+        "id": 38,
+        "age": 57,
+        "averageTen": "0.7713350000",
+        "lowerCentile": "0.3734420000",
+        "upperCentile": "1.5801510000",
+        "averageLifetime": "0.8638890000",
+        "lowerCentileLifetime": "0.4165150000",
+        "upperCentileLifetime": "1.7850940000",
+        "residualLifetime": "2.2169670000"
+    },
+    {
+        "id": 39,
+        "age": 58,
+        "averageTen": "0.8079260000",
+        "lowerCentile": "0.3913110000",
+        "upperCentile": "1.6537570000",
+        "averageLifetime": "0.9222980000",
+        "lowerCentileLifetime": "0.4447420000",
+        "upperCentileLifetime": "1.9052020000",
+        "residualLifetime": "2.1585580000"
+    },
+    {
+        "id": 40,
+        "age": 59,
+        "averageTen": "0.8444590000",
+        "lowerCentile": "0.4091670000",
+        "upperCentile": "1.7271210000",
+        "averageLifetime": "0.9806730000",
+        "lowerCentileLifetime": "0.4729620000",
+        "upperCentileLifetime": "2.0251630000",
+        "residualLifetime": "2.1001840000"
+    },
+    {
+        "id": 41,
+        "age": 60,
+        "averageTen": "0.8747140000",
+        "lowerCentile": "0.4240220000",
+        "upperCentile": "1.7872910000",
+        "averageLifetime": "1.0545840000",
+        "lowerCentileLifetime": "0.5087020000",
+        "upperCentileLifetime": "2.1769530000",
+        "residualLifetime": "2.0262730000"
+    },
+    {
+        "id": 42,
+        "age": 61,
+        "averageTen": "0.9049130000",
+        "lowerCentile": "0.4388630000",
+        "upperCentile": "1.8472300000",
+        "averageLifetime": "1.1284390000",
+        "lowerCentileLifetime": "0.5444300000",
+        "upperCentileLifetime": "2.3285090000",
+        "residualLifetime": "1.9524180000"
+    },
+    {
+        "id": 43,
+        "age": 62,
+        "averageTen": "0.9350570000",
+        "lowerCentile": "0.4536920000",
+        "upperCentile": "1.9069380000",
+        "averageLifetime": "1.2022390000",
+        "lowerCentileLifetime": "0.5801450000",
+        "upperCentileLifetime": "2.4798300000",
+        "residualLifetime": "1.8786170000"
+    },
+    {
+        "id": 44,
+        "age": 63,
+        "averageTen": "0.9651450000",
+        "lowerCentile": "0.4685070000",
+        "upperCentile": "1.9664160000",
+        "averageLifetime": "1.2759850000",
+        "lowerCentileLifetime": "0.6158470000",
+        "upperCentileLifetime": "2.6309160000",
+        "residualLifetime": "1.8048720000"
+    },
+    {
+        "id": 45,
+        "age": 64,
+        "averageTen": "0.9951790000",
+        "lowerCentile": "0.4833100000",
+        "upperCentile": "2.0256630000",
+        "averageLifetime": "1.3496750000",
+        "lowerCentileLifetime": "0.6515370000",
+        "upperCentileLifetime": "2.7817680000",
+        "residualLifetime": "1.7311820000"
+    },
+    {
+        "id": 46,
+        "age": 65,
+        "averageTen": "1.0203110000",
+        "lowerCentile": "0.4957940000",
+        "upperCentile": "2.0743970000",
+        "averageLifetime": "1.4449500000",
+        "lowerCentileLifetime": "0.6976980000",
+        "upperCentileLifetime": "2.9766510000",
+        "residualLifetime": "1.6359070000"
+    },
+    {
+        "id": 47,
+        "age": 66,
+        "averageTen": "1.0453870000",
+        "lowerCentile": "0.5082660000",
+        "upperCentile": "2.1228980000",
+        "averageLifetime": "1.5401330000",
+        "lowerCentileLifetime": "0.7438380000",
+        "upperCentileLifetime": "3.1711430000",
+        "residualLifetime": "1.5407230000"
+    },
+    {
+        "id": 48,
+        "age": 67,
+        "averageTen": "1.0704070000",
+        "lowerCentile": "0.5207240000",
+        "upperCentile": "2.1711670000",
+        "averageLifetime": "1.6352250000",
+        "lowerCentileLifetime": "0.7899560000",
+        "upperCentileLifetime": "3.3652450000",
+        "residualLifetime": "1.4456320000"
+    },
+    {
+        "id": 49,
+        "age": 68,
+        "averageTen": "1.0953710000",
+        "lowerCentile": "0.5331680000",
+        "upperCentile": "2.2192050000",
+        "averageLifetime": "1.7302240000",
+        "lowerCentileLifetime": "0.8360530000",
+        "upperCentileLifetime": "3.5589590000",
+        "residualLifetime": "1.3506320000"
+    },
+    {
+        "id": 50,
+        "age": 69,
+        "averageTen": "1.1202780000",
+        "lowerCentile": "0.5456000000",
+        "upperCentile": "2.2670120000",
+        "averageLifetime": "1.8251320000",
+        "lowerCentileLifetime": "0.8821290000",
+        "upperCentileLifetime": "3.7522830000",
+        "residualLifetime": "1.2557250000"
+    },
+    {
+        "id": 51,
+        "age": 70,
+        "averageTen": "1.1515600000",
+        "lowerCentile": "0.5611870000",
+        "upperCentile": "2.3272800000",
+        "averageLifetime": "1.9292970000",
+        "lowerCentileLifetime": "0.9327240000",
+        "upperCentileLifetime": "3.9642450000",
+        "residualLifetime": "1.1515600000"
+    },
+    {
+        "id": 52,
+        "age": 71,
+        "averageTen": "1.1827630000",
+        "lowerCentile": "0.5767550000",
+        "upperCentile": "2.3872270000",
+        "averageLifetime": "2.0333520000",
+        "lowerCentileLifetime": "0.9832930000",
+        "upperCentileLifetime": "4.1757390000",
+        "residualLifetime": "1.0475050000"
+    },
+    {
+        "id": 53,
+        "age": 72,
+        "averageTen": "1.2138870000",
+        "lowerCentile": "0.5923050000",
+        "upperCentile": "2.4468530000",
+        "averageLifetime": "2.1372960000",
+        "lowerCentileLifetime": "1.0338370000",
+        "upperCentileLifetime": "4.3867680000",
+        "residualLifetime": "0.9435610000"
+    },
+    {
+        "id": 54,
+        "age": 73,
+        "averageTen": "1.2449340000",
+        "lowerCentile": "0.6078370000",
+        "upperCentile": "2.5061590000",
+        "averageLifetime": "2.2411300000",
+        "lowerCentileLifetime": "1.0843550000",
+        "upperCentileLifetime": "4.5973310000",
+        "residualLifetime": "0.8397270000"
+    },
+    {
+        "id": 55,
+        "age": 74,
+        "averageTen": "1.2759020000",
+        "lowerCentile": "0.6233500000",
+        "upperCentile": "2.5651480000",
+        "averageLifetime": "2.3448540000",
+        "lowerCentileLifetime": "1.1348460000",
+        "upperCentileLifetime": "4.8074320000",
+        "residualLifetime": "0.7360030000"
+    },
+    {
+        "id": 56,
+        "age": 75,
+        "averageTen": "1.3038870000",
+        "lowerCentile": "0.6374750000",
+        "upperCentile": "2.6175440000",
+        "averageLifetime": "2.4652610000",
+        "lowerCentileLifetime": "1.1934920000",
+        "upperCentileLifetime": "5.0510480000",
+        "residualLifetime": "0.6155950000"
+    },
+    {
+        "id": 57,
+        "age": 76,
+        "averageTen": "1.3317910000",
+        "lowerCentile": "0.6515810000",
+        "upperCentile": "2.6696180000",
+        "averageLifetime": "2.5855210000",
+        "lowerCentileLifetime": "1.2521040000",
+        "upperCentileLifetime": "5.2940410000",
+        "residualLifetime": "0.4953360000"
+    },
+    {
+        "id": 58,
+        "age": 77,
+        "averageTen": "1.3596150000",
+        "lowerCentile": "0.6656680000",
+        "upperCentile": "2.7213710000",
+        "averageLifetime": "2.7056320000",
+        "lowerCentileLifetime": "1.3106800000",
+        "upperCentileLifetime": "5.5364120000",
+        "residualLifetime": "0.3752250000"
+    },
+    {
+        "id": 59,
+        "age": 78,
+        "averageTen": "1.3873600000",
+        "lowerCentile": "0.6797350000",
+        "upperCentile": "2.7728040000",
+        "averageLifetime": "2.8255950000",
+        "lowerCentileLifetime": "1.3692220000",
+        "upperCentileLifetime": "5.7781630000",
+        "residualLifetime": "0.2552620000"
+    },
+    {
+        "id": 60,
+        "age": 79,
+        "averageTen": "1.4150250000",
+        "lowerCentile": "0.6937840000",
+        "upperCentile": "2.8239190000",
+        "averageLifetime": "2.9454100000",
+        "lowerCentileLifetime": "1.4277280000",
+        "upperCentileLifetime": "6.0192950000",
+        "residualLifetime": "0.1354470000"
+    },
+    {
+        "id": 61,
+        "age": 80,
+        "averageTen": "1.4235170000",
+        "lowerCentile": "0.6984720000",
+        "upperCentile": "2.8364450000",
+        "averageLifetime": "3.0808570000",
+        "lowerCentileLifetime": "1.4939110000",
+        "upperCentileLifetime": "6.2915250000",
+        "residualLifetime": "0.0000000000"
+    }
+      ]
+    },
+    async getData() {
+      await api
+        .get(`api/BRCA1Breast/`)
+        .then((res) => {
+          this.dataB1Breast = res.data
+          // console.log(this.dataB1Breast.length);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      await api
+        .get(`api/BRCA1Ovarin/`)
+        .then((res) => {
+          this.dataB1Ovarin = res.data
+          // console.log(this.dataB1Ovarin.length);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      await api
+        .get(`api/BRCA2Breast/`)
+        .then((res) => {
+          this.dataB2Breast = res.data
+          // console.log(this.dataB2Breast.length);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      await api
+        .get(`api/BRCA2Ovarin/`)
+        .then((res) => {
+          this.dataB2Ovarin = res.data
+          // console.log(this.dataB2Ovarin.length);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      await api
+        .get(`api/PALB2Breast/`)
+        .then((res) => {
+          this.dataP2Breast = res.data
+          // console.log(this.dataP2Breast.length);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      await api
+        .get(`api/PALB2Ovarin/`)
+        .then((res) => {
+          this.dataP2Ovarin = res.data
+          // console.log(this.dataP2Ovarin.length);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    Page02V(){
+      if (this.option1V) {
+        this.option1=true
+        this.option3=false
+        this.option4=false
+        this.Page02()
+      }
+      else if (this.option3V) {
+        this.option1=false
+        this.option3=true
+        this.option4=false
+        this.Page02()
+      }
+      else if (this.option4V) {
+        this.option1=false
+        this.option3=false
+        this.option4=true
+        this.Page02()
+      }
+      
+    },
+    Page02(){
+      let dataV = []
+      if (this.option1) {
+        dataV = this.dataB1Breast
+      } else if(this.option3){
+        dataV = this.dataB2Breast
+      } else if (this.option4) {
+        dataV = this.dataP2Breast
+      }
+      let a = [0,0,0,0,0,0]
+      let b = [0,0,0,0,0,0]
+      for (let i = 0; i < dataV.length; i++) {
+        if (dataV[i].age<=30) {
+          a[0]+=parseFloat(dataV[i].averageLifetime)
+          b[0]+=parseFloat(dataV[i].averageTen)
+        }
+        else if (dataV[i].age<=40) {
+          a[1]+=parseFloat(dataV[i].averageLifetime)
+          b[1]+=parseFloat(dataV[i].averageTen)
+        }
+        else if (dataV[i].age<=50) {
+          a[2]+=parseFloat(dataV[i].averageLifetime)
+          b[2]+=parseFloat(dataV[i].averageTen)
+        }
+        else if (dataV[i].age<=60) {
+          a[3]+=parseFloat(dataV[i].averageLifetime)
+          b[3]+=parseFloat(dataV[i].averageTen)
+        }
+        else if (dataV[i].age<=70) {
+          a[4]+=parseFloat(dataV[i].averageLifetime)
+          b[4]+=parseFloat(dataV[i].averageTen)
+        }
+        else {
+          a[5]+=parseFloat(dataV[i].averageLifetime)
+          b[5]+=parseFloat(dataV[i].averageTen)
+        }
+      }
+      let x = [], x2 = []
+      for (let i = 0; i < dataV.length; i++) {
+        let z = {
+          x: dataV[i].age,
+          y: [
+            parseInt(dataV[i].lowerCentileLifetime),
+            (parseInt(dataV[i].averageLifetime)+parseInt(dataV[i].lowerCentileLifetime))/2,
+            parseInt(dataV[i].averageLifetime),
+            (parseInt(dataV[i].averageLifetime)+parseInt(dataV[i].upperCentileLifetime))/2,
+            parseInt(dataV[i].upperCentileLifetime)
+          ]
+        }
+        let z2 = {
+          x: dataV[i].age,
+          y: [
+            parseInt(dataV[i].lowerCentile),
+            (parseInt(dataV[i].averageTen)+parseInt(dataV[i].lowerCentile))/2,
+            parseInt(dataV[i].averageTen),
+            (parseInt(dataV[i].averageTen)+parseInt(dataV[i].upperCentile))/2,
+            parseInt(dataV[i].upperCentile)
+          ]
+        }
+        x.push(z)
+        x2.push(z2)
+      }
+      this.series[0].data=x
+      this.series2[0].data=x2
+      for (let i = 0; i < a.length; i++) {
+        if (i==0) {
+          a[i] = (a[i]/11).toFixed(1)
+          b[i] = (b[i]/11).toFixed(1)
+        }
+        else{
+          a[i] = (a[i]/10).toFixed(1)
+          b[i] = (b[i]/10).toFixed(1)
+        }
+      }
+      this.dataF= {
+        labels: [
+          'Age 20-30',
+          'Age 31-40',
+          'Age 41-50',
+          'Age 51-60',
+          'Age 61-70',
+          'Age 71-80',
+        ],
+        datasets: [
+          {
+            label: 'Your cumulative risk until age 80',
+            backgroundColor: ['#49A9B4'],
+            pointBackgroundColor: '#009BBC',
+            pointBorderColor: '#009BBC',
+            pointHoverBackgroundColor: '#009BBC',
+            pointHoverBorderColor: 'rgba(179,181,198,1)',
+            data: a
+          }
+        ]
+      }
+      this.dataF2= {
+        labels: [
+          '20-30',
+          '31-40',
+          '41-50',
+          '51-60',
+          '61-70',
+          '71-80',
+        ],
+        datasets: [
+          {
+            label: 'Your cumulative 10 year risk until age 80',
+            backgroundColor: ['#646FA9'],
+            pointBackgroundColor: '#009BBC',
+            pointBorderColor: '#009BBC',
+            pointHoverBackgroundColor: '#009BBC',
+            pointHoverBorderColor: 'rgba(179,181,198,1)',
+            data: b
+          },
+        ]
+      }
+
+      dataV = []
+      if (this.option1) {
+        dataV = this.dataB1Ovarin
+      } else if(this.option3){
+        dataV = this.dataB2Ovarin
+      } else if (this.option4) {
+        dataV = this.dataP2Ovarin
+      }
+      a = [0,0,0,0,0,0]
+      b = [0,0,0,0,0,0]
+      for (let i = 0; i < dataV.length; i++) {
+        if (dataV[i].age<=30) {
+          a[0]+=parseFloat(dataV[i].averageLifetime)
+          b[0]+=parseFloat(dataV[i].averageTen)
+        }
+        else if (dataV[i].age<=40) {
+          a[1]+=parseFloat(dataV[i].averageLifetime)
+          b[1]+=parseFloat(dataV[i].averageTen)
+        }
+        else if (dataV[i].age<=50) {
+          a[2]+=parseFloat(dataV[i].averageLifetime)
+          b[2]+=parseFloat(dataV[i].averageTen)
+        }
+        else if (dataV[i].age<=60) {
+          a[3]+=parseFloat(dataV[i].averageLifetime)
+          b[3]+=parseFloat(dataV[i].averageTen)
+        }
+        else if (dataV[i].age<=70) {
+          a[4]+=parseFloat(dataV[i].averageLifetime)
+          b[4]+=parseFloat(dataV[i].averageTen)
+        }
+        else {
+          a[5]+=parseFloat(dataV[i].averageLifetime)
+          b[5]+=parseFloat(dataV[i].averageTen)
+        }
+      }
+      x = [], x2 = []
+      for (let i = 0; i < dataV.length; i++) {
+        let z = {
+          x: dataV[i].age,
+          y: [
+            parseInt(dataV[i].lowerCentileLifetime),
+            (parseInt(dataV[i].averageLifetime)+parseInt(dataV[i].lowerCentileLifetime))/2,
+            parseInt(dataV[i].averageLifetime),
+            (parseInt(dataV[i].averageLifetime)+parseInt(dataV[i].upperCentileLifetime))/2,
+            parseInt(dataV[i].upperCentileLifetime)
+          ]
+        }
+        let z2 = {
+          x: dataV[i].age,
+          y: [
+            parseInt(dataV[i].lowerCentile),
+            (parseInt(dataV[i].averageTen)+parseInt(dataV[i].lowerCentile))/2,
+            parseInt(dataV[i].averageTen),
+            (parseInt(dataV[i].averageTen)+parseInt(dataV[i].upperCentile))/2,
+            parseInt(dataV[i].upperCentile)
+          ]
+        }
+        x.push(z)
+        x2.push(z2)
+      }
+      this.series3[0].data=x
+      this.series4[0].data=x2
+
+
+      for (let i = 0; i < a.length; i++) {
+        if (i==0) {
+          a[i] = (a[i]/11).toFixed(1)
+          b[i] = (b[i]/11).toFixed(1)
+        }
+        else{
+          a[i] = (a[i]/10).toFixed(1)
+          b[i] = (b[i]/10).toFixed(1)
+        }
+      }
+
+      this.dataJ= {
+        labels: [
+          'Age 20-30',
+          'Age 31-40',
+          'Age 41-50',
+          'Age 51-60',
+          'Age 61-70',
+          'Age 71-80',
+        ],
+        datasets: [
+          {
+            label: 'Your cumulative risk until age 80',
+            backgroundColor: ['#048a96'],
+            pointBackgroundColor: '#009BBC',
+            pointBorderColor: '#009BBC',
+            pointHoverBackgroundColor: '#009BBC',
+            pointHoverBorderColor: 'rgba(179,181,198,1)',
+            data: a
+          },
+        ]
+      }
+      this.dataJ2= {
+        labels: [
+          '20-30',
+          '31-40',
+          '41-50',
+          '51-60',
+          '61-70',
+          '71-80',
+        ],
+        datasets: [
+          {
+            label: 'Your cumulative 10 year risk until age 80',
+            backgroundColor: ['#364382'],
+            pointBackgroundColor: '#009BBC',
+            pointBorderColor: '#009BBC',
+            pointHoverBackgroundColor: '#009BBC',
+            pointHoverBorderColor: 'rgba(179,181,198,1)',
+            data: b
+          },
+        ]
+      }
+    },
+    ChageAge(){
+      this.selectAge=1
+      this.selectAge2=1
+      this.age=this.ageV
+      this.age2=this.ageV
+      this.ageMin = this.ageV
+      this.ageMax = this.ageV+10
+      if (this.ageMax>80) {
+        this.ageMax=80
+      }
+      if (this.ageMin<20) {
+        this.ageMin=20
+      }
+      this.Page03()
+      this.Page04()
+      this.Page05()
+    },
+    ChageAge2(){
+      this.ageV=this.ageV2
+      this.age=this.ageV
+      this.age2=this.ageV
+      this.ageMin = this.ageV
+      this.ageMax = this.ageV+10
+      if (this.ageMax>80) {
+        this.ageMax=80
+      }
+      if (this.ageMin<20) {
+        this.ageMin=20
+      }
+      this.selectAge=1
+      this.selectAge2=1
+      this.Page03()
+      this.Page04()
+      this.Page05()
+      this.NewRisk()
+    },
+    NewRisk(){
+      if(this.option1){
+        for (let i = 0; i < this.dataB1Breast.length; i++) {
+          if (this.dataB1Breast[i].age==this.ageV) {
+            this.boolean1Value = (this.dataB1Breast[i].residualLifetime*0.1)
+            this.boolean1Value = Math.round(this.boolean1Value * 10) / 10;
+            this.dataBoolean1={
+              labels: ['Probability of remaining cancer-free', 'Probability of developing cancer'],
+              datasets: [
+                {
+                  backgroundColor: ['#23C552', '#F84F31'],
+                  data: [100-this.boolean1Value,this.boolean1Value]
+                }
+              ],
+            }
+          }
+        }
+      }
+      if(this.option3){
+        for (let i = 0; i < this.dataB2Breast.length; i++) {
+          if (this.dataB2Breast[i].age==this.ageV) {
+            this.boolean1Value = (this.dataB2Breast[i].residualLifetime*0.1)
+            this.boolean1Value = Math.round(this.boolean1Value * 10) / 10;
+            this.dataBoolean1={
+              labels: ['Probability of remaining cancer-free', 'Probability of developing cancer'],
+              datasets: [
+                {
+                  backgroundColor: ['#23C552', '#F84F31'],
+                  data: [100-this.boolean1Value,this.boolean1Value]
+                }
+              ],
+            }
+          }
+        }
+      }
+      if(this.option4){
+        for (let i = 0; i < this.dataP2Breast.length; i++) {
+          if (this.dataP2Breast[i].age==this.ageV) {
+            this.boolean1Value = (this.dataP2Breast[i].residualLifetime*0.1)
+            this.boolean1Value = Math.round(this.boolean1Value * 10) / 10;
+            this.dataBoolean1={
+              labels: ['Probability of remaining cancer-free', 'Probability of developing cancer'],
+              datasets: [
+                {
+                  backgroundColor: ['#23C552', '#F84F31'],
+                  data: [100-this.boolean1Value,this.boolean1Value]
+                }
+              ],
+            }
+          }
+        }
+      }
+    },
+    Page03(){
+      if(this.option1){
+        for (let i = 0; i < this.dataB1Breast.length; i++) {
+          if (this.dataB1Breast[i].age==this.age) {
+            this.ageR = (this.dataB1Breast[i].residualLifetime)
+            this.ageR = Math.round(this.ageR * 10) / 10;
+            this.dataS={
+              labels: ['Probability of remaining cancer-free', 'Probability of developing cancer'],
+              datasets: [
+                {
+                  backgroundColor: ['#23C552', '#F84F31'],
+                  data: [100-this.ageR,this.ageR]
+                }
+              ],
+            }
+
+            this.ageRU = (this.dataB1Breast[i].upperCentile)
+            this.ageRU = Math.round(this.ageRU * 10) / 10;
+
+            this.ageRL = (this.dataB1Breast[i].lowerCentile)
+            this.ageRL = Math.round(this.ageRL * 10) / 10;
+          }
+        }
+      }
+      if(this.option3){
+        for (let i = 0; i < this.dataB2Breast.length; i++) {
+          if (this.dataB2Breast[i].age==this.age) {
+            this.ageR = (this.dataB2Breast[i].residualLifetime)
+            this.ageR = Math.round(this.ageR * 10) / 10;
+            this.dataS={
+              labels: ['Probability of remaining cancer-free', 'Probability of developing cancer'],
+              datasets: [
+                {
+                  backgroundColor: ['#23C552', '#F84F31'],
+                  data: [100-this.ageR,this.ageR]
+                }
+              ],
+            }
+
+            this.ageRU = (this.dataB2Breast[i].upperCentile)
+            this.ageRU = Math.round(this.ageRU * 10) / 10;
+
+            this.ageRL = (this.dataB2Breast[i].lowerCentile)
+            this.ageRL = Math.round(this.ageRL * 10) / 10;
+          }
+        }
+      }
+      if(this.option4){
+        for (let i = 0; i < this.dataP2Breast.length; i++) {
+          if (this.dataP2Breast[i].age==this.age) {
+            this.ageR = (this.dataP2Breast[i].residualLifetime)
+            this.ageR = Math.round(this.ageR * 10) / 10;
+            this.dataS={
+              labels: ['Probability of remaining cancer-free', 'Probability of developing cancer'],
+              datasets: [
+                {
+                  backgroundColor: ['#23C552', '#F84F31'],
+                  data: [100-this.ageR,this.ageR]
+                }
+              ],
+            }
+
+            this.ageRU = (this.dataP2Breast[i].upperCentile)
+            this.ageRU = Math.round(this.ageRU * 10) / 10;
+
+            this.ageRL = (this.dataP2Breast[i].lowerCentile)
+            this.ageRL = Math.round(this.ageRL * 10) / 10;
+          }
+        }
+      }
+    },
+    Page04(){
+      if(this.option1){
+        for (let i = 0; i < this.dataB1Ovarin.length; i++) {
+          if (this.dataB1Ovarin[i].age==this.age2) {
+            this.ageR2 = (this.dataB1Ovarin[i].residualLifetime)
+            this.ageR2 = Math.round(this.ageR2 * 10) / 10;
+            this.dataS2={
+              labels: ['Probability of remaining cancer-free', 'Probability of developing cancer'],
+              datasets: [
+                {
+                  backgroundColor: ['#23C552', '#F84F31'],
+                  data: [100-this.ageR2,this.ageR2]
+                }
+              ],
+            }
+
+            this.ageRU2 = (this.dataB1Ovarin[i].upperCentile)
+            this.ageRU2 = Math.round(this.ageRU2 * 10) / 10;
+
+            this.ageRL2 = (this.dataB1Ovarin[i].lowerCentile)
+            this.ageRL2 = Math.round(this.ageRL2 * 10) / 10;
+          }
+        }
+      }
+      if(this.option3){
+        for (let i = 0; i < this.dataB2Ovarin.length; i++) {
+          if (this.dataB2Ovarin[i].age==this.age2) {
+            this.ageR2 = (this.dataB2Ovarin[i].residualLifetime)
+            this.ageR2 = Math.round(this.ageR2 * 10) / 10;
+            this.dataS2={
+              labels: ['Probability of remaining cancer-free', 'Probability of developing cancer'],
+              datasets: [
+                {
+                  backgroundColor: ['#23C552', '#F84F31'],
+                  data: [100-this.ageR2,this.ageR2]
+                }
+              ],
+            }
+
+            this.ageRU2 = (this.dataB2Ovarin[i].upperCentile)
+            this.ageRU2 = Math.round(this.ageRU2 * 10) / 10;
+
+            this.ageRL2 = (this.dataB2Ovarin[i].lowerCentile)
+            this.ageRL2 = Math.round(this.ageRL2 * 10) / 10;
+          }
+        }
+      }
+      if(this.option4){
+        for (let i = 0; i < this.dataP2Ovarin.length; i++) {
+          if (this.dataP2Ovarin[i].age==this.age2) {
+            this.ageR2 = (this.dataP2Ovarin[i].residualLifetime)
+            this.ageR2 = Math.round(this.ageR2 * 10) / 10;
+            this.dataS2={
+              labels: ['Probability of remaining cancer-free', 'Probability of developing cancer'],
+              datasets: [
+                {
+                  backgroundColor: ['#23C552', '#F84F31'],
+                  data: [100-this.ageR2,this.ageR2]
+                }
+              ],
+            }
+
+            this.ageRU2 = (this.dataP2Ovarin[i].upperCentile)
+            this.ageRU2 = Math.round(this.ageRU2 * 10) / 10;
+
+            this.ageRL2 = (this.dataP2Ovarin[i].lowerCentile)
+            this.ageRL2 = Math.round(this.ageRL2 * 10) / 10;
+          }
+        }
+      }
+    },
+    Page05(){
+      console.log(true);
+      let dataV = []
+      let age = []
+      let ageR = []
+      if (this.option1) {
+        dataV = this.dataB1Breast
+      } else if(this.option3){
+        dataV = this.dataB2Breast
+      } else if (this.option4) {
+        dataV = this.dataP2Breast
+      }
+      for (let i = 0; i < dataV.length; i++) {
+        if (this.age<=dataV[i].age) {
+          age.push(dataV[i].age)
+          ageR.push(dataV[i].residualLifetime)
+        }
+      }
+      this.dataR= {
+        labels: age,
+        datasets: [
+          {
+            label: 'Your lifetime residual risk until age 80',
+            backgroundColor: ['#de3a3a'],
+            pointBackgroundColor: '#e34040',
+            pointBorderColor: '#e34040',
+            pointHoverBackgroundColor: '#e34040',
+            pointHoverBorderColor: 'rgba(179,181,198,1)',
+            data: ageR
+          }
+        ]
+      }
+
+      dataV = []
+      age = []
+      ageR = []
+      if (this.option1) {
+        dataV = this.dataB1Ovarin
+      } else if(this.option3){
+        dataV = this.dataB2Ovarin
+      } else if (this.option4) {
+        dataV = this.dataP2Ovarin
+      }
+      for (let i = 0; i < dataV.length; i++) {
+        if (this.age<=dataV[i].age) {
+          age.push(dataV[i].age)
+          ageR.push(dataV[i].residualLifetime)
+        }
+      }
+      this.dataR2= {
+        labels: age,
+        datasets: [
+          {
+            label: 'Your lifetime residual risk until age 80',
+            backgroundColor: ['#bf3232'],
+            pointBackgroundColor: '#e34040',
+            pointBorderColor: '#e34040',
+            pointHoverBackgroundColor: '#e34040',
+            pointHoverBorderColor: 'rgba(179,181,198,1)',
+            data: ageR
+          }
+        ]
+      }
+    },
+    onFileChange(event) {
+      let xlsxfile = event.target.files ? event.target.files[0] : null;
+      readXlsxFile(xlsxfile).then((rows) => {
+        console.log("rows:", rows.length)
+        this.dataUpload = rows;
+      });
+    },
+    async PrintData(){
+      // console.log(this.dataUpload);
+      for (let i = 1; i < this.dataUpload.length; i++) {
+        let a= {
+          "age": i+19,
+          "averageTen": (this.dataUpload[i][0]*100).toFixed(6),
+          "lowerCentile": (this.dataUpload[i][1]*100).toFixed(6),
+          "upperCentile": (this.dataUpload[i][2]*100).toFixed(6),
+          "averageLifetime": (this.dataUpload[i][3]*100).toFixed(6),
+          "lowerCentileLifetime": (this.dataUpload[i][4]*100).toFixed(6),
+          "upperCentileLifetime": (this.dataUpload[i][6]*100).toFixed(6),
+          "residualLifetime": (this.dataUpload[i][5]*100).toFixed(6)
+        }
+        // console.table(a);
+        await api
+          .post(`api/PALB2Ovarin/`,a)
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    }
+  }
+}
+</script>
+<style>
+.activeOp {
+  background: linear-gradient(to right, #E37C0A, #ED2D6C) !important;
+  color: white !important;
+}
+.activeOpV {
+  background: linear-gradient(to right, #E37C0A, #ED2D6C) !important;
+  color: white !important;
+}
+.activeOp2 {
+  background: linear-gradient(to right, #E37C0A, #ED2D6C) !important;
+  color: white !important;
+}
+.activebool {
+  background: linear-gradient(to right, #E37C0A, #ED2D6C) !important;
+  color: white !important;
+}
+</style>
